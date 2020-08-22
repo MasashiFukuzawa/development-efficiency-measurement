@@ -1,0 +1,1 @@
+function calculateTheoreticalHours(): void {}
