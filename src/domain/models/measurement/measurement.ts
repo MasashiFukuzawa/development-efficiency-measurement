@@ -37,9 +37,7 @@ export class Measurement {
   }
 
   static isConflicting(lastMeasurement: Measurement | null): boolean {
-    return (
-      lastMeasurement !== null &&
-      lastMeasurement.getMeasurementStopAt() === undefined
-    );
+    if (lastMeasurement === null) return false;
+    return lastMeasurement.getMeasurementStopAt()?.toDate() === undefined;
   }
 }
