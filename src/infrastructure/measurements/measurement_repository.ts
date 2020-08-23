@@ -23,24 +23,26 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
   }
 
   stampStartAt(userId: string, description?: string): Measurement {
+    const id = Measurement.issueNewMeasurementId(this.lastRow);
     const now = new Date();
-    const measurement = new Measurement(userId, now, void 0, description);
+    const measurement = new Measurement(id, userId, now, void 0, description);
     this.sheet
       .getRange(this.lastRow + 1, 1, 1, this.lastCol)
-      .setValues([[userId, now, void 0, description]]);
+      .setValues([[id, userId, now, void 0, description]]);
     return measurement;
   }
 
   stampStopAt(userId: string, lastMeasurement: Measurement): Measurement {
+    const id = lastMeasurement.getMeasurementId().toNumber();
     const startAt = lastMeasurement.getMeasurementStartAt().toDate();
     const now = new Date();
     const description =
       typeof lastMeasurement.getDescription() === 'undefined'
         ? void 0
         : lastMeasurement.getDescription()?.toString();
-    const measurement = new Measurement(userId, startAt, now, description);
+    const measurement = new Measurement(id, userId, startAt, now, description);
     this.sheet
-      .getRange(this.lastRow + 1, 1, 1, this.lastCol)
+      .getRange(id + 1, 1, 1, this.lastCol)
       .setValues([[userId, startAt, now, description]]);
     return measurement;
   }
@@ -83,7 +85,7 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
 
   private map(fullData: any[][]): readonly Measurement[] {
     return fullData.map((e) => {
-      return new Measurement(e[0], e[1], e[2] || void 0, e[3] || void 0);
+      return new Measurement(e[0], e[1], e[2], e[3] || void 0, e[4] || void 0);
     });
   }
 }

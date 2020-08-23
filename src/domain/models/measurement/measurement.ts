@@ -1,19 +1,23 @@
 import { UserId } from '../user/value_objects/user_id';
 import { MeasurementDescription } from './value_objects/measurement_description';
+import { MeasurementId } from './value_objects/measurement_id';
 import { MeasurementStartAt } from './value_objects/measurement_start_at';
 import { MeasurementStopAt } from './value_objects/measurement_stop_at';
 
 export class Measurement {
+  private readonly id: MeasurementId;
   private readonly userId: UserId;
   private readonly startAt: MeasurementStartAt;
   private readonly stopAt?: MeasurementStopAt;
   private readonly description?: MeasurementDescription;
   constructor(
+    id: number,
     userId: string,
     startAt: Date,
     stopAt?: Date,
     description?: string,
   ) {
+    this.id = new MeasurementId(id);
     this.userId = new UserId(userId);
     this.startAt = new MeasurementStartAt(startAt);
     if (typeof stopAt !== 'undefined') {
@@ -22,6 +26,10 @@ export class Measurement {
     if (typeof description !== 'undefined') {
       this.description = new MeasurementDescription(description);
     }
+  }
+
+  getMeasurementId(): MeasurementId {
+    return this.id;
   }
 
   getUserId(): UserId {
@@ -38,6 +46,10 @@ export class Measurement {
 
   getDescription(): MeasurementDescription | undefined {
     return this.description;
+  }
+
+  static issueNewMeasurementId(lastMeasurementId: number): number {
+    return lastMeasurementId + 1;
   }
 
   static isConflicting(lastMeasurement: Measurement | null): boolean {

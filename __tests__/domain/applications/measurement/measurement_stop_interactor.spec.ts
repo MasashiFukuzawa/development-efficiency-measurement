@@ -43,7 +43,7 @@ describe('MeasurementStopInteractor', () => {
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';
           const user = new User(userId, userName);
-          const measurement = new Measurement(userId, new Date(), void 0);
+          const measurement = new Measurement(1, userId, new Date(), void 0);
 
           jest
             .spyOn(UserRepository.prototype, 'findByUserId')
@@ -96,7 +96,12 @@ describe('MeasurementStopInteractor', () => {
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';
           const user = new User(userId, userName);
-          const measurement = new Measurement(userId, new Date(), new Date());
+          const measurement = new Measurement(
+            1,
+            userId,
+            new Date(),
+            new Date(),
+          );
           jest
             .spyOn(UserRepository.prototype, 'findByUserId')
             .mockReturnValue(user);
