@@ -56,11 +56,11 @@ describe('MeasurementRepository', () => {
         const userId = lastMeasurement.getUserId().toString();
         const startAt = lastMeasurement.getMeasurementStartAt().toDate();
         const stopAt = lastMeasurement.getMeasurementStopAt().toDate();
-        const description = lastMeasurement.getDescription().toString();
+        const description = lastMeasurement.getDescription();
         expect(userId).toBe('IM1234');
         expect(startAt).toStrictEqual(new Date(2020, 5, 1, 10, 0, 0, 0));
         expect(stopAt).toStrictEqual(new Date(2020, 5, 1, 11, 0, 0, 0));
-        expect(description).toBe(undefined);
+        expect(typeof description).toBe('undefined');
       });
     });
 

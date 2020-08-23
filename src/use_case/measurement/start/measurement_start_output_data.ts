@@ -1,6 +1,6 @@
 export class MeasurementStartOutputData {
   getStartMessage(userName: string, description?: string): string {
-    if (description === undefined) {
+    if (typeof description === 'undefined') {
       return `${userName} さんの実装開始時間を打刻しました！`;
     } else {
       return `${userName} さんの実装開始時間を打刻しました！ 作業名: ${description}`;

@@ -1,10 +1,11 @@
 export class MeasurementDescription {
-  description: string | undefined;
-  constructor(description: string | undefined) {
-    if (description !== undefined && typeof description !== 'string') {
+  description?: string;
+  constructor(description?: string) {
+    const isUndefined = typeof description === 'undefined';
+    if (!isUndefined && typeof description !== 'string') {
       throw new Error('MeasurementDescriptionはstring型でなければなりません');
     }
-    this.description = description;
+    if (!isUndefined) this.description = description;
   }
 
   toString(): string | undefined {

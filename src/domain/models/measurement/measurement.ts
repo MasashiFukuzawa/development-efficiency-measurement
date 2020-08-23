@@ -16,8 +16,12 @@ export class Measurement {
   ) {
     this.userId = new UserId(userId);
     this.startAt = new MeasurementStartAt(startAt);
-    this.stopAt = new MeasurementStopAt(stopAt);
-    this.description = new MeasurementDescription(description);
+    if (typeof stopAt !== 'undefined') {
+      this.stopAt = new MeasurementStopAt(stopAt);
+    }
+    if (typeof description !== 'undefined') {
+      this.description = new MeasurementDescription(description);
+    }
   }
 
   getUserId(): UserId {
@@ -38,6 +42,6 @@ export class Measurement {
 
   static isConflicting(lastMeasurement: Measurement | null): boolean {
     if (lastMeasurement === null) return false;
-    return lastMeasurement.getMeasurementStopAt()?.toDate() === undefined;
+    return typeof lastMeasurement.getMeasurementStopAt() === 'undefined';
   }
 }
