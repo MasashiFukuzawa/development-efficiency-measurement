@@ -3,9 +3,9 @@ import { UserRepository } from '../../../../src/infrastructure/users/user_reposi
 import { MeasurementRepository } from '../../../../src/infrastructure/measurements/measurement_repository';
 import { User } from '../../../../src/domain/models/user/user';
 import { ReplyPresenter } from '../../../../src/webhook_app/common/presenters/reply/reply_presenter';
-import { MeasurementStartInteractor } from '../../../../src/domain/applications/measurement/measurement_start_interactor';
+import { MeasurementStopInteractor } from '../../../../src/domain/applications/measurement/measurement_stop_interactor';
 
-describe('MeasurementStartInteractor', () => {
+describe('MeasurementStopInteractor', () => {
   SpreadsheetApp.openById = jest.fn(() => ({
     getSheetByName: jest.fn(() => ({
       getLastRow: jest.fn(() => 1),
@@ -30,7 +30,7 @@ describe('MeasurementStartInteractor', () => {
   const userRepository = new UserRepository();
   const measurementRepository = new MeasurementRepository();
   const replyPresenter = new ReplyPresenter();
-  const measurementStartInteractor = new MeasurementStartInteractor(
+  const measurementStopInteractor = new MeasurementStopInteractor(
     userRepository,
     measurementRepository,
     replyPresenter,
@@ -39,11 +39,11 @@ describe('MeasurementStartInteractor', () => {
   describe('#handle', () => {
     describe('when valid', () => {
       describe('when user exists', () => {
-        it('sends a start message successfully', () => {
+        it('sends a stop message successfully', () => {
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';
           const user = new User(userId, userName);
-          const measurement = new Measurement(userId, new Date(), new Date());
+          const measurement = new Measurement(userId, new Date(), undefined);
 
           jest
             .spyOn(UserRepository.prototype, 'findByUserId')
@@ -52,26 +52,7 @@ describe('MeasurementStartInteractor', () => {
             .spyOn(MeasurementRepository.prototype, 'last')
             .mockReturnValue(measurement);
 
-          measurementStartInteractor.handle(userId, userName, 'description');
-          expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
-        });
-      });
-
-      describe('when user use app for the first time', () => {
-        it('sends a start message successfully', () => {
-          const userId = 'IM1234';
-          const userName = 'izuku.midoriya';
-          const user = new User(userId, userName);
-          const measurement = null;
-
-          jest
-            .spyOn(UserRepository.prototype, 'findByUserId')
-            .mockReturnValue(user);
-          jest
-            .spyOn(MeasurementRepository.prototype, 'last')
-            .mockReturnValue(measurement);
-
-          measurementStartInteractor.handle(userId, userName, 'description');
+          measurementStopInteractor.handle(userId, userName);
           expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
         });
       });
@@ -86,17 +67,18 @@ describe('MeasurementStartInteractor', () => {
 
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';
-          measurementStartInteractor.handle(userId, userName);
+          measurementStopInteractor.handle(userId, userName);
           expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
         });
       });
 
-      describe('when user does not stop previous timer', () => {
-        it('sends an error message', () => {
+      describe('when user use app for the first time', () => {
+        it('sends a message for beginners', () => {
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';
           const user = new User(userId, userName);
-          const measurement = new Measurement(userId, new Date(), undefined);
+          const measurement = null;
+
           jest
             .spyOn(UserRepository.prototype, 'findByUserId')
             .mockReturnValue(user);
@@ -104,7 +86,25 @@ describe('MeasurementStartInteractor', () => {
             .spyOn(MeasurementRepository.prototype, 'last')
             .mockReturnValue(measurement);
 
-          measurementStartInteractor.handle(userId, userName);
+          measurementStopInteractor.handle(userId, userName);
+          expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('when user already stopped previous timer', () => {
+        it('sends an error message', () => {
+          const userId = 'IM1234';
+          const userName = 'izuku.midoriya';
+          const user = new User(userId, userName);
+          const measurement = new Measurement(userId, new Date(), new Date());
+          jest
+            .spyOn(UserRepository.prototype, 'findByUserId')
+            .mockReturnValue(user);
+          jest
+            .spyOn(MeasurementRepository.prototype, 'last')
+            .mockReturnValue(measurement);
+
+          measurementStopInteractor.handle(userId, userName);
           expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
         });
       });
