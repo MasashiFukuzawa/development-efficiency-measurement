@@ -40,16 +40,30 @@ describe('UserCreateInteractor', () => {
     replyPresenter,
   );
 
-  describe('SpreadsheetInfrastructure', () => {
-    describe('#handle', () => {
-      describe('when valid', () => {
-        it('sends a create message successfully', () => {
+  describe('#handle', () => {
+    describe('when valid', () => {
+      it('sends a create message successfully', () => {
+        jest
+          .spyOn(UserRepository.prototype, 'findByUserId')
+          .mockReturnValue(null);
+        jest
+          .spyOn(UserSettingRepository.prototype, 'findByUserId')
+          .mockReturnValue(null);
+
+        const userId = 'IM1234';
+        const userName = 'izuku.midoriya';
+        const googleCalendarId = 'izuku.midoriya@example.com';
+        userCreateInteractor.handle(userId, userName, googleCalendarId);
+        expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('when invalid', () => {
+      describe('when found target user', () => {
+        it('sends a create error message successfully', () => {
           jest
             .spyOn(UserRepository.prototype, 'findByUserId')
-            .mockReturnValue(null);
-          jest
-            .spyOn(UserSettingRepository.prototype, 'findByUserId')
-            .mockReturnValue(null);
+            .mockReturnValue(new User('IM1234', 'izuku.midoriya', new Date()));
 
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';
@@ -59,57 +73,39 @@ describe('UserCreateInteractor', () => {
         });
       });
 
-      describe('when invalid', () => {
-        describe('when found target user', () => {
-          it('sends a create error message successfully', () => {
-            jest
-              .spyOn(UserRepository.prototype, 'findByUserId')
-              .mockReturnValue(
-                new User('IM1234', 'izuku.midoriya', new Date()),
-              );
+      describe('when found target user setting', () => {
+        it('sends a create error message successfully', () => {
+          jest
+            .spyOn(UserRepository.prototype, 'findByUserId')
+            .mockReturnValue(null);
+          jest
+            .spyOn(UserSettingRepository.prototype, 'findByUserId')
+            .mockReturnValue(
+              new UserSetting('IM1234', 'izuku.midoriya@exmaple.com'),
+            );
 
-            const userId = 'IM1234';
-            const userName = 'izuku.midoriya';
-            const googleCalendarId = 'izuku.midoriya@example.com';
-            userCreateInteractor.handle(userId, userName, googleCalendarId);
-            expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
-          });
+          const userId = 'IM1234';
+          const userName = 'izuku.midoriya';
+          const googleCalendarId = 'izuku.midoriya@example.com';
+          userCreateInteractor.handle(userId, userName, googleCalendarId);
+          expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
         });
+      });
 
-        describe('when found target user setting', () => {
-          it('sends a create error message successfully', () => {
-            jest
-              .spyOn(UserRepository.prototype, 'findByUserId')
-              .mockReturnValue(null);
-            jest
-              .spyOn(UserSettingRepository.prototype, 'findByUserId')
-              .mockReturnValue(
-                new UserSetting('IM1234', 'izuku.midoriya@exmaple.com'),
-              );
+      describe('when googleCalendarId is null', () => {
+        it('sends a create error message successfully', () => {
+          jest
+            .spyOn(UserRepository.prototype, 'findByUserId')
+            .mockReturnValue(null);
+          jest
+            .spyOn(UserSettingRepository.prototype, 'findByUserId')
+            .mockReturnValue(null);
 
-            const userId = 'IM1234';
-            const userName = 'izuku.midoriya';
-            const googleCalendarId = 'izuku.midoriya@example.com';
-            userCreateInteractor.handle(userId, userName, googleCalendarId);
-            expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
-          });
-        });
-
-        describe('when googleCalendarId is null', () => {
-          it('sends a create error message successfully', () => {
-            jest
-              .spyOn(UserRepository.prototype, 'findByUserId')
-              .mockReturnValue(null);
-            jest
-              .spyOn(UserSettingRepository.prototype, 'findByUserId')
-              .mockReturnValue(null);
-
-            const userId = 'IM1234';
-            const userName = 'izuku.midoriya';
-            const googleCalendarId = null;
-            userCreateInteractor.handle(userId, userName, googleCalendarId);
-            expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
-          });
+          const userId = 'IM1234';
+          const userName = 'izuku.midoriya';
+          const googleCalendarId = null;
+          userCreateInteractor.handle(userId, userName, googleCalendarId);
+          expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
         });
       });
     });
