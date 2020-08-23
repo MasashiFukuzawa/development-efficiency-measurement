@@ -1,18 +1,52 @@
+env:
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  ID_TOKEN: ${{ secrets.ID_TOKEN }}
+  REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+  CLIENT_ID: ${{ secrets.CLIENT_ID }}
+  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+  SCRIPT_ID: ${{ secrets.SCRIPT_ID }}
+
 on: push
+
 jobs:
-  test:
+  test-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Yarn install
         run: yarn install
+
       - name: Eslint review
         uses: reviewdog/action-eslint@v1
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           eslint_flags: './**/*.{ts,js}'
+
       - name: Eslint
         run: yarn lint
+
       - name: Jest
         run: yarn test
+
+      - name: Set access_token into clasprc.json
+        run: sudo sed -i -e "s/\"access_token\":\"DUMMY\"/\"access_token\":\"${ACCESS_TOKEN}\"/" clasprc.json
+      - name: Set id_token into clasprc.json
+        run: sudo sed -i -e "s/\"id_token\":\"DUMMY\"/\"id_token\":\"${ID_TOKEN}\"/" clasprc.json
+      - name: Set clientId into clasprc.json
+        run: sudo sed -i -e "s/\"clientId\":\"DUMMY\"/\"clientId\":\"${CLIENT_ID}\"/" clasprc.json
+      - name: Set clientSecret into clasprc.json
+        run: sudo sed -i -e "s/\"clientSecret\":\"DUMMY\"/\"clientSecret\":\"${CLIENT_SECRET}\"/" clasprc.json
+      - name: Set refresh_token into clasprc.json
+        run: sudo sed -i -e "s@\"refresh_token\":\"DUMMY\"@\"refresh_token\":\"${REFRESH_TOKEN}\"@" clasprc.json
+      - name: Set scriptId into .clasp.json
+        run: |
+          sudo sed -i -e "s/\"scriptId\":\"DUMMY\"/\"scriptId\":\"${SCRIPT_ID}\"/" .clasp.json
+      - name: Set clasprc
+        run: sudo cat clasprc.json > ~/.clasprc.json
+
+      - name: Clasp push
+        run: yarn push
+
+      - name: Claps deploy
+        run: yarn deploy

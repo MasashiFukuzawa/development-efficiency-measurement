@@ -1,0 +1,15 @@
+{
+  "token": {
+    "access_token": "DUMMY",
+    "refresh_token": "DUMMY",
+    "token_type": "Bearer",
+    "id_token": "DUMMY",
+    "expiry_date": 1598173456129
+  },
+  "oauth2ClientSettings": {
+    "clientId": "DUMMY",
+    "clientSecret": "DUMMY",
+    "redirectUri": "http://localhost"
+  },
+  "isLocalCreds": false
+}
