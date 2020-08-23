@@ -33,7 +33,7 @@ export class User {
       new UserName(name);
       return null;
     } catch (e) {
-      return e;
+      return e.message;
     }
   }
 }
