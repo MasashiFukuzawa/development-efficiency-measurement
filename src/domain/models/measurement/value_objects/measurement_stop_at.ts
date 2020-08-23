@@ -1,14 +1,17 @@
 export class MeasurementStopAt {
   stopAt?: Date;
   constructor(stopAt?: Date) {
-    const isUndefined = typeof stopAt === 'undefined';
-    if (!isUndefined && typeof stopAt !== 'object') {
+    if (!this.isUndefined(stopAt) && typeof stopAt !== 'object') {
       throw new Error('MeasurementStopAtはDate型でなければなりません');
     }
-    if (!isUndefined) this.stopAt = stopAt;
+    if (!this.isUndefined(stopAt)) this.stopAt = stopAt;
   }
 
   toDate(): Date | undefined {
     return this.stopAt;
+  }
+
+  isUndefined(stopAt?: Date): boolean {
+    return typeof stopAt === 'undefined';
   }
 }

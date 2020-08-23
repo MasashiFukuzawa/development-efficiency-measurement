@@ -6,6 +6,8 @@ import { UserSettingRepository } from '../../infrastructure/user_settings/user_s
 import { ReplyPresenter } from '../../webhook_app/common/presenters/reply/reply_presenter';
 import { UserCreateController } from '../../webhook_app/user/controllers/create/user_create_controller';
 import { MeasurementStartController } from '../../webhook_app/measurement/controllers/start/measurement_start_controller';
+import { MeasurementStopController } from '../../webhook_app/measurement/controllers/stop/measurement_stop_controller';
+import { MeasurementStopInteractor } from '../../domain/applications/measurement/measurement_stop_interactor';
 import TextOutput = GoogleAppsScript.Content.TextOutput;
 
 function doPost(e: any): TextOutput {
@@ -42,6 +44,8 @@ class SlackDoPost {
         );
       case 'start':
         return this.execMeasurementStartAction(userId, userName, arg);
+      case 'stop':
+        return this.execMeasurementStopAction(userId, userName);
       default:
         return this.getArgumentErrorMessage(
           `/kaihatsu ${text} は設定されていないコマンドです`,
@@ -83,6 +87,24 @@ class SlackDoPost {
       measurementStartInteractor,
     );
     return measurementStartController.start(userId, userName, description);
+  }
+
+  private execMeasurementStopAction(
+    userId: string,
+    userName: string,
+  ): TextOutput {
+    const userRepository = new UserRepository();
+    const measurementRepository = new MeasurementRepository();
+    const replyPresenter = new ReplyPresenter();
+    const measurementStopInteractor = new MeasurementStopInteractor(
+      userRepository,
+      measurementRepository,
+      replyPresenter,
+    );
+    const measurementStartController = new MeasurementStopController(
+      measurementStopInteractor,
+    );
+    return measurementStartController.stop(userId, userName);
   }
 
   private getArgumentErrorMessage(errorMessage: string): TextOutput {
