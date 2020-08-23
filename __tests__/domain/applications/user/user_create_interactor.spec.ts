@@ -71,9 +71,7 @@ describe('UserCreateInteractor', () => {
             const userId = 'IM1234';
             const userName = 'izuku.midoriya';
             const googleCalendarId = 'izuku.midoriya@example.com';
-            expect(() =>
-              userCreateInteractor.handle(userId, userName, googleCalendarId),
-            ).toThrow('User Validation Error');
+            userCreateInteractor.handle(userId, userName, googleCalendarId);
             expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
           });
         });
@@ -92,9 +90,7 @@ describe('UserCreateInteractor', () => {
             const userId = 'IM1234';
             const userName = 'izuku.midoriya';
             const googleCalendarId = 'izuku.midoriya@example.com';
-            expect(() =>
-              userCreateInteractor.handle(userId, userName, googleCalendarId),
-            ).toThrow('UserSetting Validation Error');
+            userCreateInteractor.handle(userId, userName, googleCalendarId);
             expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
           });
         });
@@ -111,9 +107,7 @@ describe('UserCreateInteractor', () => {
             const userId = 'IM1234';
             const userName = 'izuku.midoriya';
             const googleCalendarId = null;
-            expect(() =>
-              userCreateInteractor.handle(userId, userName, googleCalendarId),
-            ).toThrow('UserSetting Validation Error');
+            userCreateInteractor.handle(userId, userName, googleCalendarId);
             expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
           });
         });

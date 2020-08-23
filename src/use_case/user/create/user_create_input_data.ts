@@ -1,7 +1,7 @@
 export class UserCreateInputData {
-  parseText(text: string): string | null {
-    // text => user_create {googleCalendarId}
-    const contents = text.split(' ');
-    return contents[1];
+  parseText(text: string): string {
+    // text: '<mailto:xxx@finc.com|xxx@finc.com>'
+    const parsedText = text.split('|')[1];
+    return !parsedText ? text : parsedText.replace('>', '');
   }
 }

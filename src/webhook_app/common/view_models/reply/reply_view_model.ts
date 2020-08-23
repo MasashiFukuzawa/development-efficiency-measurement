@@ -1,11 +1,9 @@
-import { ReplySubscriber } from '../../reply_subscriber';
+import { UserSlackReplyView } from '../../../user/views/slack/reply/user_slack_reply_view';
+import TextOutput = GoogleAppsScript.Content.TextOutput;
 
 export class ReplyViewModel {
-  reply(message: string): void {
-    const subscribers = ReplySubscriber.subscribers;
-    subscribers.forEach((e) => {
-      e.reply(message);
-      console.log(`${e.getWebhookAppName()} にメッセージを送信しました`);
-    });
+  reply(message: string): TextOutput {
+    const slack = new UserSlackReplyView();
+    return slack.reply(message);
   }
 }

@@ -10,6 +10,6 @@ export class UserCreateOutputData {
       'YYYY/MM/DD HH:mm:ss',
     );
     return `新規ユーザーを作成しました。
-user_id: ${userId}, user_name: ${name}, google_calendar_id: ${googleCalendarId}, created_at: ${createdAt}`;
+UserInfo: { UserId: ${userId}, UserName: ${name}, GoogleCalendarId: ${googleCalendarId}, CreatedAt: ${createdAt} }`;
   }
 }

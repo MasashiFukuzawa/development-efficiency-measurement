@@ -1,3 +1,5 @@
+import TextOutput = GoogleAppsScript.Content.TextOutput;
+
 export interface ReplyPresenterInterface {
-  reply(message: string): void;
+  reply(message: string): TextOutput;
 }

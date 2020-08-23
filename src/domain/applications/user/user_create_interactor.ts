@@ -5,6 +5,7 @@ import { ReplyPresenterInterface } from '../../../use_case/common/reply_presente
 import { User } from '../../models/user/user';
 import { UserSetting } from '../../models/user_setting/user_setting';
 import { UserCreateOutputData } from '../../../use_case/user/create/user_create_output_data';
+import TextOutput = GoogleAppsScript.Content.TextOutput;
 
 export class UserCreateInteractor implements UserCreateUseCaseInterface {
   constructor(
@@ -13,61 +14,43 @@ export class UserCreateInteractor implements UserCreateUseCaseInterface {
     private readonly replyPresenter: ReplyPresenterInterface,
   ) {}
 
-  handle(userId: string, userName: string, googleCalendarId: string): void {
-    if (!this.userValidation(userId, userName)) {
-      throw new Error('User Validation Error');
-    }
-    if (!this.userSettingValidation(userId, googleCalendarId)) {
-      throw new Error('UserSetting Validation Error');
-    }
-
-    const user = this.userRepository.create(userId, userName);
-    const userSetting = this.userSettingRepository.create(
-      userId,
-      googleCalendarId,
-    );
-
-    this.replyPresenter.reply(
-      new UserCreateOutputData().getMessage(user, userSetting),
-    );
-  }
-
-  private userValidation(userId: string, userName: string): boolean {
+  handle(
+    userId: string,
+    userName: string,
+    googleCalendarId: string,
+  ): TextOutput {
     const user = this.userRepository.findByUserId(userId);
     if (user) {
       const errorMessage = user.getRecordNotUniqueErrorMessage();
-      this.replyPresenter.reply(errorMessage);
-      return false;
+      return this.replyPresenter.reply(errorMessage);
     }
 
     const userValidationErrorMessage = User.validate(userId, userName);
     if (userValidationErrorMessage) {
-      this.replyPresenter.reply(userValidationErrorMessage);
-      return false;
+      return this.replyPresenter.reply(userValidationErrorMessage);
     }
 
-    return true;
-  }
-
-  private userSettingValidation(
-    userId: string,
-    googleCalendarId: string,
-  ): boolean {
     const userSetting = this.userSettingRepository.findByUserId(userId);
     if (userSetting) {
       const errorMessage = userSetting.getRecordNotUniqueErrorMessage();
-      this.replyPresenter.reply(errorMessage);
-      return false;
+      return this.replyPresenter.reply(errorMessage);
     }
 
     const userSettingValidationErrorMessage = UserSetting.validate(
       googleCalendarId,
     );
     if (userSettingValidationErrorMessage) {
-      this.replyPresenter.reply(userSettingValidationErrorMessage);
-      return false;
+      return this.replyPresenter.reply(userSettingValidationErrorMessage);
     }
 
-    return true;
+    const createdUser = this.userRepository.create(userId, userName);
+    const createdUserSetting = this.userSettingRepository.create(
+      userId,
+      googleCalendarId,
+    );
+
+    return this.replyPresenter.reply(
+      new UserCreateOutputData().getMessage(createdUser, createdUserSetting),
+    );
   }
 }

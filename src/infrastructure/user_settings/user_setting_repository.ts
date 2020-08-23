@@ -60,7 +60,7 @@ export class UserSettingRepository implements UserSettingRepositoryInterface {
     const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
 
     if (!spreadsheet) throw new Error('Target spreadsheet is not found.');
-    const sheet = spreadsheet.getSheetByName('users');
+    const sheet = spreadsheet.getSheetByName('user_settings');
 
     if (!sheet) throw new Error('Target table is not found.');
     return sheet;
