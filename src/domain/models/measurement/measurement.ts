@@ -42,6 +42,10 @@ export class Measurement {
 
   static isConflicting(lastMeasurement: Measurement | null): boolean {
     if (lastMeasurement === null) return false;
+    return this.isAlreadyStarted(lastMeasurement);
+  }
+
+  static isAlreadyStarted(lastMeasurement: Measurement): boolean {
     return typeof lastMeasurement.getMeasurementStopAt() === 'undefined';
   }
 }
