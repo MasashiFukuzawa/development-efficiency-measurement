@@ -1,12 +1,12 @@
-import { UserSettingRepositoryInterface } from '../../domain/models/user_setting/user_setting_repository_interface';
-import { UserSetting } from '../../domain/models/user_setting/user_setting';
+import { UserRepositoryInterface } from '../../domain/models/user/user_repository_interface';
+import { User } from '../../domain/models/user/user';
 import Sheet = GoogleAppsScript.Spreadsheet.Sheet;
 
-export class UserSettingRepository implements UserSettingRepositoryInterface {
+export class UserRepository implements UserRepositoryInterface {
   private readonly sheet: Sheet;
   private readonly lastRow: number;
   private readonly lastCol: number;
-  private readonly fullData: readonly UserSetting[];
+  private readonly fullData: readonly User[];
   constructor() {
     this.sheet = this.getSheet();
     this.lastRow = this.getLastRow();
@@ -14,33 +14,22 @@ export class UserSettingRepository implements UserSettingRepositoryInterface {
     this.fullData = this.getAll();
   }
 
-  findByUserId(userId: string): UserSetting | null {
+  findByUserId(userId: string): User | null {
     const user = this.fullData.filter((e) => {
-      return e.getUserId().toString() === userId;
+      return e.getId().toString() === userId;
     })[0];
     return !!user ? user : null;
   }
 
-  create(userId: string, googleCalendarId: string): UserSetting {
-    const userSetting = new UserSetting(userId, googleCalendarId);
+  create(userId: string, userName: string): User {
+    const user = new User(userId, userName);
     this.sheet
       .getRange(this.lastRow + 1, 1, 1, this.lastCol)
-      .setValues([
-        [
-          userId,
-          googleCalendarId,
-          userSetting.getWorkStartHour().toNumber(),
-          userSetting.getWorkStartMinute().toNumber(),
-          userSetting.getWorkEndHour().toNumber(),
-          userSetting.getWorkEndMinute().toNumber(),
-          userSetting.getNotificationStatus().toString(),
-          userSetting.getUpdatedAt(),
-        ],
-      ]);
-    return userSetting;
+      .setValues([[userId, userName, user.getCreatedAt()]]);
+    return user;
   }
 
-  private getAll(): readonly UserSetting[] {
+  private getAll(): readonly User[] {
     if (this.fullData) return this.fullData;
     const rawData = this.sheet
       .getRange(2, 1, this.lastRow - 1, this.lastCol)
@@ -60,7 +49,7 @@ export class UserSettingRepository implements UserSettingRepositoryInterface {
     const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
 
     if (!spreadsheet) throw new Error('Target spreadsheet is not found.');
-    const sheet = spreadsheet.getSheetByName('user_settings');
+    const sheet = spreadsheet.getSheetByName('users');
 
     if (!sheet) throw new Error('Target table is not found.');
     return sheet;
@@ -76,9 +65,9 @@ export class UserSettingRepository implements UserSettingRepositoryInterface {
     return this.sheet.getLastColumn();
   }
 
-  private map(fullData: any[][]): readonly UserSetting[] {
+  private map(fullData: any[][]): readonly User[] {
     return fullData.map((e) => {
-      return new UserSetting(e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]);
+      return new User(e[0], e[1], e[2]);
     });
   }
 }

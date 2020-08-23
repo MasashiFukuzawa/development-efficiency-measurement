@@ -7,6 +7,7 @@ module.exports = {
     Moment: {},
     SpreadsheetApp: {},
     PropertiesService: {},
+    ContentService: {},
     UrlFetchApp: {},
   },
 
