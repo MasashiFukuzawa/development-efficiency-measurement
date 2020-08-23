@@ -19,9 +19,11 @@ export class UserCreateInteractor implements UserCreateUseCaseInterface {
     userName: string,
     googleCalendarId: string,
   ): TextOutput {
+    const outputData = new UserCreateOutputData();
+
     const user = this.userRepository.findByUserId(userId);
     if (user) {
-      const errorMessage = user.getRecordNotUniqueErrorMessage();
+      const errorMessage = outputData.getUserNotUniqueErrorMessage(userName);
       return this.replyPresenter.reply(errorMessage);
     }
 
@@ -32,7 +34,9 @@ export class UserCreateInteractor implements UserCreateUseCaseInterface {
 
     const userSetting = this.userSettingRepository.findByUserId(userId);
     if (userSetting) {
-      const errorMessage = userSetting.getRecordNotUniqueErrorMessage();
+      const errorMessage = outputData.getGoogleCalendarIdNotUniqueErrorMessage(
+        googleCalendarId,
+      );
       return this.replyPresenter.reply(errorMessage);
     }
 
@@ -50,7 +54,7 @@ export class UserCreateInteractor implements UserCreateUseCaseInterface {
     );
 
     return this.replyPresenter.reply(
-      new UserCreateOutputData().getMessage(createdUser, createdUserSetting),
+      outputData.getMessage(createdUser, createdUserSetting),
     );
   }
 }
