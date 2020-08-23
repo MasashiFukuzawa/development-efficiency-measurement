@@ -50,7 +50,7 @@ class SlackDoPost {
   }
 
   private execUserCreateAction(
-    text: string,
+    slackFormatGmail: string,
     userId: string,
     userName: string,
   ): TextOutput {
@@ -63,7 +63,7 @@ class SlackDoPost {
       replyPresenter,
     );
     const userCreateController = new UserCreateController(userCreateInteractor);
-    return userCreateController.create(text, userId, userName);
+    return userCreateController.create(slackFormatGmail, userId, userName);
   }
 
   private execMeasurementStartAction(
