@@ -1,0 +1,18 @@
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Yarn install
+        run: yarn install
+      - name: Eslint review
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          eslint_flags: './**/*.{ts,js}'
+      - name: Eslint
+        run: yarn lint
+      - name: Jest
+        run: yarn test
