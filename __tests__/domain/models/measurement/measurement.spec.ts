@@ -24,4 +24,22 @@ describe('Measurement', () => {
       });
     });
   });
+
+  describe('.isAlreadyStarted', () => {
+    describe('when measurement is already started', () => {
+      it('returns true', () => {
+        const lastMeasurement = new Measurement('xxx', new Date(), undefined);
+        const result = Measurement.isAlreadyStarted(lastMeasurement);
+        expect(result).toBe(true);
+      });
+    });
+
+    describe('when invalid', () => {
+      it('returns measurement is not started yet', () => {
+        const lastMeasurement = new Measurement('xxx', new Date(), new Date());
+        const result = Measurement.isAlreadyStarted(lastMeasurement);
+        expect(result).toBe(false);
+      });
+    });
+  });
 });
