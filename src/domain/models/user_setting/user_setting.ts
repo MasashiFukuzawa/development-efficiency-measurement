@@ -69,10 +69,6 @@ export class UserSetting {
     return this.updatedAt;
   }
 
-  getRecordNotUniqueErrorMessage(): string {
-    return `Unique制約に引っ掛かりました。${this.getGoogleCalendarId().toString()} は既に登録されています`;
-  }
-
   static validate(googleCalendarId: string): string | null {
     try {
       new UserSettingGoogleCalendarId(googleCalendarId);

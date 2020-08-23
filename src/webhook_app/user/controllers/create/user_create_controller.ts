@@ -5,8 +5,14 @@ import TextOutput = GoogleAppsScript.Content.TextOutput;
 export class UserCreateController {
   constructor(private readonly userCreateUseCase: UserCreateUseCaseInterface) {}
 
-  create(text: string, userId: string, userName: string): TextOutput {
-    const googleCalendarId = new UserCreateInputData().parseText(text);
+  create(
+    slackFormatGmail: string,
+    userId: string,
+    userName: string,
+  ): TextOutput {
+    const googleCalendarId = new UserCreateInputData().parseText(
+      slackFormatGmail,
+    );
     return this.userCreateUseCase.handle(userId, userName, googleCalendarId);
   }
 }

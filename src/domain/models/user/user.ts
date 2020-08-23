@@ -23,10 +23,6 @@ export class User {
     return this.createdAt;
   }
 
-  getRecordNotUniqueErrorMessage(): string {
-    return `Unique制約に引っ掛かりました。${this.getName().toString()} さんは既に登録されています`;
-  }
-
   static validate(id: string, name: string): string | null {
     try {
       new UserId(id);

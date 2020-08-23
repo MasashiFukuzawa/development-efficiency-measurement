@@ -12,4 +12,12 @@ export class UserCreateOutputData {
     return `新規ユーザーを作成しました。
 UserInfo: { UserId: ${userId}, UserName: ${name}, GoogleCalendarId: ${googleCalendarId}, CreatedAt: ${createdAt} }`;
   }
+
+  getUserNotUniqueErrorMessage(UserName: string): string {
+    return `Unique制約に引っ掛かりました。${UserName} さんは既に登録されています`;
+  }
+
+  getGoogleCalendarIdNotUniqueErrorMessage(googleCalendarId: string): string {
+    return `Unique制約に引っ掛かりました。${googleCalendarId} は既に登録されています`;
+  }
 }
