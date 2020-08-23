@@ -48,10 +48,6 @@ export class Measurement {
     return this.description;
   }
 
-  static issueNewMeasurementId(lastMeasurementId: number): number {
-    return lastMeasurementId + 1;
-  }
-
   static isConflicting(lastMeasurement: Measurement | null): boolean {
     if (lastMeasurement === null) return false;
     return this.isAlreadyStarted(lastMeasurement);
