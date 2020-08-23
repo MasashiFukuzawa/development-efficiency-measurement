@@ -3,7 +3,7 @@ import { UserRepository } from '../../../src/infrastructure/users/user_repositor
 describe('UserRepository', () => {
   SpreadsheetApp.openById = jest.fn(() => ({
     getSheetByName: jest.fn(() => ({
-      getLastRow: jest.fn(() => 4),
+      getLastRow: jest.fn(() => 5),
       getLastColumn: jest.fn(() => 3),
       getRange: jest.fn(() => ({
         getValues: jest.fn(() => [

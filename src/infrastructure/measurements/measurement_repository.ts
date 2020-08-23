@@ -23,7 +23,7 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
   }
 
   stampStartAt(userId: string, description?: string): Measurement {
-    const id = Measurement.issueNewMeasurementId(this.lastRow);
+    const id = this.lastRow;
     const now = new Date();
     const measurement = new Measurement(id, userId, now, void 0, description);
     this.sheet
@@ -43,7 +43,7 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
     const measurement = new Measurement(id, userId, startAt, now, description);
     this.sheet
       .getRange(id + 1, 1, 1, this.lastCol)
-      .setValues([[userId, startAt, now, description]]);
+      .setValues([[id, userId, startAt, now, description]]);
     return measurement;
   }
 

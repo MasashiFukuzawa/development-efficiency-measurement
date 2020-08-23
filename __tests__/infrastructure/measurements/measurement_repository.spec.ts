@@ -4,7 +4,7 @@ import { MeasurementRepository } from '../../../src/infrastructure/measurements/
 describe('MeasurementRepository', () => {
   SpreadsheetApp.openById = jest.fn(() => ({
     getSheetByName: jest.fn(() => ({
-      getLastRow: jest.fn(() => 5),
+      getLastRow: jest.fn(() => 6),
       getLastColumn: jest.fn(() => 5),
       getRange: jest.fn(() => ({
         getValues: jest.fn(() => [
