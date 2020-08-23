@@ -31,6 +31,20 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
     return measurement;
   }
 
+  stampStopAt(userId: string, lastMeasurement: Measurement): Measurement {
+    const startAt = lastMeasurement.getMeasurementStartAt().toDate();
+    const now = new Date();
+    const description =
+      typeof lastMeasurement.getDescription() === 'undefined'
+        ? undefined
+        : lastMeasurement.getDescription()?.toString();
+    const measurement = new Measurement(userId, startAt, now, description);
+    this.sheet
+      .getRange(this.lastRow + 1, 1, 1, this.lastCol)
+      .setValues([[userId, startAt, now, description]]);
+    return measurement;
+  }
+
   private getAll(): readonly Measurement[] {
     if (this.fullData) return this.fullData;
     const rawData = this.sheet
