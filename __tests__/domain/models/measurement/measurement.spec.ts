@@ -18,7 +18,7 @@ describe('Measurement', () => {
 
     describe('when invalid', () => {
       it('returns true', () => {
-        const lastMeasurement = new Measurement('xxx', new Date(), undefined);
+        const lastMeasurement = new Measurement('xxx', new Date(), void 0);
         const result = Measurement.isConflicting(lastMeasurement);
         expect(result).toBe(true);
       });
@@ -28,7 +28,7 @@ describe('Measurement', () => {
   describe('.isAlreadyStarted', () => {
     describe('when measurement is already started', () => {
       it('returns true', () => {
-        const lastMeasurement = new Measurement('xxx', new Date(), undefined);
+        const lastMeasurement = new Measurement('xxx', new Date(), void 0);
         const result = Measurement.isAlreadyStarted(lastMeasurement);
         expect(result).toBe(true);
       });

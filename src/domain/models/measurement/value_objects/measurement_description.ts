@@ -1,14 +1,17 @@
 export class MeasurementDescription {
   description?: string;
   constructor(description?: string) {
-    const isUndefined = typeof description === 'undefined';
-    if (!isUndefined && typeof description !== 'string') {
+    if (!this.isUndefined(description) && typeof description !== 'string') {
       throw new Error('MeasurementDescriptionはstring型でなければなりません');
     }
-    if (!isUndefined) this.description = description;
+    if (!this.isUndefined(description)) this.description = description;
   }
 
   toString(): string | undefined {
     return this.description;
+  }
+
+  isUndefined(description?: string): boolean {
+    return typeof description === 'undefined';
   }
 }
