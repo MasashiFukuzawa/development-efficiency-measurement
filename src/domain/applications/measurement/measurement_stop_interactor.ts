@@ -34,9 +34,15 @@ export class MeasurementStopInteractor
       return this.replyPresenter.reply(errorMessage);
     }
 
-    this.measurementRepository.stampStopAt(userId, lastMeasurement);
+    const measurement = this.measurementRepository.stampStopAt(
+      userId,
+      lastMeasurement,
+    );
 
-    const startMessage = outputData.getStopMessage(userName);
+    const startMessage = outputData.getStopMessage(
+      userName,
+      measurement.calculateImplementMilliSeconds(),
+    );
     return this.replyPresenter.reply(startMessage);
   }
 }

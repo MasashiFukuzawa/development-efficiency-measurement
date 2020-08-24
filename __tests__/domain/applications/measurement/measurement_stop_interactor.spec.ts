@@ -51,6 +51,9 @@ describe('MeasurementStopInteractor', () => {
           jest
             .spyOn(MeasurementRepository.prototype, 'last')
             .mockReturnValue(measurement);
+          jest
+            .spyOn(Measurement.prototype, 'calculateImplementMilliSeconds')
+            .mockReturnValue(1800000);
 
           measurementStopInteractor.handle(userId, userName);
           expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
