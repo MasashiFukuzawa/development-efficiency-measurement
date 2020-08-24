@@ -48,6 +48,12 @@ export class Measurement {
     return this.description;
   }
 
+  calculateImplementMilliSeconds() {
+    const startAt = Moment.moment(this.getMeasurementStartAt().toDate());
+    const stopAt = Moment.moment(this.getMeasurementStopAt()?.toDate());
+    return Math.abs(startAt.diff(stopAt));
+  }
+
   static isConflicting(lastMeasurement: Measurement | null): boolean {
     if (lastMeasurement === null) return false;
     return this.isAlreadyStarted(lastMeasurement);
