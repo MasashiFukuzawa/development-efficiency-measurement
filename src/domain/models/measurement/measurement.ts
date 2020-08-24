@@ -51,7 +51,7 @@ export class Measurement {
   calculateImplementMilliSeconds() {
     const startAt = Moment.moment(this.getMeasurementStartAt().toDate());
     const stopAt = Moment.moment(this.getMeasurementStopAt()?.toDate());
-    return startAt.diff(stopAt);
+    return Math.abs(startAt.diff(stopAt));
   }
 
   static isConflicting(lastMeasurement: Measurement | null): boolean {
