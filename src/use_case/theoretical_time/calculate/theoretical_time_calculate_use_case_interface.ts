@@ -1,1 +1,3 @@
-export interface TheoreticalTimeCalculateUseCaseInterface {}
+export interface TheoreticalTimeCalculateUseCaseInterface {
+  handle(): void;
+}

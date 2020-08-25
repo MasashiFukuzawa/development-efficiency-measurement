@@ -40,7 +40,7 @@ export class UserSettingRepository implements UserSettingRepositoryInterface {
     return userSetting;
   }
 
-  private getAll(): readonly UserSetting[] {
+  getAll(): readonly UserSetting[] {
     if (this.fullData) return this.fullData;
     const rawData = this.sheet
       .getRange(2, 1, this.lastRow - 1, this.lastCol)
