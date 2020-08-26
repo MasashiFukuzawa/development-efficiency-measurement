@@ -48,7 +48,7 @@ export class Measurement {
     return this.description;
   }
 
-  calculateImplementMilliSeconds() {
+  calculateImplementTime() {
     const startAt = Moment.moment(this.getMeasurementStartAt().toDate());
     const stopAt = Moment.moment(this.getMeasurementStopAt()?.toDate());
     return Math.abs(startAt.diff(stopAt));

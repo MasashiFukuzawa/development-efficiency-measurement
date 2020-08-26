@@ -27,12 +27,12 @@ describe('TheoreticalTimeRepository', () => {
       );
       const userId = theoreticalTime.getUserId().toString();
       const iosWeek = theoreticalTime.getTheoreticalTimeIsoWeek().toNumber();
-      const totalMilliSeconds = theoreticalTime
-        .getTheoreticalTimeTotalMilliSecond()
+      const totalTimes = theoreticalTime
+        .getTheoreticalTimeTotalTime()
         .toNumber();
       expect(userId).toBe('IM1234');
       expect(iosWeek).toBe(35);
-      expect(totalMilliSeconds).toBe(10000000);
+      expect(totalTimes).toBe(10000000);
     });
   });
 });

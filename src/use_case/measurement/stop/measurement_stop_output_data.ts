@@ -1,6 +1,6 @@
 export class MeasurementStopOutputData {
-  getStopMessage(userName: string, implementMilliSeconds: number): string {
-    const implementMinutes = implementMilliSeconds / (60 * 1000);
+  getStopMessage(userName: string, implementTime: number): string {
+    const implementMinutes = implementTime / (60 * 1000);
     return `${userName} さんの実装終了時間を打刻しました！実装時間は ${Math.round(
       implementMinutes,
     )}分 でした！`;

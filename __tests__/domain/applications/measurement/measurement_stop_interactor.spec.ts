@@ -52,7 +52,7 @@ describe('MeasurementStopInteractor', () => {
             .spyOn(MeasurementRepository.prototype, 'last')
             .mockReturnValue(measurement);
           jest
-            .spyOn(Measurement.prototype, 'calculateImplementMilliSeconds')
+            .spyOn(Measurement.prototype, 'calculateImplementTime')
             .mockReturnValue(1800000);
 
           measurementStopInteractor.handle(userId, userName);

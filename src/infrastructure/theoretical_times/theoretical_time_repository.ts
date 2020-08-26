@@ -16,12 +16,12 @@ export class TheoreticalTimeRepository
   create(
     userId: string,
     isoWeek: number,
-    theoreticalMilliSecond: number,
+    theoreticalTime: number,
   ): TheoreticalTime {
     this.sheet
       .getRange(this.lastRow + 1, 1, 1, this.lastCol)
-      .setValues([[userId, isoWeek, theoreticalMilliSecond]]);
-    return new TheoreticalTime(userId, isoWeek, theoreticalMilliSecond);
+      .setValues([[userId, isoWeek, theoreticalTime]]);
+    return new TheoreticalTime(userId, isoWeek, theoreticalTime);
   }
 
   private getSheet(): Sheet {

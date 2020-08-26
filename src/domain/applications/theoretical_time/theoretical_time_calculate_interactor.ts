@@ -24,7 +24,7 @@ export class TheoreticalTimeCalculateInteractor
       const workEndMinute = e.getWorkEndMinute().toNumber();
 
       const weeklyEvents = inputData.mapWeeklyEvents(googleCalendarId);
-      const theoreticalMilliSecond = TheoreticalTime.calculateTheoreticalMilliSeconds(
+      const theoreticalTime = TheoreticalTime.calculateTheoreticalTime(
         weeklyEvents,
         workStartHour,
         workStartMinute,
@@ -32,15 +32,11 @@ export class TheoreticalTimeCalculateInteractor
         workEndMinute,
       );
 
-      this.theoreticalTimeRepository.create(
-        userId,
-        isoWeek,
-        theoreticalMilliSecond,
-      );
+      this.theoreticalTimeRepository.create(userId, isoWeek, theoreticalTime);
 
       console.log(
         `userId: ${userId} のTheoreticalTimeを記録しました。theoreticalHours: ${
-          theoreticalMilliSecond / (60 * 60 * 1000)
+          theoreticalTime / (60 * 60 * 1000)
         } hours`,
       );
     });

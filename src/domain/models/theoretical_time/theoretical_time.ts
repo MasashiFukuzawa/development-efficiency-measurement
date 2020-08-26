@@ -1,6 +1,6 @@
 import { UserId } from '../user/value_objects/user_id';
 import { TheoreticalTimeIsoWeek } from './value_objects/theoretical_time_iso_week';
-import { TheoreticalTimeTotalMilliSecond } from './value_objects/theoretical_time_total_milli_second';
+import { TheoreticalTimeTotalTime } from './value_objects/theoretical_time_total_time';
 
 export interface WeeklyEvent {
   willAttend: boolean;
@@ -13,13 +13,11 @@ export class TheoreticalTime {
 
   private readonly userId: UserId;
   private readonly isoWeek: TheoreticalTimeIsoWeek;
-  private readonly totalMilliSecond: TheoreticalTimeTotalMilliSecond;
-  constructor(userId: string, isoWeek: number, totalMilliSecond: number) {
+  private readonly totalTime: TheoreticalTimeTotalTime;
+  constructor(userId: string, isoWeek: number, totalTime: number) {
     this.userId = new UserId(userId);
     this.isoWeek = new TheoreticalTimeIsoWeek(isoWeek);
-    this.totalMilliSecond = new TheoreticalTimeTotalMilliSecond(
-      totalMilliSecond,
-    );
+    this.totalTime = new TheoreticalTimeTotalTime(totalTime);
   }
 
   getUserId(): UserId {
@@ -30,18 +28,20 @@ export class TheoreticalTime {
     return this.isoWeek;
   }
 
-  getTheoreticalTimeTotalMilliSecond(): TheoreticalTimeTotalMilliSecond {
-    return this.totalMilliSecond;
+  getTheoreticalTimeTotalTime(): TheoreticalTimeTotalTime {
+    return this.totalTime;
   }
 
-  static calculateTheoreticalMilliSeconds(
+  static calculateTheoreticalTime(
     weeklyEvents: WeeklyEvent[],
     workStartHour: number,
     workStartMinute: number,
     workEndHour: number,
     workEndMinute: number,
   ): number {
-    const sortedEvents = this.sortEvent(weeklyEvents);
+    const attendEvents = this.cutOffNotAttendEvents(weeklyEvents);
+
+    const sortedEvents = this.sortEvent(attendEvents);
 
     const eventsWithoutTimeOverlapping = this.trimTimeOverlapping(sortedEvents);
 
@@ -53,28 +53,34 @@ export class TheoreticalTime {
       workEndMinute,
     );
 
-    const eventMilliSecondsLists = trimmedBeforeAndAfterWorkHour.map((e) => {
-      return e.end.getMilliseconds() - e.start.getMilliseconds();
+    const eventTimeLists = trimmedBeforeAndAfterWorkHour.map((e) => {
+      return e.end.getTime() - e.start.getTime();
     });
 
-    const totalMilliSeconds = eventMilliSecondsLists.reduce(
+    const totalTime = eventTimeLists.reduce(
       (accumulator: number, currentValue: number) => accumulator + currentValue,
     );
 
-    const maxMilliSeconds = this.WORK_HOURS_PER_WEEK * 60 * 60 * 1000;
+    const maxTime = this.WORK_HOURS_PER_WEEK * 60 * 60 * 1000;
 
-    return maxMilliSeconds - totalMilliSeconds;
+    return maxTime - totalTime;
   }
 
-  private static sortEvent(weeklyEvents: WeeklyEvent[]): WeeklyEvent[] {
-    return weeklyEvents
+  private static cutOffNotAttendEvents(
+    weeklyEvents: WeeklyEvent[],
+  ): WeeklyEvent[] {
+    return weeklyEvents.filter((e) => {
+      return e.willAttend;
+    });
+  }
+
+  private static sortEvent(attendEvents: WeeklyEvent[]): WeeklyEvent[] {
+    return attendEvents
       .sort((a, b) => {
-        return a.eventEndAt.getMilliseconds() - b.eventEndAt.getMilliseconds();
+        return a.eventEndAt.getTime() - b.eventEndAt.getTime();
       })
       .sort((a, b) => {
-        return (
-          a.eventStartAt.getMilliseconds() - b.eventStartAt.getMilliseconds()
-        );
+        return a.eventStartAt.getTime() - b.eventStartAt.getTime();
       });
   }
 
