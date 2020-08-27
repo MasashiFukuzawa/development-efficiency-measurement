@@ -1,1 +1,3 @@
-export interface NotifyPresenterInterface {}
+export interface NotifyPresenterInterface {
+  notify(message: string): void;
+}
