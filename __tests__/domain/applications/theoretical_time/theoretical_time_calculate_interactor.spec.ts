@@ -2,7 +2,6 @@ import { UserSetting } from '../../../../src/domain/models/user_setting/user_set
 import { TheoreticalTimeRepository } from '../../../../src/infrastructure/theoretical_times/theoretical_time_repository';
 import { UserSettingRepository } from '../../../../src/infrastructure/user_settings/user_setting_repository';
 import { TheoreticalTimeCalculateInteractor } from '../../../../src/domain/applications/theoretical_time/theoretical_time_calculate_interactor';
-import { TheoreticalTimeCalculateInputData } from '../../../../src/use_case/theoretical_time/calculate/theoretical_time_calculate_input_data';
 
 describe('TheoreticalTimeCalculateInteractor', () => {
   SpreadsheetApp.openById = jest.fn(() => ({
