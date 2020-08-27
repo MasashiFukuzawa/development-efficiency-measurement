@@ -1,6 +1,5 @@
 import { WeeklyEvent } from '../../../domain/models/theoretical_time/theoretical_time';
 import CalendarEvent = GoogleAppsScript.Calendar.CalendarEvent;
-import GuestStatus = GoogleAppsScript.Calendar.GuestStatus;
 
 export class TheoreticalTimeCalculateInputData {
   mapWeeklyEvents(googleCalendarId: string): WeeklyEvent[] {
@@ -24,7 +23,7 @@ export class TheoreticalTimeCalculateInputData {
     return calendar.getEvents(nextMonday, nextFriday);
   }
 
-  private willAttend(attendStatus: GuestStatus): boolean {
-    return attendStatus !== GuestStatus.NO;
+  private willAttend(attendStatus: any): boolean {
+    return attendStatus !== 'NO';
   }
 }

@@ -10,11 +10,6 @@ module.exports = {
     ContentService: {},
     UrlFetchApp: {},
     CalendarApp: {},
-    GoogleAppsScript: {
-      Calendar: {
-        GuestStatus: {},
-      },
-    },
   },
 
   // Automatically clear mock calls and instances between every test
