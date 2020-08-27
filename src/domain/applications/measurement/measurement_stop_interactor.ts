@@ -41,7 +41,7 @@ export class MeasurementStopInteractor
 
     const startMessage = outputData.getStopMessage(
       userName,
-      measurement.calculateImplementMilliSeconds(),
+      measurement.calculateImplementTime(),
     );
     return this.replyPresenter.reply(startMessage);
   }

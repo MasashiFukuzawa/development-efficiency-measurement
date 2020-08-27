@@ -9,6 +9,7 @@ module.exports = {
     PropertiesService: {},
     ContentService: {},
     UrlFetchApp: {},
+    CalendarApp: {},
   },
 
   // Automatically clear mock calls and instances between every test
