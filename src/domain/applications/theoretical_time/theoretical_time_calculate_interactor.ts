@@ -17,6 +17,8 @@ export class TheoreticalTimeCalculateInteractor
     const isoWeek = Moment.moment().isoWeek();
     userSettings.forEach((e) => {
       const userId = e.getUserId().toString();
+      if (this.isNotUnique(userId, isoWeek)) return;
+
       const googleCalendarId = e.getGoogleCalendarId().toString();
       const workStartHour = e.getWorkStartHour().toNumber();
       const workStartMinute = e.getWorkStartMinute().toNumber();
@@ -40,5 +42,17 @@ export class TheoreticalTimeCalculateInteractor
         } hours`,
       );
     });
+  }
+
+  private isNotUnique(userId: string, isoWeek: number): boolean {
+    const userDataForTheIsoWeek = this.theoreticalTimeRepository
+      .getAll()
+      .find((e) => {
+        return (
+          e.getUserId().toString() === userId &&
+          e.getTheoreticalTimeIsoWeek().toNumber() === isoWeek
+        );
+      });
+    return !!userDataForTheIsoWeek;
   }
 }

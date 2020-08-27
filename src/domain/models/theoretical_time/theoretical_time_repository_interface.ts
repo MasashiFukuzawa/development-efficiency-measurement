@@ -6,4 +6,5 @@ export interface TheoreticalTimeRepositoryInterface {
     theoreticalTime: number,
     isoWeek: number,
   ): TheoreticalTime;
+  getAll(): readonly TheoreticalTime[];
 }

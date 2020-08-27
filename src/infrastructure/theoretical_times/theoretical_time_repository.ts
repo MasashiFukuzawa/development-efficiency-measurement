@@ -7,10 +7,12 @@ export class TheoreticalTimeRepository
   private readonly sheet: Sheet;
   private readonly lastRow: number;
   private readonly lastCol: number;
+  private readonly fullData: readonly TheoreticalTime[];
   constructor() {
     this.sheet = this.getSheet();
     this.lastRow = this.getLastRow();
     this.lastCol = this.getLastColumn();
+    this.fullData = this.getAll();
   }
 
   create(
@@ -22,6 +24,15 @@ export class TheoreticalTimeRepository
       .getRange(this.lastRow + 1, 1, 1, this.lastCol)
       .setValues([[userId, isoWeek, theoreticalTime]]);
     return new TheoreticalTime(userId, isoWeek, theoreticalTime);
+  }
+
+  getAll(): readonly TheoreticalTime[] {
+    if (this.fullData) return this.fullData;
+    const rawData = this.sheet
+      .getRange(2, 1, this.lastRow - 1, this.lastCol)
+      .getValues();
+    const fullData = rawData.filter((e) => !!e[0]);
+    return this.map(fullData);
   }
 
   private getSheet(): Sheet {
@@ -49,5 +60,11 @@ export class TheoreticalTimeRepository
   private getLastColumn(): number {
     if (this.lastCol) return this.lastCol;
     return this.sheet.getLastColumn();
+  }
+
+  private map(fullData: any[][]): readonly TheoreticalTime[] {
+    return fullData.map((e) => {
+      return new TheoreticalTime(e[0], e[1], e[2]);
+    });
   }
 }
