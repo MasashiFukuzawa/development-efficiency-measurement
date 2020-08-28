@@ -2,7 +2,7 @@ import { UserId } from '../user/value_objects/user_id';
 import { TheoreticalTimeIsoWeek } from './value_objects/theoretical_time_iso_week';
 import { TheoreticalTimeTotalTime } from './value_objects/theoretical_time_total_time';
 
-export interface WeeklyEvent {
+export interface Event {
   willAttend: boolean;
   eventStartAt: Date;
   eventEndAt: Date;
@@ -34,7 +34,7 @@ export class TheoreticalTime {
   }
 
   static calculateTheoreticalTime(
-    weeklyEvents: WeeklyEvent[],
+    weeklyEvents: Event[],
     workStartHour: number,
     workStartMinute: number,
     workEndHour: number,
@@ -68,15 +68,13 @@ export class TheoreticalTime {
     return maxTime - totalTime;
   }
 
-  private static cutOffNotAttendEvents(
-    weeklyEvents: WeeklyEvent[],
-  ): WeeklyEvent[] {
+  private static cutOffNotAttendEvents(weeklyEvents: Event[]): Event[] {
     return weeklyEvents.filter((e) => {
       return e.willAttend;
     });
   }
 
-  private static sortEvent(attendEvents: WeeklyEvent[]): WeeklyEvent[] {
+  private static sortEvent(attendEvents: Event[]): Event[] {
     return attendEvents
       .sort((a, b) => {
         return a.eventEndAt.getTime() - b.eventEndAt.getTime();
@@ -87,7 +85,7 @@ export class TheoreticalTime {
   }
 
   private static trimTimeOverlapping(
-    sortedEvents: WeeklyEvent[],
+    sortedEvents: Event[],
   ): { start: Date; end: Date }[] {
     const blocks = [];
     const block = {

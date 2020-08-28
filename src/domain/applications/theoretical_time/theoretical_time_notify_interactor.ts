@@ -26,7 +26,9 @@ export class TheoreticalTimeNotifyInteractor
       const workEndHour = e.getWorkEndHour().toNumber();
       const workEndMinute = e.getWorkEndMinute().toNumber();
 
-      const weeklyEvents = inputData.mapDailyEvents(googleCalendarId);
+      const weeklyEvents = inputData.mapEvents(
+        inputData.getEvents(googleCalendarId),
+      );
       const todaysTheoreticalTime = TheoreticalTime.calculateTheoreticalTime(
         weeklyEvents,
         workStartHour,
