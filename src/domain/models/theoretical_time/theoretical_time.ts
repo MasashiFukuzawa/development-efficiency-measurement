@@ -9,7 +9,8 @@ export interface WeeklyEvent {
 }
 
 export class TheoreticalTime {
-  private static readonly WORK_HOURS_PER_WEEK = 40;
+  static readonly WORK_HOURS_PER_DAY = 8;
+  static readonly WORK_HOURS_PER_WEEK = 40;
 
   private readonly userId: UserId;
   private readonly isoWeek: TheoreticalTimeIsoWeek;
@@ -38,6 +39,7 @@ export class TheoreticalTime {
     workStartMinute: number,
     workEndHour: number,
     workEndMinute: number,
+    theoreticalWorkHours: 8 | 40,
   ): number {
     const attendEvents = this.cutOffNotAttendEvents(weeklyEvents);
 
@@ -61,7 +63,7 @@ export class TheoreticalTime {
       (accumulator: number, currentValue: number) => accumulator + currentValue,
     );
 
-    const maxTime = this.WORK_HOURS_PER_WEEK * 60 * 60 * 1000;
+    const maxTime = theoreticalWorkHours * 60 * 60 * 1000;
 
     return maxTime - totalTime;
   }

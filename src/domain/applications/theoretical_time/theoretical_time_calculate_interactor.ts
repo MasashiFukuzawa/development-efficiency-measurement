@@ -32,6 +32,7 @@ export class TheoreticalTimeCalculateInteractor
         workStartMinute,
         workEndHour,
         workEndMinute,
+        TheoreticalTime.WORK_HOURS_PER_WEEK,
       );
 
       this.theoreticalTimeRepository.create(userId, isoWeek, theoreticalTime);

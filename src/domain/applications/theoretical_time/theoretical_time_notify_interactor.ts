@@ -33,6 +33,7 @@ export class TheoreticalTimeNotifyInteractor
         workStartMinute,
         workEndHour,
         workEndMinute,
+        TheoreticalTime.WORK_HOURS_PER_DAY,
       );
 
       const message = outputData.getMessage(userId, todaysTheoreticalTime);
