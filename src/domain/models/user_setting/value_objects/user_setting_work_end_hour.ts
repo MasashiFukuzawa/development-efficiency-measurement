@@ -9,6 +9,7 @@ export class UserSettingWorkEndHour {
 
     this.workEndHour = workEndHour;
   }
+
   toNumber(): number {
     return this.workEndHour;
   }

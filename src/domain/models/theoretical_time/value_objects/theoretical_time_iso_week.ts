@@ -3,7 +3,9 @@ export class TheoreticalTimeIsoWeek {
 
   theoreticalTimeIsoWeek: number;
   constructor(iosWeek: number) {
-    if (!iosWeek) throw new Error('TheoreticalTimeIsoWeekが存在しません');
+    if (iosWeek === null) {
+      throw new Error('TheoreticalTimeIsoWeekが存在しません');
+    }
 
     if (isNaN(iosWeek)) {
       throw new Error('TheoreticalTimeIsoWeekはnumber型でなければなりません');

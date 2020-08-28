@@ -1,7 +1,7 @@
 export class TheoreticalTimeTotalTime {
   theoreticalTimeTotalTime: number;
   constructor(totalTime: number) {
-    if (!totalTime) {
+    if (totalTime === null) {
       throw new Error('TheoreticalTimeTotalTimeが存在しません');
     }
 
