@@ -25,7 +25,7 @@ export class UserRepository implements UserRepositoryInterface {
     const user = new User(userId, userName);
     this.sheet
       .getRange(this.lastRow + 1, 1, 1, this.lastCol)
-      .setValues([[userId, userName, user.getCreatedAt()]]);
+      .setValues([[userId, userName, user.getRegisteredAt().toDate()]]);
     return user;
   }
 
