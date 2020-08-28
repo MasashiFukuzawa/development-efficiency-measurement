@@ -2,14 +2,15 @@ import { UserId } from '../user/value_objects/user_id';
 import { TheoreticalTimeIsoWeek } from './value_objects/theoretical_time_iso_week';
 import { TheoreticalTimeTotalTime } from './value_objects/theoretical_time_total_time';
 
-export interface WeeklyEvent {
+export interface Event {
   willAttend: boolean;
   eventStartAt: Date;
   eventEndAt: Date;
 }
 
 export class TheoreticalTime {
-  private static readonly WORK_HOURS_PER_WEEK = 40;
+  static readonly WORK_HOURS_PER_DAY = 8;
+  static readonly WORK_HOURS_PER_WEEK = 40;
 
   private readonly userId: UserId;
   private readonly isoWeek: TheoreticalTimeIsoWeek;
@@ -33,11 +34,12 @@ export class TheoreticalTime {
   }
 
   static calculateTheoreticalTime(
-    weeklyEvents: WeeklyEvent[],
+    weeklyEvents: Event[],
     workStartHour: number,
     workStartMinute: number,
     workEndHour: number,
     workEndMinute: number,
+    theoreticalWorkHours: 8 | 40,
   ): number {
     const attendEvents = this.cutOffNotAttendEvents(weeklyEvents);
 
@@ -61,20 +63,18 @@ export class TheoreticalTime {
       (accumulator: number, currentValue: number) => accumulator + currentValue,
     );
 
-    const maxTime = this.WORK_HOURS_PER_WEEK * 60 * 60 * 1000;
+    const maxTime = theoreticalWorkHours * 60 * 60 * 1000;
 
     return maxTime - totalTime;
   }
 
-  private static cutOffNotAttendEvents(
-    weeklyEvents: WeeklyEvent[],
-  ): WeeklyEvent[] {
+  private static cutOffNotAttendEvents(weeklyEvents: Event[]): Event[] {
     return weeklyEvents.filter((e) => {
       return e.willAttend;
     });
   }
 
-  private static sortEvent(attendEvents: WeeklyEvent[]): WeeklyEvent[] {
+  private static sortEvent(attendEvents: Event[]): Event[] {
     return attendEvents
       .sort((a, b) => {
         return a.eventEndAt.getTime() - b.eventEndAt.getTime();
@@ -85,7 +85,7 @@ export class TheoreticalTime {
   }
 
   private static trimTimeOverlapping(
-    sortedEvents: WeeklyEvent[],
+    sortedEvents: Event[],
   ): { start: Date; end: Date }[] {
     const blocks = [];
     const block = {

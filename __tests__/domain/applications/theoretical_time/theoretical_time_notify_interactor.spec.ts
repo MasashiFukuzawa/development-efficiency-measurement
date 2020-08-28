@@ -1,9 +1,9 @@
 import { UserSetting } from '../../../../src/domain/models/user_setting/user_setting';
-import { TheoreticalTimeRepository } from '../../../../src/infrastructure/theoretical_times/theoretical_time_repository';
 import { UserSettingRepository } from '../../../../src/infrastructure/user_settings/user_setting_repository';
-import { TheoreticalTimeCalculateInteractor } from '../../../../src/domain/applications/theoretical_time/theoretical_time_calculate_interactor';
+import { NotifyPresenter } from '../../../../src/webhook_app/common/presenters/notify/notify_presenter';
+import { TheoreticalTimeNotifyInteractor } from '../../../../src/domain/applications/theoretical_time/theoretical_time_notify_interactor';
 
-describe('TheoreticalTimeCalculateInteractor', () => {
+describe('TheoreticalTimeNotifyInteractor', () => {
   SpreadsheetApp.openById = jest.fn(() => ({
     getSheetByName: jest.fn(() => ({
       getLastRow: jest.fn(() => 1),
@@ -41,22 +41,26 @@ describe('TheoreticalTimeCalculateInteractor', () => {
     })),
   })) as any;
 
+  UrlFetchApp.fetch = jest.fn();
+
   Moment.moment = jest.fn(() => ({
-    isoWeek: jest.fn(() => 35),
-    day: jest.fn(() => ({
+    startOf: jest.fn(() => ({
+      toDate: jest.fn(() => new Date()),
+    })),
+    endOf: jest.fn(() => ({
       toDate: jest.fn(() => new Date()),
     })),
   }));
 
-  const userRepository = new TheoreticalTimeRepository();
   const userSettingRepository = new UserSettingRepository();
-  const userCalculateInteractor = new TheoreticalTimeCalculateInteractor(
-    userRepository,
+  const notifyPresenter = new NotifyPresenter();
+  const userNotifyInteractor = new TheoreticalTimeNotifyInteractor(
     userSettingRepository,
+    notifyPresenter,
   );
 
   describe('#handle', () => {
-    it('sends a create message successfully', () => {
+    it("sends today's theoretical time", () => {
       const userSettings = [
         new UserSetting(
           'IM1234',
@@ -65,7 +69,7 @@ describe('TheoreticalTimeCalculateInteractor', () => {
           0,
           19,
           0,
-          'on',
+          'off',
           new Date(),
         ),
         new UserSetting(
@@ -85,7 +89,7 @@ describe('TheoreticalTimeCalculateInteractor', () => {
           0,
           19,
           0,
-          'on',
+          'off',
           new Date(),
         ),
         new UserSetting(
@@ -103,11 +107,9 @@ describe('TheoreticalTimeCalculateInteractor', () => {
       jest
         .spyOn(UserSettingRepository.prototype, 'getAll')
         .mockReturnValue(userSettings);
-      jest.spyOn(TheoreticalTimeRepository.prototype, 'create');
-      jest.spyOn(console, 'log');
 
-      userCalculateInteractor.handle();
-      expect(console.log).toHaveBeenCalledTimes(userSettings.length);
+      userNotifyInteractor.handle();
+      expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(2);
     });
   });
 });

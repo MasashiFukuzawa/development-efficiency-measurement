@@ -25,13 +25,16 @@ export class TheoreticalTimeCalculateInteractor
       const workEndHour = e.getWorkEndHour().toNumber();
       const workEndMinute = e.getWorkEndMinute().toNumber();
 
-      const weeklyEvents = inputData.mapWeeklyEvents(googleCalendarId);
+      const weeklyEvents = inputData.mapEvents(
+        inputData.getEvents(googleCalendarId),
+      );
       const theoreticalTime = TheoreticalTime.calculateTheoreticalTime(
         weeklyEvents,
         workStartHour,
         workStartMinute,
         workEndHour,
         workEndMinute,
+        TheoreticalTime.WORK_HOURS_PER_WEEK,
       );
 
       this.theoreticalTimeRepository.create(userId, isoWeek, theoreticalTime);
