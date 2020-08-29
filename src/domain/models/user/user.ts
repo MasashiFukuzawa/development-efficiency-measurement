@@ -11,7 +11,7 @@ export class User {
     this.createdAt = createdAt;
   }
 
-  getId(): UserId {
+  getUserId(): UserId {
     return this.id;
   }
 

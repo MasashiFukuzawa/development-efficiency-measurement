@@ -16,7 +16,9 @@ export class TheoreticalTimeNotifyInteractor
     const userSettings = this.userSettingRepository.getAll();
     const inputData = new TheoreticalTimeNotifyInputData();
     const outputData = new TheoreticalTimeNotifyOutputData();
+    const day: number = Moment.moment().isoWeekday();
     userSettings.forEach((e) => {
+      if (day === 6 || day === 7) return; // 6: Saturday, 7: Sunday
       if (e.getNotificationStatus().toString() === 'off') return;
 
       const userId = e.getUserId().toString();
@@ -29,7 +31,7 @@ export class TheoreticalTimeNotifyInteractor
       const weeklyEvents = inputData.mapEvents(
         inputData.getEvents(googleCalendarId),
       );
-      const todaysTheoreticalTime = TheoreticalTime.calculateTheoreticalTime(
+      const todaysTheoreticalHour = TheoreticalTime.convertMilliSecToHour(
         weeklyEvents,
         workStartHour,
         workStartMinute,
@@ -38,7 +40,7 @@ export class TheoreticalTimeNotifyInteractor
         TheoreticalTime.WORK_HOURS_PER_DAY,
       );
 
-      const message = outputData.getMessage(userId, todaysTheoreticalTime);
+      const message = outputData.getMessage(userId, todaysTheoreticalHour);
 
       this.notifyPresenter.notify(message);
     });

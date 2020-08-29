@@ -1,4 +1,5 @@
 import { UserId } from '../user/value_objects/user_id';
+import { TheoreticalTimeId } from './value_objects/theoretical_time_id';
 import { TheoreticalTimeIsoWeek } from './value_objects/theoretical_time_iso_week';
 import { TheoreticalTimeTotalTime } from './value_objects/theoretical_time_total_time';
 
@@ -12,25 +13,67 @@ export class TheoreticalTime {
   static readonly WORK_HOURS_PER_DAY = 8;
   static readonly WORK_HOURS_PER_WEEK = 40;
 
+  private readonly id: TheoreticalTimeId;
   private readonly userId: UserId;
-  private readonly isoWeek: TheoreticalTimeIsoWeek;
   private readonly totalTime: TheoreticalTimeTotalTime;
-  constructor(userId: string, isoWeek: number, totalTime: number) {
+  private readonly isoWeek: TheoreticalTimeIsoWeek;
+  constructor(
+    id: number,
+    userId: string,
+    totalTime: number,
+    isoWeek = Moment.moment().isoWeek(),
+  ) {
+    this.id = new TheoreticalTimeId(id);
     this.userId = new UserId(userId);
-    this.isoWeek = new TheoreticalTimeIsoWeek(isoWeek);
     this.totalTime = new TheoreticalTimeTotalTime(totalTime);
+    this.isoWeek = new TheoreticalTimeIsoWeek(isoWeek);
+  }
+
+  getTheoreticalTimeId(): TheoreticalTimeId {
+    return this.id;
   }
 
   getUserId(): UserId {
     return this.userId;
   }
 
+  getTheoreticalTimeTotalTime(): TheoreticalTimeTotalTime {
+    return this.totalTime;
+  }
+
   getTheoreticalTimeIsoWeek(): TheoreticalTimeIsoWeek {
     return this.isoWeek;
   }
 
-  getTheoreticalTimeTotalTime(): TheoreticalTimeTotalTime {
-    return this.totalTime;
+  isThisWeekData(isoWeek = Moment.moment().isoWeek()): boolean {
+    return this.getTheoreticalTimeIsoWeek().toNumber() === isoWeek;
+  }
+
+  isAssociatedWithUser(userIds: string[]): boolean {
+    return userIds.indexOf(this.getUserId().toString()) !== 1;
+  }
+
+  isTargetUser(userId: string): boolean {
+    return this.getUserId().toString() === userId;
+  }
+
+  static convertMilliSecToHour(
+    weeklyEvents: Event[],
+    workStartHour: number,
+    workStartMinute: number,
+    workEndHour: number,
+    workEndMinute: number,
+    theoreticalWorkHours: 8 | 40,
+  ): number {
+    const milliSec = this.calculateTheoreticalTime(
+      weeklyEvents,
+      workStartHour,
+      workStartMinute,
+      workEndHour,
+      workEndMinute,
+      theoreticalWorkHours,
+    );
+    return milliSec / (60 * 60 * 1000);
   }
 
   static calculateTheoreticalTime(

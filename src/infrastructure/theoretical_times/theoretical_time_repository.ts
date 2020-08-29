@@ -17,13 +17,18 @@ export class TheoreticalTimeRepository
 
   create(
     userId: string,
-    isoWeek: number,
-    theoreticalTime: number,
+    totalImplementTime: number,
+    isoWeek: number = Moment.moment().isoWeek(),
   ): TheoreticalTime {
     this.sheet
       .getRange(this.lastRow + 1, 1, 1, this.lastCol)
-      .setValues([[userId, isoWeek, theoreticalTime]]);
-    return new TheoreticalTime(userId, isoWeek, theoreticalTime);
+      .setValues([[this.lastRow, userId, totalImplementTime, isoWeek]]);
+    return new TheoreticalTime(
+      this.lastRow,
+      userId,
+      totalImplementTime,
+      isoWeek,
+    );
   }
 
   getAll(): readonly TheoreticalTime[] {
@@ -64,7 +69,7 @@ export class TheoreticalTimeRepository
 
   private map(fullData: any[][]): readonly TheoreticalTime[] {
     return fullData.map((e) => {
-      return new TheoreticalTime(e[0], e[1], e[2]);
+      return new TheoreticalTime(e[0], e[1], e[2], e[3]);
     });
   }
 }

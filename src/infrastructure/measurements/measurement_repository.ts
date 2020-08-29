@@ -22,17 +22,32 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
     return !!lastMeasurement ? lastMeasurement : null;
   }
 
-  stampStartAt(userId: string, description?: string): Measurement {
+  stampStartAt(
+    userId: string,
+    theoreticalTimeId: number,
+    description?: string,
+  ): Measurement {
     const id = this.lastRow;
     const now = new Date();
-    const measurement = new Measurement(id, userId, now, void 0, description);
+    const measurement = new Measurement(
+      id,
+      userId,
+      theoreticalTimeId,
+      now,
+      void 0,
+      description,
+    );
     this.sheet
       .getRange(this.lastRow + 1, 1, 1, this.lastCol)
-      .setValues([[id, userId, now, void 0, description]]);
+      .setValues([[id, userId, theoreticalTimeId, now, void 0, description]]);
     return measurement;
   }
 
-  stampStopAt(userId: string, lastMeasurement: Measurement): Measurement {
+  stampStopAt(
+    userId: string,
+    theoreticalTimeId: number,
+    lastMeasurement: Measurement,
+  ): Measurement {
     const id = lastMeasurement.getMeasurementId().toNumber();
     const startAt = lastMeasurement.getMeasurementStartAt().toDate();
     const now = new Date();
@@ -40,14 +55,21 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
       typeof lastMeasurement.getDescription() === 'undefined'
         ? void 0
         : lastMeasurement.getDescription()?.toString();
-    const measurement = new Measurement(id, userId, startAt, now, description);
+    const measurement = new Measurement(
+      id,
+      userId,
+      theoreticalTimeId,
+      startAt,
+      now,
+      description,
+    );
     this.sheet
       .getRange(id + 1, 1, 1, this.lastCol)
-      .setValues([[id, userId, startAt, now, description]]);
+      .setValues([[id, userId, theoreticalTimeId, startAt, now, description]]);
     return measurement;
   }
 
-  private getAll(): readonly Measurement[] {
+  getAll(): readonly Measurement[] {
     if (this.fullData) return this.fullData;
     const rawData = this.sheet
       .getRange(2, 1, this.lastRow - 1, this.lastCol)
@@ -85,7 +107,14 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
 
   private map(fullData: any[][]): readonly Measurement[] {
     return fullData.map((e) => {
-      return new Measurement(e[0], e[1], e[2], e[3] || void 0, e[4] || void 0);
+      return new Measurement(
+        e[0],
+        e[1],
+        e[2],
+        e[3],
+        e[4] || void 0,
+        e[5] || void 0,
+      );
     });
   }
 }

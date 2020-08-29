@@ -1,6 +1,6 @@
 export class TheoreticalTimeNotifyOutputData {
-  getMessage(userId: string, todaysTheoreticalTime: number): string {
+  getMessage(userId: string, todaysTheoreticalHour: number): string {
     return `<@${userId}>
-本日の実装可能時間は ${todaysTheoreticalTime / (60 * 60 * 1000)}h です。`;
+本日の実装可能時間は ${todaysTheoreticalHour}h です。`;
   }
 }

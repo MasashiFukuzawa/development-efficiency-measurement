@@ -69,6 +69,10 @@ export class UserSetting {
     return this.updatedAt;
   }
 
+  canNotify(): boolean {
+    return this.getNotificationStatus().toString() === 'on';
+  }
+
   static validate(googleCalendarId: string): string | null {
     try {
       new UserSettingGoogleCalendarId(googleCalendarId);

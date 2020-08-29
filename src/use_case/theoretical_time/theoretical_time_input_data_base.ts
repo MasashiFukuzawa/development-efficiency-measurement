@@ -1,4 +1,4 @@
-import { Event } from '../../../domain/models/theoretical_time/theoretical_time';
+import { Event } from '../../domain/models/theoretical_time/theoretical_time';
 import CalendarEvent = GoogleAppsScript.Calendar.CalendarEvent;
 
 export abstract class TheoreticalTimeInputDataBase {

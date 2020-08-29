@@ -47,7 +47,10 @@ export class TheoreticalTimeCalculateInteractor
     });
   }
 
-  private isNotUnique(userId: string, isoWeek: number): boolean {
+  private isNotUnique(
+    userId: string,
+    isoWeek: number = Moment.moment().isoWeek(),
+  ): boolean {
     const userDataForTheIsoWeek = this.theoreticalTimeRepository
       .getAll()
       .find((e) => {

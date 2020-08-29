@@ -16,7 +16,7 @@ export class UserRepository implements UserRepositoryInterface {
 
   findByUserId(userId: string): User | null {
     const user = this.fullData.filter((e) => {
-      return e.getId().toString() === userId;
+      return e.getUserId().toString() === userId;
     })[0];
     return !!user ? user : null;
   }
@@ -29,7 +29,7 @@ export class UserRepository implements UserRepositoryInterface {
     return user;
   }
 
-  private getAll(): readonly User[] {
+  getAll(): readonly User[] {
     if (this.fullData) return this.fullData;
     const rawData = this.sheet
       .getRange(2, 1, this.lastRow - 1, this.lastCol)

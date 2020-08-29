@@ -27,7 +27,7 @@ describe('UserRepository', () => {
     describe('when valid', () => {
       it('returns a user resource', () => {
         const user = userRepository.findByUserId('IM1234');
-        const userId = user.getId().toString();
+        const userId = user.getUserId().toString();
         const userName = user.getName().toString();
         expect(userId).toBe('IM1234');
         expect(userName).toBe('izuku.midoriya');
@@ -45,7 +45,7 @@ describe('UserRepository', () => {
   describe('#create', () => {
     it('creates successfully', () => {
       const user = userRepository.create('MY1234', 'momo.yaoyorozu');
-      const userId = user.getId().toString();
+      const userId = user.getUserId().toString();
       const userName = user.getName().toString();
       expect(userId).toBe('MY1234');
       expect(userName).toBe('momo.yaoyorozu');
