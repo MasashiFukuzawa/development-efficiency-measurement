@@ -9,6 +9,7 @@ import { MeasurementStartController } from '../../webhook_app/measurement/contro
 import { MeasurementStopController } from '../../webhook_app/measurement/controllers/stop/measurement_stop_controller';
 import { MeasurementStopInteractor } from '../../domain/applications/measurement/measurement_stop_interactor';
 import TextOutput = GoogleAppsScript.Content.TextOutput;
+import { IsoWeekRepository } from '../../infrastructure/iso_weeks/iso_week_repository';
 
 function doPost(e: any): TextOutput {
   const token = PropertiesService.getScriptProperties().getProperty(
@@ -77,10 +78,12 @@ class SlackDoPost {
   ): TextOutput {
     const userRepository = new UserRepository();
     const measurementRepository = new MeasurementRepository();
+    const isoWeekRepository = new IsoWeekRepository();
     const replyPresenter = new ReplyPresenter();
     const measurementStartInteractor = new MeasurementStartInteractor(
       userRepository,
       measurementRepository,
+      isoWeekRepository,
       replyPresenter,
     );
     const measurementStartController = new MeasurementStartController(
@@ -95,10 +98,12 @@ class SlackDoPost {
   ): TextOutput {
     const userRepository = new UserRepository();
     const measurementRepository = new MeasurementRepository();
+    const isoWeekRepository = new IsoWeekRepository();
     const replyPresenter = new ReplyPresenter();
     const measurementStopInteractor = new MeasurementStopInteractor(
       userRepository,
       measurementRepository,
+      isoWeekRepository,
       replyPresenter,
     );
     const measurementStartController = new MeasurementStopController(

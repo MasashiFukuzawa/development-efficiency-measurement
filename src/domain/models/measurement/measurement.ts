@@ -1,3 +1,4 @@
+import { IsoWeekId } from '../iso_week/domain_objects/ios_week_id';
 import { UserId } from '../user/value_objects/user_id';
 import { MeasurementDescription } from './value_objects/measurement_description';
 import { MeasurementId } from './value_objects/measurement_id';
@@ -7,18 +8,21 @@ import { MeasurementStopAt } from './value_objects/measurement_stop_at';
 export class Measurement {
   private readonly id: MeasurementId;
   private readonly userId: UserId;
+  private readonly isoWeekId: IsoWeekId;
   private readonly startAt: MeasurementStartAt;
   private readonly stopAt?: MeasurementStopAt;
   private readonly description?: MeasurementDescription;
   constructor(
     id: number,
     userId: string,
+    isoWeekId: number,
     startAt: Date,
     stopAt?: Date,
     description?: string,
   ) {
     this.id = new MeasurementId(id);
     this.userId = new UserId(userId);
+    this.isoWeekId = new IsoWeekId(isoWeekId);
     this.startAt = new MeasurementStartAt(startAt);
     if (typeof stopAt !== 'undefined') {
       this.stopAt = new MeasurementStopAt(stopAt);
@@ -34,6 +38,10 @@ export class Measurement {
 
   getUserId(): UserId {
     return this.userId;
+  }
+
+  getIsoWeekId(): IsoWeekId {
+    return this.isoWeekId;
   }
 
   getMeasurementStartAt(): MeasurementStartAt {

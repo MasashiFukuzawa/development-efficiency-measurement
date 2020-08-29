@@ -1,7 +1,11 @@
 import { Measurement } from './measurement';
 
 export interface MeasurementRepositoryInterface {
-  last(userId: string): Measurement | null;
-  stampStartAt(userId: string, description?: string): Measurement;
-  stampStopAt(userId: string, lastMeasurement: Measurement): Measurement;
+  last(userId: string, isoWeekId: number): Measurement | null;
+  stampStartAt(
+    userId: string,
+    isoWeekId: number,
+    description?: string,
+  ): Measurement;
+  stampStopAt(lastMeasurement: Measurement): Measurement;
 }
