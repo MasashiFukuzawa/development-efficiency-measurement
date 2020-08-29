@@ -12,7 +12,7 @@ export class User {
     this.registeredAt = new UserRegisteredAt(registeredAt);
   }
 
-  getId(): UserId {
+  getUserId(): UserId {
     return this.id;
   }
 

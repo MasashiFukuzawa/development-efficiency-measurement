@@ -3,7 +3,7 @@ import { UserSetting } from '../../../domain/models/user_setting/user_setting';
 
 export class UserCreateOutputData {
   getMessage(user: User, userSetting: UserSetting): string {
-    const userId = user.getId().toString();
+    const userId = user.getUserId().toString();
     const name = user.getName().toString();
     const googleCalendarId = userSetting.getGoogleCalendarId().toString();
     const registeredAt = Moment.moment(user.getRegisteredAt()).format(

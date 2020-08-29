@@ -16,7 +16,7 @@ export class UserRepository implements UserRepositoryInterface {
 
   findByUserId(userId: string): User | null {
     const user = this.fullData.filter((e) => {
-      return e.getId().toString() === userId;
+      return e.getUserId().toString() === userId;
     })[0];
     return !!user ? user : null;
   }
