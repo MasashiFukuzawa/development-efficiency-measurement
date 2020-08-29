@@ -52,7 +52,7 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
     const description =
       typeof lastMeasurement.getDescription() === 'undefined'
         ? void 0
-        : lastMeasurement.getDescription()?.toString();
+        : lastMeasurement.getDescription().toString();
     const measurement = new Measurement(
       id,
       userId,
