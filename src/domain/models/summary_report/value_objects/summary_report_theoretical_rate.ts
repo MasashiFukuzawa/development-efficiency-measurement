@@ -1,1 +1,1 @@
-export class SummaryReportTheoreticalRate {}
+export class SummaryReportAvailableRate {}

@@ -1,1 +1,1 @@
-export class SummaryReportTheoreticalHour {}
+export class SummaryReportAvailableHour {}
