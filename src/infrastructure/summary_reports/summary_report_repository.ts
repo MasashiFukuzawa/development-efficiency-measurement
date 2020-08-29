@@ -19,27 +19,25 @@ export class SummaryReportRepository
     return this.fullData[this.fullData.length - 1];
   }
 
-  bulkInsert(summaryReports: SummaryReport[]): number[] {
+  bulkInsert(summaryReports: SummaryReport[]): void {
     const count = summaryReports.length;
     const params = summaryReports.map((e) => {
       return [
         e.getSummaryReportId().toNumber(),
         e.getUserId().toString(),
-        e.getStandardValueId().toNumber(),
-        e.getTotalHour().toNumber(),
+        e.getIsoWeekId().toNumber(),
+        e.getTotalImplementHour().toNumber(),
         e.getMeasurementCount().toNumber(),
-        e.getAverageHour().toNumber(),
-        e.getTheoreticalHour().toNumber(),
-        e.getTheoreticalRate().toNumber(),
+        e.getAverageImplementHour().toNumber(),
+        e.getTheoreticalAvailableHour().toNumber(),
+        e.getAvailableRate().toNumber(),
         e.getKpiValue().toNumber(),
-        e.getIsoWeek().toNumber(),
         e.getNotifiedAt().toDate(),
       ];
     });
     this.sheet
       .getRange(this.lastRow + 1, 1, count, this.lastCol)
       .setValues(params);
-    return summaryReports.map((e) => e.getSummaryReportId().toNumber());
   }
 
   private getAll(): readonly SummaryReport[] {

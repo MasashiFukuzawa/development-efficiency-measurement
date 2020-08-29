@@ -57,7 +57,7 @@ export class AvailableTime {
     workStartMinute: number,
     workEndHour: number,
     workEndMinute: number,
-    theoreticalWorkHours: 8 | 40,
+    availableWorkHours: 8 | 40,
   ): number {
     const milliSec = this.calculateAvailableTime(
       weeklyEvents,
@@ -65,7 +65,7 @@ export class AvailableTime {
       workStartMinute,
       workEndHour,
       workEndMinute,
-      theoreticalWorkHours,
+      availableWorkHours,
     );
     return milliSec / (60 * 60 * 1000);
   }

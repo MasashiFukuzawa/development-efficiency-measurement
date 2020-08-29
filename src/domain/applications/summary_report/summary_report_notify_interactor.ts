@@ -2,112 +2,119 @@ import { NotifyPresenterInterface } from '../../../use_case/common/notify_presen
 import { SummaryReportNotifyUseCaseInterface } from '../../../use_case/summary_report/notify/summary_report_notify_use_case_interface';
 import { MeasurementRepositoryInterface } from '../../models/measurement/measurement_repository_interface';
 import { SummaryReportRepositoryInterface } from '../../models/summary_report/summary_report_repository_interface';
-import { TheoreticalTimeRepositoryInterface } from '../../models/theoretical_time/theoretical_time_repository_interface';
+import { AvailableTimeRepositoryInterface } from '../../models/available_time/available_time_repository_interface';
 import { UserSettingRepositoryInterface } from '../../models/user_setting/user_setting_repository_interface';
 import { SummaryReportNotifyOutputData } from '../../../use_case/summary_report/notify/summary_report_notify_output_data';
 import { SummaryReport } from '../../models/summary_report/summary_report';
-import { TheoreticalTime } from '../../models/theoretical_time/theoretical_time';
+import { AvailableTime } from '../../models/available_time/available_time';
 import { Measurement } from '../../models/measurement/measurement';
+import { IsoWeekRepositoryInterface } from '../../models/iso_week/iso_week_repository_interface';
+import { StandardValueRepositoryInterface } from '../../models/standard_value/standard_value_repository_interface';
+import { StandardValue } from '../../models/standard_value/standard_value';
 
 export class SummaryReportNotifyInteractor
   implements SummaryReportNotifyUseCaseInterface {
   constructor(
+    private readonly isoWeekRepository: IsoWeekRepositoryInterface,
     private readonly userSettingRepository: UserSettingRepositoryInterface,
-    private readonly theoreticalTimeRepository: TheoreticalTimeRepositoryInterface,
+    private readonly availableTimeRepository: AvailableTimeRepositoryInterface,
     private readonly measurementRepository: MeasurementRepositoryInterface,
     private readonly summaryReportRepository: SummaryReportRepositoryInterface,
+    private readonly standardValueRepository: StandardValueRepositoryInterface,
     private readonly notifyPresenter: NotifyPresenterInterface,
   ) {}
 
   handle(): void {
-    const isoWeek = Moment.moment().isoWeek;
-    const outputData = new SummaryReportNotifyOutputData();
+    const now = Moment.moment();
+    const isoWeek = this.isoWeekRepository.find(now.get('year'), now.isoWeek());
+    if (!isoWeek) throw new Error('Target IsoWeek is not found.');
+    const targetIsoWeekId = isoWeek.getIsoWeekId().toNumber();
 
     const targetUserIds = this.getNotifiedUserIds();
     if (targetUserIds.length === 0) return;
 
-    const targetTheoreticalTimes = this.filterTheoreticalTimesBy(
+    const targetAvailableTimes = this.filterAvailableTimesBy(
       targetUserIds,
-      isoWeek,
+      targetIsoWeekId,
     );
-    if (targetTheoreticalTimes.length === 0) return;
+    if (targetAvailableTimes.length === 0) return;
 
     const targetMeasurements = this.filterMeasurementsBy(
-      this.getTheoreticalTimeIds(targetTheoreticalTimes),
       targetUserIds,
+      targetIsoWeekId,
     );
     if (targetMeasurements.length === 0) return;
 
     const summaryReports = this.getSummaryReports(
       targetUserIds,
-      targetTheoreticalTimes,
+      targetAvailableTimes,
       targetMeasurements,
-      isoWeek,
+      targetIsoWeekId,
     );
 
-    const createdSummaryReportIds = this.summaryReportRepository.bulkInsert(
+    this.summaryReportRepository.bulkInsert(summaryReports);
+
+    const standardValue = StandardValue.calculateAverage(
+      targetIsoWeekId,
       summaryReports,
     );
+    this.standardValueRepository.create(standardValue);
 
-    // TODO: 今週と全体の基準値を更新
-
-    // TODO: 今週と全体の基準値を添えて通知
+    const outputData = new SummaryReportNotifyOutputData();
     summaryReports.forEach((e) => {
-      const message = outputData.getMessage(e);
+      const message = outputData.getMessage(e, standardValue);
       this.notifyPresenter.notify(message);
     });
-
-    console.log(createdSummaryReportIds.join(', '));
   }
 
   private getSummaryReports(
     userIds: string[],
-    theoreticalTimes: TheoreticalTime[],
+    availableTimes: AvailableTime[],
     measurements: Measurement[],
-    isoWeek = Moment.moment().isoWeek,
+    isoWeekId: number,
   ): SummaryReport[] {
     const lastSummaryReportId = this.getLastSummaryReportId();
 
     return userIds.map((userId, i) => {
-      const userTheoreticalTime = this.getTheoreticalTimeAssociatedWithUser(
-        theoreticalTimes,
+      const userAvailableTime = this.getAvailableTimeAssociatedWithUser(
+        availableTimes,
         userId,
       );
       const userMeasurements = this.getMeasurementsAssociatedWithUser(
         measurements,
         userId,
-        theoreticalTimes[0].getTheoreticalTimeId().theoreticalTimeId,
+        isoWeekId,
       );
 
       const measurementCount = SummaryReport.count(userMeasurements);
       const totalImplementHour = SummaryReport.sum(userMeasurements);
-      const averageHour = SummaryReport.average(
+      const averageImplementHour = SummaryReport.average(
         measurementCount,
         totalImplementHour,
       );
-      const theoreticalHour = SummaryReport.calculateTheoreticalHour(
-        userTheoreticalTime.getTheoreticalTimeTotalTime().toNumber(),
+      const theoreticalAvailableHour = SummaryReport.calculateTheoreticalAvailableHour(
+        userAvailableTime.getTheoreticalImplementTime().toNumber(),
       );
-      const theoreticalRate = SummaryReport.calculateTheoreticalRate(
-        theoreticalHour,
+      const availableRate = SummaryReport.calculateAvailableRate(
+        theoreticalAvailableHour,
         totalImplementHour,
       );
       const kpiValue = SummaryReport.calculateKpiValue(
         totalImplementHour,
-        averageHour,
-        theoreticalRate,
+        averageImplementHour,
+        availableRate,
       );
 
       return new SummaryReport(
         lastSummaryReportId + i + 1,
         userId,
+        isoWeekId,
         totalImplementHour,
         measurementCount,
-        averageHour,
-        theoreticalHour,
-        theoreticalRate,
+        averageImplementHour,
+        theoreticalAvailableHour,
+        availableRate,
         kpiValue,
-        isoWeek,
       );
     });
   }
@@ -119,30 +126,21 @@ export class SummaryReportNotifyInteractor
       .map((e) => e.getUserId().toString());
   }
 
-  private filterTheoreticalTimesBy(
+  private filterAvailableTimesBy(
     userIds: string[],
-    isoWeek: number = Moment.moment().isoWeek(),
-  ): TheoreticalTime[] {
-    return this.theoreticalTimeRepository.getAll().filter((e) => {
-      return e.isThisWeekData(isoWeek) && e.isAssociatedWithUser(userIds);
+    isoWeekId: number,
+  ): AvailableTime[] {
+    return this.availableTimeRepository.getAll().filter((e) => {
+      return e.isTargetWeek(isoWeekId) && e.isAssociatedWithUser(userIds);
     });
   }
 
   private filterMeasurementsBy(
-    theoreticalTimeIds: number[],
     userIds: string[],
+    isoWeekId: number,
   ): Measurement[] {
     return this.measurementRepository.getAll().filter((e) => {
-      return (
-        e.isAssociatedWithTheoreticalTime(theoreticalTimeIds) &&
-        e.isAssociatedWithUser(userIds)
-      );
-    });
-  }
-
-  private getTheoreticalTimeIds(theoreticalTimes: TheoreticalTime[]): number[] {
-    return theoreticalTimes.map((e) => {
-      return e.getTheoreticalTimeId().toNumber();
+      return e.isTargetWeek(isoWeekId) && e.isAssociatedWithUser(userIds);
     });
   }
 
@@ -150,20 +148,19 @@ export class SummaryReportNotifyInteractor
     return this.summaryReportRepository.last().getSummaryReportId().toNumber();
   }
 
-  private getTheoreticalTimeAssociatedWithUser(
-    theoreticalTimes: TheoreticalTime[],
+  private getAvailableTimeAssociatedWithUser(
+    availableTimes: AvailableTime[],
     userId: string,
-  ): TheoreticalTime {
-    return theoreticalTimes
+  ): AvailableTime {
+    return availableTimes
       .filter((e) => {
         return e.isTargetUser(userId);
       })
       .map((e) => {
-        return new TheoreticalTime(
-          e.getTheoreticalTimeId().toNumber(),
+        return new AvailableTime(
           userId,
-          e.getTheoreticalTimeIsoWeek().toNumber(),
-          e.getTheoreticalTimeTotalTime().toNumber(),
+          e.getIsoWeekId().toNumber(),
+          e.getTheoreticalImplementTime().toNumber(),
         );
       })[0];
   }
@@ -171,7 +168,7 @@ export class SummaryReportNotifyInteractor
   private getMeasurementsAssociatedWithUser(
     measurements: Measurement[],
     userId: string,
-    theoreticalTimeId: number,
+    isoWeekId: number,
   ): Measurement[] {
     return measurements
       .filter((e) => {
@@ -181,7 +178,7 @@ export class SummaryReportNotifyInteractor
         return new Measurement(
           e.getMeasurementId().toNumber(),
           userId,
-          theoreticalTimeId,
+          isoWeekId,
           e.getMeasurementStartAt().toDate(),
           e.getMeasurementStopAt()?.toDate(),
         );

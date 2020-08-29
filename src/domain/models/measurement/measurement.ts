@@ -62,9 +62,8 @@ export class Measurement {
     return Math.abs(startAt.diff(stopAt));
   }
 
-  // TODO
-  isAssociatedWithAvailableTime(availableTimeIds: number[]): boolean {
-    return availableTimeIds.indexOf(this.getIsoWeekId().toNumber()) !== 1;
+  isTargetWeek(isoWeekId: number): boolean {
+    return this.getIsoWeekId().toNumber() === isoWeekId;
   }
 
   isAssociatedWithUser(userIds: string[]): boolean {

@@ -1,7 +1,7 @@
 import { UserId } from '../user/value_objects/user_id';
 import { IsoWeekId } from '../iso_week/domain_objects/ios_week_id';
 import { SummaryReportNotifiedAt } from './value_objects/summary_report_notified_at';
-import { SummaryReportAverageHour } from './value_objects/summary_report_average_hour';
+import { SummaryReportAverageImplementHour } from './value_objects/summary_report_average_implement_hour';
 import { SummaryReportKpiValue } from './value_objects/summary_report_kpi_value';
 import { SummaryReportMeasurementCount } from './value_objects/summary_report_measurement_count';
 import { SummaryReportTheoreticalAvailableHour } from './value_objects/summary_report_theoretical_available_hour';
@@ -16,7 +16,7 @@ export class SummaryReport {
   private readonly isoWeekId: IsoWeekId;
   private readonly totalImplementHour: SummaryReportTotalImplementHour;
   private readonly measurementCount: SummaryReportMeasurementCount;
-  private readonly averageHour: SummaryReportAverageHour;
+  private readonly averageImplementHour: SummaryReportAverageImplementHour;
   private readonly theoreticalAvailableHour: SummaryReportTheoreticalAvailableHour;
   private readonly availableRate: SummaryReportAvailableRate;
   private readonly kpiValue: SummaryReportKpiValue;
@@ -27,7 +27,7 @@ export class SummaryReport {
     isoWeekId: number,
     totalImplementHour: number,
     measurementCount: number,
-    averageHour: number,
+    averageImplementHour: number,
     theoreticalAvailableHour: number,
     availableRate: number,
     kpiValue: number,
@@ -40,7 +40,9 @@ export class SummaryReport {
       totalImplementHour,
     );
     this.measurementCount = new SummaryReportMeasurementCount(measurementCount);
-    this.averageHour = new SummaryReportAverageHour(averageHour);
+    this.averageImplementHour = new SummaryReportAverageImplementHour(
+      averageImplementHour,
+    );
     this.theoreticalAvailableHour = new SummaryReportTheoreticalAvailableHour(
       theoreticalAvailableHour,
     );
@@ -69,8 +71,8 @@ export class SummaryReport {
     return this.measurementCount;
   }
 
-  getAverageHour(): SummaryReportAverageHour {
-    return this.averageHour;
+  getAverageImplementHour(): SummaryReportAverageImplementHour {
+    return this.averageImplementHour;
   }
 
   getTheoreticalAvailableHour(): SummaryReportTheoreticalAvailableHour {
@@ -108,11 +110,13 @@ export class SummaryReport {
     return measurementCount === 0 ? 0 : totalImplementHour / measurementCount;
   }
 
-  static calculateTheoreticalHour(theoreticalTotalTime: number): number {
-    return theoreticalTotalTime / (60 * 60 * 1000);
+  static calculateTheoreticalAvailableHour(
+    theoreticalAvailableTime: number,
+  ): number {
+    return theoreticalAvailableTime / (60 * 60 * 1000);
   }
 
-  static calculateTheoreticalRate(
+  static calculateAvailableRate(
     theoreticalHour: number,
     totalImplementHour: number,
   ): number {
@@ -121,9 +125,9 @@ export class SummaryReport {
 
   static calculateKpiValue(
     totalImplementHour: number,
-    averageHour: number,
+    averageImplementHour: number,
     theoreticalRate: number,
   ): number {
-    return totalImplementHour * averageHour * theoreticalRate;
+    return totalImplementHour * averageImplementHour * theoreticalRate;
   }
 }
