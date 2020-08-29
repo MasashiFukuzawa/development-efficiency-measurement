@@ -2,6 +2,7 @@ import { AvailableTimeCalculateInputData } from '../../../use_case/available_tim
 import { AvailableTimeCalculateUseCaseInterface } from '../../../use_case/available_time/calculate/available_time_calculate_use_case_interface';
 import { AvailableTime } from '../../models/available_time/available_time';
 import { AvailableTimeRepositoryInterface } from '../../models/available_time/available_time_repository_interface';
+import { IsoWeekRepositoryInterface } from '../../models/iso_week/iso_week_repository_interface';
 import { UserSettingRepositoryInterface } from '../../models/user_setting/user_setting_repository_interface';
 
 export class AvailableTimeCalculateInteractor
@@ -9,15 +10,22 @@ export class AvailableTimeCalculateInteractor
   constructor(
     private readonly availableTimeRepository: AvailableTimeRepositoryInterface,
     private readonly userSettingRepository: UserSettingRepositoryInterface,
+    private readonly isoWeekRepository: IsoWeekRepositoryInterface,
   ) {}
 
   handle(): void {
-    const userSettings = this.userSettingRepository.getAll();
     const inputData = new AvailableTimeCalculateInputData();
-    const isoWeek = Moment.moment().isoWeek();
+
+    const userSettings = this.userSettingRepository.getAll();
+
+    const now = Moment.moment();
+    const isoWeek = this.isoWeekRepository.find(now.get('year'), now.isoWeek());
+    if (!isoWeek) throw new Error('Target IsoWeek is not found.');
+    const isoWeekId = isoWeek.getIsoWeekId().toNumber();
+
     userSettings.forEach((e) => {
       const userId = e.getUserId().toString();
-      if (this.isNotUnique(userId, isoWeek)) return;
+      if (this.isNotUnique(userId, isoWeekId)) return;
 
       const googleCalendarId = e.getGoogleCalendarId().toString();
       const workStartHour = e.getWorkStartHour().toNumber();
@@ -37,7 +45,7 @@ export class AvailableTimeCalculateInteractor
         AvailableTime.WORK_HOURS_PER_WEEK,
       );
 
-      this.availableTimeRepository.create(userId, isoWeek, availableTime);
+      this.availableTimeRepository.create(userId, isoWeekId, availableTime);
 
       console.log(
         `userId: ${userId} のAvailableTimeを記録しました。availableHours: ${
@@ -53,7 +61,7 @@ export class AvailableTimeCalculateInteractor
       .find((e) => {
         return (
           e.getUserId().toString() === userId &&
-          e.getAvailableTimeIsoWeek().toNumber() === isoWeek
+          e.getIsoWeekId().toNumber() === isoWeek
         );
       });
     return !!userDataForTheIsoWeek;

@@ -1,6 +1,6 @@
+import { IsoWeekId } from '../iso_week/domain_objects/ios_week_id';
 import { UserId } from '../user/value_objects/user_id';
-import { AvailableTimeIsoWeek } from './value_objects/available_time_iso_week';
-import { AvailableTimeTotalTime } from './value_objects/available_time_total_time';
+import { AvailableTimeTheoreticalImplementTime } from './value_objects/available_time_theoretical_implement_time';
 
 export interface Event {
   willAttend: boolean;
@@ -13,24 +13,30 @@ export class AvailableTime {
   static readonly WORK_HOURS_PER_WEEK = 40;
 
   private readonly userId: UserId;
-  private readonly isoWeek: AvailableTimeIsoWeek;
-  private readonly totalTime: AvailableTimeTotalTime;
-  constructor(userId: string, isoWeek: number, totalTime: number) {
+  private readonly isoWeekId: IsoWeekId;
+  private readonly theoreticalImplementTime: AvailableTimeTheoreticalImplementTime;
+  constructor(
+    userId: string,
+    isoWeekId: number,
+    theoreticalImplementTime: number,
+  ) {
     this.userId = new UserId(userId);
-    this.isoWeek = new AvailableTimeIsoWeek(isoWeek);
-    this.totalTime = new AvailableTimeTotalTime(totalTime);
+    this.isoWeekId = new IsoWeekId(isoWeekId);
+    this.theoreticalImplementTime = new AvailableTimeTheoreticalImplementTime(
+      theoreticalImplementTime,
+    );
   }
 
   getUserId(): UserId {
     return this.userId;
   }
 
-  getAvailableTimeIsoWeek(): AvailableTimeIsoWeek {
-    return this.isoWeek;
+  getIsoWeekId(): IsoWeekId {
+    return this.isoWeekId;
   }
 
-  getAvailableTimeTotalTime(): AvailableTimeTotalTime {
-    return this.totalTime;
+  getAvailableTimeTheoreticalImplementTime(): AvailableTimeTheoreticalImplementTime {
+    return this.theoreticalImplementTime;
   }
 
   static calculateAvailableTime(
@@ -59,29 +65,23 @@ export class AvailableTime {
       return e.end.getTime() - e.start.getTime();
     });
 
-    const totalTime = eventTimeLists.reduce(
+    const theoreticalImplementTime = eventTimeLists.reduce(
       (accumulator: number, currentValue: number) => accumulator + currentValue,
     );
 
     const maxTime = availableWorkHours * 60 * 60 * 1000;
 
-    return maxTime - totalTime;
+    return maxTime - theoreticalImplementTime;
   }
 
   private static cutOffNotAttendEvents(weeklyEvents: Event[]): Event[] {
-    return weeklyEvents.filter((e) => {
-      return e.willAttend;
-    });
+    return weeklyEvents.filter((e) => e.willAttend);
   }
 
   private static sortEvent(attendEvents: Event[]): Event[] {
     return attendEvents
-      .sort((a, b) => {
-        return a.eventEndAt.getTime() - b.eventEndAt.getTime();
-      })
-      .sort((a, b) => {
-        return a.eventStartAt.getTime() - b.eventStartAt.getTime();
-      });
+      .sort((a, b) => a.eventEndAt.getTime() - b.eventEndAt.getTime())
+      .sort((a, b) => a.eventStartAt.getTime() - b.eventStartAt.getTime());
   }
 
   private static trimTimeOverlapping(
@@ -106,9 +106,7 @@ export class AvailableTime {
         block.end = end;
       }
 
-      if (block.end < end) {
-        block.end = end;
-      }
+      if (block.end < end) return (block.end = end);
     });
 
     blocks.push({

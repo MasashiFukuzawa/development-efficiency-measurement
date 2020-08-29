@@ -1,7 +1,9 @@
 import { UserSetting } from '../../../../src/domain/models/user_setting/user_setting';
 import { AvailableTimeRepository } from '../../../../src/infrastructure/available_times/available_time_repository';
 import { UserSettingRepository } from '../../../../src/infrastructure/user_settings/user_setting_repository';
+import { IsoWeekRepository } from '../../../../src/infrastructure/iso_weeks/iso_week_repository';
 import { AvailableTimeCalculateInteractor } from '../../../../src/domain/applications/available_time/available_time_calculate_interactor';
+import { IsoWeek } from '../../../../src/domain/models/iso_week/iso_week';
 
 describe('AvailableTimeCalculateInteractor', () => {
   SpreadsheetApp.openById = jest.fn(() => ({
@@ -43,6 +45,7 @@ describe('AvailableTimeCalculateInteractor', () => {
 
   Moment.moment = jest.fn(() => ({
     isoWeek: jest.fn(() => 35),
+    get: jest.fn(() => 2020),
     day: jest.fn(() => ({
       toDate: jest.fn(() => new Date()),
     })),
@@ -50,9 +53,11 @@ describe('AvailableTimeCalculateInteractor', () => {
 
   const userRepository = new AvailableTimeRepository();
   const userSettingRepository = new UserSettingRepository();
+  const isoWeekRepository = new IsoWeekRepository();
   const userCalculateInteractor = new AvailableTimeCalculateInteractor(
     userRepository,
     userSettingRepository,
+    isoWeekRepository,
   );
 
   describe('#handle', () => {
@@ -104,6 +109,9 @@ describe('AvailableTimeCalculateInteractor', () => {
         .spyOn(UserSettingRepository.prototype, 'getAll')
         .mockReturnValue(userSettings);
       jest.spyOn(AvailableTimeRepository.prototype, 'create');
+      jest
+        .spyOn(IsoWeekRepository.prototype, 'find')
+        .mockReturnValue(new IsoWeek(1, 2020, 35));
       jest.spyOn(console, 'log');
 
       userCalculateInteractor.handle();

@@ -17,13 +17,13 @@ export class AvailableTimeRepository
 
   create(
     userId: string,
-    isoWeek: number,
+    isoWeekId: number,
     availableTime: number,
   ): AvailableTime {
     this.sheet
       .getRange(this.lastRow + 1, 1, 1, this.lastCol)
-      .setValues([[userId, isoWeek, availableTime]]);
-    return new AvailableTime(userId, isoWeek, availableTime);
+      .setValues([[userId, isoWeekId, availableTime]]);
+    return new AvailableTime(userId, isoWeekId, availableTime);
   }
 
   getAll(): readonly AvailableTime[] {
