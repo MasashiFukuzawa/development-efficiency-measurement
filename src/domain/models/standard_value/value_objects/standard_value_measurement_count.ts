@@ -1,12 +1,12 @@
-export class SummaryReportMeasurementCount {
+export class StandardValueMeasurementCount {
   measurementCount: number;
   constructor(measurementCount: number) {
     if (measurementCount === null) {
-      throw new Error('SummaryReportMeasurementCountが存在しません');
+      throw new Error('StandardValueMeasurementCountが存在しません');
     }
     if (isNaN(measurementCount)) {
       throw new Error(
-        'SummaryReportMeasurementCountはnumber型でなければなりません',
+        'StandardValueMeasurementCountはnumber型でなければなりません',
       );
     }
     this.measurementCount = measurementCount;

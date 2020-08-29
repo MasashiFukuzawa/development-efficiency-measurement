@@ -1,16 +1,12 @@
 import { Measurement } from './measurement';
 
 export interface MeasurementRepositoryInterface {
-  last(userId: string): Measurement | null;
+  last(userId: string, isoWeekId: number): Measurement | null;
   stampStartAt(
     userId: string,
-    theoreticalTimeId: number,
+    isoWeekId: number,
     description?: string,
   ): Measurement;
-  stampStopAt(
-    userId: string,
-    theoreticalTimeId: number,
-    lastMeasurement: Measurement,
-  ): Measurement;
+  stampStopAt(lastMeasurement: Measurement): Measurement;
   getAll(): readonly Measurement[];
 }

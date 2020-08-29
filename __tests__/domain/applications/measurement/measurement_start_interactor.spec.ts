@@ -1,9 +1,11 @@
 import { Measurement } from '../../../../src/domain/models/measurement/measurement';
 import { UserRepository } from '../../../../src/infrastructure/users/user_repository';
 import { MeasurementRepository } from '../../../../src/infrastructure/measurements/measurement_repository';
+import { IsoWeekRepository } from '../../../../src/infrastructure/iso_weeks/iso_week_repository';
 import { User } from '../../../../src/domain/models/user/user';
 import { ReplyPresenter } from '../../../../src/webhook_app/common/presenters/reply/reply_presenter';
 import { MeasurementStartInteractor } from '../../../../src/domain/applications/measurement/measurement_start_interactor';
+import { IsoWeek } from '../../../../src/domain/models/iso_week/iso_week';
 
 describe('MeasurementStartInteractor', () => {
   SpreadsheetApp.openById = jest.fn(() => ({
@@ -27,12 +29,19 @@ describe('MeasurementStartInteractor', () => {
 
   ContentService.MimeType = jest.fn() as any;
 
+  Moment.moment = jest.fn(() => ({
+    get: jest.fn(() => 2020),
+    isoWeek: jest.fn(() => 35),
+  }));
+
   const userRepository = new UserRepository();
   const measurementRepository = new MeasurementRepository();
+  const isoWeekRepository = new IsoWeekRepository();
   const replyPresenter = new ReplyPresenter();
   const measurementStartInteractor = new MeasurementStartInteractor(
     userRepository,
     measurementRepository,
+    isoWeekRepository,
     replyPresenter,
   );
 
@@ -43,9 +52,11 @@ describe('MeasurementStartInteractor', () => {
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';
           const user = new User(userId, userName);
+          const isoWeek = new IsoWeek(1, 2020, 10);
           const measurement = new Measurement(
             1,
             userId,
+            isoWeek.getIsoWeekId().toNumber(),
             new Date(),
             new Date(),
           );
@@ -53,6 +64,9 @@ describe('MeasurementStartInteractor', () => {
           jest
             .spyOn(UserRepository.prototype, 'findByUserId')
             .mockReturnValue(user);
+          jest
+            .spyOn(IsoWeekRepository.prototype, 'find')
+            .mockReturnValue(isoWeek);
           jest
             .spyOn(MeasurementRepository.prototype, 'last')
             .mockReturnValue(measurement);
@@ -67,11 +81,15 @@ describe('MeasurementStartInteractor', () => {
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';
           const user = new User(userId, userName);
+          const isoWeek = new IsoWeek(1, 2020, 10);
           const measurement = null;
 
           jest
             .spyOn(UserRepository.prototype, 'findByUserId')
             .mockReturnValue(user);
+          jest
+            .spyOn(IsoWeekRepository.prototype, 'find')
+            .mockReturnValue(isoWeek);
           jest
             .spyOn(MeasurementRepository.prototype, 'last')
             .mockReturnValue(measurement);
@@ -101,10 +119,21 @@ describe('MeasurementStartInteractor', () => {
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';
           const user = new User(userId, userName);
-          const measurement = new Measurement(1, userId, new Date(), void 0);
+          const isoWeek = new IsoWeek(1, 2020, 10);
+          const measurement = new Measurement(
+            1,
+            userId,
+            isoWeek.getIsoWeekId().toNumber(),
+            new Date(),
+            void 0,
+          );
+
           jest
             .spyOn(UserRepository.prototype, 'findByUserId')
             .mockReturnValue(user);
+          jest
+            .spyOn(IsoWeekRepository.prototype, 'find')
+            .mockReturnValue(isoWeek);
           jest
             .spyOn(MeasurementRepository.prototype, 'last')
             .mockReturnValue(measurement);

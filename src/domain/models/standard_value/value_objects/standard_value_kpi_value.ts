@@ -1,11 +1,11 @@
-export class SummaryReportKpiValue {
+export class StandardValueKpiValue {
   kpiValue: number;
   constructor(kpiValue: number) {
     if (kpiValue === null) {
-      throw new Error('SummaryReportKpiValueが存在しません');
+      throw new Error('StandardValueKpiValueが存在しません');
     }
     if (isNaN(kpiValue)) {
-      throw new Error('SummaryReportKpiValueはnumber型でなければなりません');
+      throw new Error('StandardValueKpiValueはnumber型でなければなりません');
     }
     this.kpiValue = kpiValue;
   }

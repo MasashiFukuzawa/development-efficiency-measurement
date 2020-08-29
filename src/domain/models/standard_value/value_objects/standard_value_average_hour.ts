@@ -1,11 +1,11 @@
-export class SummaryReportAverageHour {
+export class StandardValueAverageHour {
   averageHour: number;
   constructor(averageHour: number) {
     if (averageHour === null) {
-      throw new Error('SummaryReportAverageHourが存在しません');
+      throw new Error('StandardValueAverageHourが存在しません');
     }
     if (isNaN(averageHour)) {
-      throw new Error('SummaryReportAverageHourはnumber型でなければなりません');
+      throw new Error('StandardValueAverageHourはnumber型でなければなりません');
     }
     this.averageHour = averageHour;
   }

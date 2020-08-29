@@ -1,14 +1,15 @@
 import { UserId } from './value_objects/user_id';
 import { UserName } from './value_objects/user_name';
+import { UserRegisteredAt } from './value_objects/user_registered_at';
 
 export class User {
   private readonly id: UserId;
   private readonly name: UserName;
-  private readonly createdAt: Date;
-  constructor(id: string, name: string, createdAt = new Date()) {
+  private readonly registeredAt: UserRegisteredAt;
+  constructor(id: string, name: string, registeredAt = new Date()) {
     this.id = new UserId(id);
     this.name = new UserName(name);
-    this.createdAt = createdAt;
+    this.registeredAt = new UserRegisteredAt(registeredAt);
   }
 
   getUserId(): UserId {
@@ -19,8 +20,8 @@ export class User {
     return this.name;
   }
 
-  getCreatedAt(): Date {
-    return this.createdAt;
+  getRegisteredAt(): UserRegisteredAt {
+    return this.registeredAt;
   }
 
   static validate(id: string, name: string): string | null {

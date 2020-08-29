@@ -1,8 +1,8 @@
-import { TheoreticalTimeSlackNotifyView } from '../../../theoretical_time/views/slack/notify/theoretical_time_slack_notify_view';
+import { AvailableTimeSlackNotifyView } from '../../../available_time/views/slack/notify/available_time_slack_notify_view';
 
 export class NotifyViewModel {
   notify(message: string): void {
-    const slack = new TheoreticalTimeSlackNotifyView();
+    const slack = new AvailableTimeSlackNotifyView();
     slack.notify(message);
   }
 }

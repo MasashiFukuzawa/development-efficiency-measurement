@@ -1,51 +1,51 @@
-import { Measurement } from '../measurement/measurement';
-import { TheoreticalTimeIsoWeek } from '../theoretical_time/value_objects/theoretical_time_iso_week';
 import { UserId } from '../user/value_objects/user_id';
-import { StandardValueId } from '../standard_value/value_objects/standard_value_id';
+import { IsoWeekId } from '../iso_week/domain_objects/ios_week_id';
 import { SummaryReportNotifiedAt } from './value_objects/summary_report_notified_at';
 import { SummaryReportAverageHour } from './value_objects/summary_report_average_hour';
 import { SummaryReportKpiValue } from './value_objects/summary_report_kpi_value';
 import { SummaryReportMeasurementCount } from './value_objects/summary_report_measurement_count';
-import { SummaryReportTheoreticalHour } from './value_objects/summary_report_theoretical_hour';
-import { SummaryReportTheoreticalRate } from './value_objects/summary_report_theoretical_rate';
-import { SummaryReportTotalHour } from './value_objects/summary_report_total_hour';
+import { SummaryReportTheoreticalAvailableHour } from './value_objects/summary_report_theoretical_available_hour';
+import { SummaryReportAvailableRate } from './value_objects/summary_report_available_rate';
+import { SummaryReportTotalImplementHour } from './value_objects/summary_report_total_implement_hour';
 import { SummaryReportId } from './value_objects/summary_report_id';
+import { Measurement } from '../measurement/measurement';
 
 export class SummaryReport {
   private readonly id: SummaryReportId;
   private readonly userId: UserId;
-  private readonly standardValueId: StandardValueId;
-  private readonly totalHour: SummaryReportTotalHour;
+  private readonly isoWeekId: IsoWeekId;
+  private readonly totalImplementHour: SummaryReportTotalImplementHour;
   private readonly measurementCount: SummaryReportMeasurementCount;
   private readonly averageHour: SummaryReportAverageHour;
-  private readonly theoreticalHour: SummaryReportTheoreticalHour;
-  private readonly theoreticalRate: SummaryReportTheoreticalRate;
+  private readonly theoreticalAvailableHour: SummaryReportTheoreticalAvailableHour;
+  private readonly availableRate: SummaryReportAvailableRate;
   private readonly kpiValue: SummaryReportKpiValue;
-  private readonly isoWeek: TheoreticalTimeIsoWeek;
   private readonly notifiedAt: SummaryReportNotifiedAt;
   constructor(
     id: number,
     userId: string,
-    standardValueId: number,
-    totalHour: number,
+    isoWeekId: number,
+    totalImplementHour: number,
     measurementCount: number,
     averageHour: number,
-    theoreticalHour: number,
-    theoreticalRate: number,
+    theoreticalAvailableHour: number,
+    availableRate: number,
     kpiValue: number,
-    isoWeek: number = Moment.moment().isoWeek(),
     notifiedAt = new Date(),
   ) {
     this.id = new SummaryReportId(id);
     this.userId = new UserId(userId);
-    this.standardValueId = new StandardValueId(standardValueId);
-    this.totalHour = new SummaryReportTotalHour(totalHour);
+    this.isoWeekId = new IsoWeekId(isoWeekId);
+    this.totalImplementHour = new SummaryReportTotalImplementHour(
+      totalImplementHour,
+    );
     this.measurementCount = new SummaryReportMeasurementCount(measurementCount);
     this.averageHour = new SummaryReportAverageHour(averageHour);
-    this.theoreticalHour = new SummaryReportTheoreticalHour(theoreticalHour);
-    this.theoreticalRate = new SummaryReportTheoreticalRate(theoreticalRate);
+    this.theoreticalAvailableHour = new SummaryReportTheoreticalAvailableHour(
+      theoreticalAvailableHour,
+    );
+    this.availableRate = new SummaryReportAvailableRate(availableRate);
     this.kpiValue = new SummaryReportKpiValue(kpiValue);
-    this.isoWeek = new TheoreticalTimeIsoWeek(isoWeek);
     this.notifiedAt = new SummaryReportNotifiedAt(notifiedAt);
   }
 
@@ -57,12 +57,12 @@ export class SummaryReport {
     return this.userId;
   }
 
-  getStandardValueId(): StandardValueId {
-    return this.standardValueId;
+  getIsoWeekId(): IsoWeekId {
+    return this.isoWeekId;
   }
 
-  getTotalHour(): SummaryReportTotalHour {
-    return this.totalHour;
+  getTotalImplementHour(): SummaryReportTotalImplementHour {
+    return this.totalImplementHour;
   }
 
   getMeasurementCount(): SummaryReportMeasurementCount {
@@ -73,20 +73,16 @@ export class SummaryReport {
     return this.averageHour;
   }
 
-  getTheoreticalHour(): SummaryReportTheoreticalHour {
-    return this.theoreticalHour;
+  getTheoreticalAvailableHour(): SummaryReportTheoreticalAvailableHour {
+    return this.theoreticalAvailableHour;
   }
 
-  getTheoreticalRate(): SummaryReportTheoreticalRate {
-    return this.theoreticalRate;
+  getAvailableRate(): SummaryReportAvailableRate {
+    return this.availableRate;
   }
 
   getKpiValue(): SummaryReportKpiValue {
     return this.kpiValue;
-  }
-
-  getIsoWeek(): TheoreticalTimeIsoWeek {
-    return this.isoWeek;
   }
 
   getNotifiedAt(): SummaryReportNotifiedAt {

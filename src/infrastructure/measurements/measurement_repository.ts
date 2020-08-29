@@ -24,7 +24,7 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
 
   stampStartAt(
     userId: string,
-    theoreticalTimeId: number,
+    isoWeekId: number,
     description?: string,
   ): Measurement {
     const id = this.lastRow;
@@ -32,23 +32,21 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
     const measurement = new Measurement(
       id,
       userId,
-      theoreticalTimeId,
+      isoWeekId,
       now,
       void 0,
       description,
     );
     this.sheet
       .getRange(this.lastRow + 1, 1, 1, this.lastCol)
-      .setValues([[id, userId, theoreticalTimeId, now, void 0, description]]);
+      .setValues([[id, userId, isoWeekId, now, void 0, description]]);
     return measurement;
   }
 
-  stampStopAt(
-    userId: string,
-    theoreticalTimeId: number,
-    lastMeasurement: Measurement,
-  ): Measurement {
+  stampStopAt(lastMeasurement: Measurement): Measurement {
     const id = lastMeasurement.getMeasurementId().toNumber();
+    const userId = lastMeasurement.getUserId().toString();
+    const isoWeekId = lastMeasurement.getIsoWeekId().toNumber();
     const startAt = lastMeasurement.getMeasurementStartAt().toDate();
     const now = new Date();
     const description =
@@ -58,14 +56,14 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
     const measurement = new Measurement(
       id,
       userId,
-      theoreticalTimeId,
+      isoWeekId,
       startAt,
       now,
       description,
     );
     this.sheet
       .getRange(id + 1, 1, 1, this.lastCol)
-      .setValues([[id, userId, theoreticalTimeId, startAt, now, description]]);
+      .setValues([[id, userId, isoWeekId, startAt, now, description]]);
     return measurement;
   }
 
