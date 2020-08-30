@@ -161,12 +161,16 @@ export class SummaryReportNotifyInteractor implements SummaryReportNotifyUseCase
         return e.isTargetUser(userId);
       })
       .map((e) => {
+        const measurementStopAt = e.getMeasurementStopAt();
+        if (typeof measurementStopAt === 'undefined') {
+          throw new Error('StopAt is nothing.');
+        }
         return new Measurement(
           e.getMeasurementId().toNumber(),
           userId,
           isoWeekId,
           e.getMeasurementStartAt().toDate(),
-          e.getMeasurementStopAt()?.toDate(),
+          measurementStopAt.toDate(),
         );
       });
   }

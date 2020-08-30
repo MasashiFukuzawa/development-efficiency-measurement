@@ -3,10 +3,10 @@ import { UserCreateInteractor } from '../../domain/applications/user/user_create
 import { MeasurementRepository } from '../../infrastructure/measurements/measurement_repository';
 import { UserRepository } from '../../infrastructure/users/user_repository';
 import { UserSettingRepository } from '../../infrastructure/user_settings/user_setting_repository';
-import { ReplyPresenter } from '../../webhook_app/common/presenters/reply/reply_presenter';
-import { UserCreateController } from '../../webhook_app/user/controllers/create/user_create_controller';
-import { MeasurementStartController } from '../../webhook_app/measurement/controllers/start/measurement_start_controller';
-import { MeasurementStopController } from '../../webhook_app/measurement/controllers/stop/measurement_stop_controller';
+import { ReplyPresenter } from '../../webhook_app/presenters/reply/reply_presenter';
+import { UserCreateController } from '../../webhook_app/controllers/user/create/user_create_controller';
+import { MeasurementStartController } from '../../webhook_app/controllers/measurement/start/measurement_start_controller';
+import { MeasurementStopController } from '../../webhook_app/controllers/measurement/stop/measurement_stop_controller';
 import { MeasurementStopInteractor } from '../../domain/applications/measurement/measurement_stop_interactor';
 import { IsoWeekRepository } from '../../infrastructure/iso_weeks/iso_week_repository';
 import TextOutput = GoogleAppsScript.Content.TextOutput;

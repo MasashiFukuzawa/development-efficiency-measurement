@@ -1,4 +1,4 @@
-export class AvailableTimeSlackNotifyView {
+export class SlackNotifyView {
   private webhookUrl: string | null;
   constructor() {
     this.webhookUrl = null;
