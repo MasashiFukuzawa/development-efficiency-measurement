@@ -68,22 +68,20 @@ export class StandardValue {
   }
 
   // TODO: もっと効率の良いロジックに修正する
-  static calculateAverage(
-    isoWeekId: number,
-    summaryReports: SummaryReport[],
-  ): StandardValue {
+  static calculateAverage(summaryReports: SummaryReport[]): StandardValue {
+    const count = summaryReports.length;
     return new StandardValue(
-      isoWeekId,
-      this.calculateTotalImplementHourAverage(summaryReports),
-      this.calculateMeasurementCountAverage(summaryReports),
-      this.calculateAverageImplementHourAverage(summaryReports),
-      this.calculateTheoreticalAvailableHourAverage(summaryReports),
-      this.calculateAvailableRateAverage(summaryReports),
-      this.calculateKpiValueAverage(summaryReports),
+      summaryReports[0].getIsoWeekId().toNumber(),
+      this.sumTotalImplementHour(summaryReports) / count,
+      this.sumMeasurementCount(summaryReports) / count,
+      this.sumAverageImplementHour(summaryReports) / count,
+      this.sumTheoreticalAvailableHour(summaryReports) / count,
+      this.sumAvailableRate(summaryReports) / count,
+      this.sumKpiValue(summaryReports) / count,
     );
   }
 
-  private static calculateTotalImplementHourAverage(
+  private static sumTotalImplementHour(
     summaryReports: SummaryReport[],
   ): number {
     return summaryReports
@@ -95,9 +93,7 @@ export class StandardValue {
       });
   }
 
-  private static calculateMeasurementCountAverage(
-    summaryReports: SummaryReport[],
-  ): number {
+  private static sumMeasurementCount(summaryReports: SummaryReport[]): number {
     return summaryReports
       .map((e) => {
         return e.getMeasurementCount().toNumber();
@@ -107,7 +103,7 @@ export class StandardValue {
       });
   }
 
-  private static calculateAverageImplementHourAverage(
+  private static sumAverageImplementHour(
     summaryReports: SummaryReport[],
   ): number {
     return summaryReports
@@ -119,7 +115,7 @@ export class StandardValue {
       });
   }
 
-  private static calculateTheoreticalAvailableHourAverage(
+  private static sumTheoreticalAvailableHour(
     summaryReports: SummaryReport[],
   ): number {
     return summaryReports
@@ -131,9 +127,7 @@ export class StandardValue {
       });
   }
 
-  private static calculateAvailableRateAverage(
-    summaryReports: SummaryReport[],
-  ): number {
+  private static sumAvailableRate(summaryReports: SummaryReport[]): number {
     return summaryReports
       .map((e) => {
         return e.getAvailableRate().toNumber();
@@ -143,9 +137,7 @@ export class StandardValue {
       });
   }
 
-  private static calculateKpiValueAverage(
-    summaryReports: SummaryReport[],
-  ): number {
+  private static sumKpiValue(summaryReports: SummaryReport[]): number {
     return summaryReports
       .map((e) => {
         return e.getKpiValue().toNumber();

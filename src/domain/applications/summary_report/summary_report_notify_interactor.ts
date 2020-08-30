@@ -54,10 +54,7 @@ export class SummaryReportNotifyInteractor
 
     this.summaryReportRepository.bulkInsert(summaryReports);
 
-    const standardValue = StandardValue.calculateAverage(
-      targetIsoWeekId,
-      summaryReports,
-    );
+    const standardValue = StandardValue.calculateAverage(summaryReports);
     this.standardValueRepository.create(standardValue);
 
     const outputData = new SummaryReportNotifyOutputData();
