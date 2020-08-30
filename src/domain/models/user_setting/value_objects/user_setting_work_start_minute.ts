@@ -5,9 +5,7 @@ export class UserSettingWorkStartMinute {
       throw new Error('UserSettingWorkStartMinuteが存在しません');
     }
     if (isNaN(workStartMinute)) {
-      throw new Error(
-        'UserSettingWorkStartMinuteはnumber型でなければなりません',
-      );
+      throw new Error('UserSettingWorkStartMinuteはnumber型でなければなりません');
     }
     this.workStartMinute = workStartMinute;
   }

@@ -12,8 +12,7 @@ import { IsoWeekRepositoryInterface } from '../../models/iso_week/iso_week_repos
 import { StandardValueRepositoryInterface } from '../../models/standard_value/standard_value_repository_interface';
 import { StandardValue } from '../../models/standard_value/standard_value';
 
-export class SummaryReportNotifyInteractor
-  implements SummaryReportNotifyUseCaseInterface {
+export class SummaryReportNotifyInteractor implements SummaryReportNotifyUseCaseInterface {
   constructor(
     private readonly isoWeekRepository: IsoWeekRepositoryInterface,
     private readonly userSettingRepository: UserSettingRepositoryInterface,
@@ -33,16 +32,10 @@ export class SummaryReportNotifyInteractor
     const targetUserIds = this.getNotifiedUserIds();
     if (targetUserIds.length === 0) return;
 
-    const targetAvailableTimes = this.filterAvailableTimesBy(
-      targetUserIds,
-      targetIsoWeekId,
-    );
+    const targetAvailableTimes = this.filterAvailableTimesBy(targetUserIds, targetIsoWeekId);
     if (targetAvailableTimes.length === 0) return;
 
-    const targetMeasurements = this.filterMeasurementsBy(
-      targetUserIds,
-      targetIsoWeekId,
-    );
+    const targetMeasurements = this.filterMeasurementsBy(targetUserIds, targetIsoWeekId);
     if (targetMeasurements.length === 0) return;
 
     const summaryReports = this.getSummaryReports(
@@ -74,28 +67,18 @@ export class SummaryReportNotifyInteractor
     const lastSummaryReportId = this.getLastSummaryReportId();
 
     return userIds.map((userId, i) => {
-      const userAvailableTime = this.getAvailableTimeAssociatedWithUser(
-        availableTimes,
-        userId,
-      );
+      const userAvailableTime = this.getAvailableTimeAssociatedWithUser(availableTimes, userId);
       const userMeasurements = this.getMeasurementsAssociatedWithUser(
         measurements,
         userId,
         isoWeekId,
       );
 
-      const targetMeasurements = Measurement.cutOffBeforeAndAfterWorkHour(
-        userMeasurements,
-      );
+      const targetMeasurements = Measurement.cutOffBeforeAndAfterWorkHour(userMeasurements);
       const totalImplementMilliSec = SummaryReport.sum(targetMeasurements);
-      const totalImplementHour = SummaryReport.convertMilliSecToHour(
-        totalImplementMilliSec,
-      );
+      const totalImplementHour = SummaryReport.convertMilliSecToHour(totalImplementMilliSec);
       const measurementCount = SummaryReport.count(targetMeasurements);
-      const averageImplementHour = SummaryReport.average(
-        measurementCount,
-        totalImplementHour,
-      );
+      const averageImplementHour = SummaryReport.average(measurementCount, totalImplementHour);
       const theoreticalAvailableHour = SummaryReport.calculateTheoreticalAvailableHour(
         userAvailableTime.getTheoreticalImplementTime().toNumber(),
       );
@@ -130,19 +113,13 @@ export class SummaryReportNotifyInteractor
       .map((e) => e.getUserId().toString());
   }
 
-  private filterAvailableTimesBy(
-    userIds: string[],
-    isoWeekId: number,
-  ): AvailableTime[] {
+  private filterAvailableTimesBy(userIds: string[], isoWeekId: number): AvailableTime[] {
     return this.availableTimeRepository.getAll().filter((e) => {
       return e.isTargetWeek(isoWeekId) && e.isAssociatedWithUser(userIds);
     });
   }
 
-  private filterMeasurementsBy(
-    userIds: string[],
-    isoWeekId: number,
-  ): Measurement[] {
+  private filterMeasurementsBy(userIds: string[], isoWeekId: number): Measurement[] {
     return this.measurementRepository.getAll().filter((e) => {
       return e.isTargetWeek(isoWeekId) && e.isAssociatedWithUser(userIds);
     });

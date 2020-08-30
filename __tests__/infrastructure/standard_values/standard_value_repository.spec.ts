@@ -22,12 +22,8 @@ describe('StandardValueRepository', () => {
   describe('#create', () => {
     it('returns a summaryReport resource', () => {
       const standardValue = new StandardValue(36, 10, 10, 1, 20, 0.5, 5);
-      const createdStandardValue = standardValueRepository.create(
-        standardValue,
-      );
-      expect(createdStandardValue).toStrictEqual(
-        new StandardValue(36, 10, 10, 1, 20, 0.5, 5),
-      );
+      const createdStandardValue = standardValueRepository.create(standardValue);
+      expect(createdStandardValue).toStrictEqual(new StandardValue(36, 10, 10, 1, 20, 0.5, 5));
     });
   });
 });

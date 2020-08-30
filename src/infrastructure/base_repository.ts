@@ -14,9 +14,7 @@ export abstract class BaseRepository {
 
   getAll(): readonly any[] {
     if (this.fullData) return this.fullData;
-    const rawData = this.sheet
-      .getRange(2, 1, this.lastRow - 1, this.lastCol)
-      .getValues();
+    const rawData = this.sheet.getRange(2, 1, this.lastRow - 1, this.lastCol).getValues();
     const data = rawData.filter((e) => !!e[0]);
     return this.map(data);
   }
@@ -26,9 +24,7 @@ export abstract class BaseRepository {
   private getSheet(sheetName: string): Sheet {
     if (this.sheet) return this.sheet;
 
-    const spreadsheetId = PropertiesService.getScriptProperties().getProperty(
-      'SPREAD_SHEET_ID',
-    );
+    const spreadsheetId = PropertiesService.getScriptProperties().getProperty('SPREAD_SHEET_ID');
 
     if (!spreadsheetId) throw new Error('SPREAD_SHEET_ID is not found.');
     const spreadsheet = SpreadsheetApp.openById(spreadsheetId);

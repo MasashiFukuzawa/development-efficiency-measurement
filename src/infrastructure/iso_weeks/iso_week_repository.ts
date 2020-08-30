@@ -2,8 +2,7 @@ import { IsoWeek } from '../../domain/models/iso_week/iso_week';
 import { IsoWeekRepositoryInterface } from '../../domain/models/iso_week/iso_week_repository_interface';
 import { BaseRepository } from '../base_repository';
 
-export class IsoWeekRepository extends BaseRepository
-  implements IsoWeekRepositoryInterface {
+export class IsoWeekRepository extends BaseRepository implements IsoWeekRepositoryInterface {
   constructor(sheetName = 'iso_weeks') {
     super(sheetName);
   }

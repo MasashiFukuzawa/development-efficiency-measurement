@@ -35,9 +35,7 @@ describe('UserSettingRepository', () => {
         const workStartMinute = userSetting.getWorkStartMinute().toNumber();
         const workEndHour = userSetting.getWorkEndHour().toNumber();
         const workEndMinute = userSetting.getWorkEndMinute().toNumber();
-        const notificationStatus = userSetting
-          .getNotificationStatus()
-          .toString();
+        const notificationStatus = userSetting.getNotificationStatus().toString();
         expect(userId).toBe('IM1234');
         expect(googleCalendarId).toBe('izuku.midoriya@example.com');
         expect(workStartHour).toBe(10);
@@ -50,9 +48,7 @@ describe('UserSettingRepository', () => {
 
     describe('when invalid', () => {
       it('returns null', () => {
-        const userSetting = userSettingRepository.findByUserId(
-          'momo.yaoyorozu',
-        );
+        const userSetting = userSettingRepository.findByUserId('momo.yaoyorozu');
         expect(userSetting).toBe(null);
       });
     });
@@ -60,10 +56,7 @@ describe('UserSettingRepository', () => {
 
   describe('#create', () => {
     it('creates successfully', () => {
-      const userSetting = userSettingRepository.create(
-        'MY1234',
-        'momo.yaoyorozu@example.com',
-      );
+      const userSetting = userSettingRepository.create('MY1234', 'momo.yaoyorozu@example.com');
       const userId = userSetting.getUserId().toString();
       const googleCalendarId = userSetting.getGoogleCalendarId().toString();
       const workStartHour = userSetting.getWorkStartHour().toNumber();

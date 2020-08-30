@@ -5,8 +5,7 @@ import { AvailableTimeRepositoryInterface } from '../../models/available_time/av
 import { IsoWeekRepositoryInterface } from '../../models/iso_week/iso_week_repository_interface';
 import { UserSettingRepositoryInterface } from '../../models/user_setting/user_setting_repository_interface';
 
-export class AvailableTimeCalculateInteractor
-  implements AvailableTimeCalculateUseCaseInterface {
+export class AvailableTimeCalculateInteractor implements AvailableTimeCalculateUseCaseInterface {
   constructor(
     private readonly availableTimeRepository: AvailableTimeRepositoryInterface,
     private readonly userSettingRepository: UserSettingRepositoryInterface,
@@ -33,9 +32,7 @@ export class AvailableTimeCalculateInteractor
       const workEndHour = e.getWorkEndHour().toNumber();
       const workEndMinute = e.getWorkEndMinute().toNumber();
 
-      const weeklyEvents = inputData.mapEvents(
-        inputData.getEvents(googleCalendarId),
-      );
+      const weeklyEvents = inputData.mapEvents(inputData.getEvents(googleCalendarId));
       const availableTime = AvailableTime.calculateAvailableTime(
         weeklyEvents,
         workStartHour,
@@ -56,14 +53,9 @@ export class AvailableTimeCalculateInteractor
   }
 
   private isNotUnique(userId: string, isoWeek: number): boolean {
-    const userDataForTheIsoWeek = this.availableTimeRepository
-      .getAll()
-      .find((e) => {
-        return (
-          e.getUserId().toString() === userId &&
-          e.getIsoWeekId().toNumber() === isoWeek
-        );
-      });
+    const userDataForTheIsoWeek = this.availableTimeRepository.getAll().find((e) => {
+      return e.getUserId().toString() === userId && e.getIsoWeekId().toNumber() === isoWeek;
+    });
     return !!userDataForTheIsoWeek;
   }
 }

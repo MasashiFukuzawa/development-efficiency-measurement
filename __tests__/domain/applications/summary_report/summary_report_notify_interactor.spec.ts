@@ -61,36 +61,9 @@ describe('SummaryReportNotifyInteractor', () => {
   const userId3 = 'OU1234';
 
   const userSettings = [
-    new UserSetting(
-      userId1,
-      'izuku.midoriya@example.com',
-      10,
-      0,
-      19,
-      0,
-      'on',
-      new Date(),
-    ),
-    new UserSetting(
-      userId2,
-      'katsuki.bakugo@example.com',
-      10,
-      0,
-      19,
-      0,
-      'off',
-      new Date(),
-    ),
-    new UserSetting(
-      userId3,
-      'ochako.uraraka@example.com',
-      10,
-      0,
-      19,
-      0,
-      'on',
-      new Date(),
-    ),
+    new UserSetting(userId1, 'izuku.midoriya@example.com', 10, 0, 19, 0, 'on', new Date()),
+    new UserSetting(userId2, 'katsuki.bakugo@example.com', 10, 0, 19, 0, 'off', new Date()),
+    new UserSetting(userId3, 'ochako.uraraka@example.com', 10, 0, 19, 0, 'on', new Date()),
   ];
   const availableTimes = [
     new AvailableTime(userId1, isoWeekId, 10000000),
@@ -162,36 +135,16 @@ describe('SummaryReportNotifyInteractor', () => {
       new Date(2020, 8, 27, 20, 44, 50),
     ),
   ];
-  const summaryReport = new SummaryReport(
-    100,
-    userId1,
-    isoWeekId,
-    10,
-    10,
-    1,
-    20,
-    0.5,
-    5,
-  );
+  const summaryReport = new SummaryReport(100, userId1, isoWeekId, 10, 10, 1, 20, 0.5, 5);
 
   describe('#handle', () => {
     describe('when user exists', () => {
       it('sends reports successfully', () => {
-        jest
-          .spyOn(IsoWeekRepository.prototype, 'find')
-          .mockReturnValue(isoWeek);
-        jest
-          .spyOn(UserSettingRepository.prototype, 'getAll')
-          .mockReturnValue(userSettings);
-        jest
-          .spyOn(AvailableTimeRepository.prototype, 'getAll')
-          .mockReturnValue(availableTimes);
-        jest
-          .spyOn(MeasurementRepository.prototype, 'getAll')
-          .mockReturnValue(measurements);
-        jest
-          .spyOn(SummaryReportRepository.prototype, 'last')
-          .mockReturnValue(summaryReport);
+        jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
+        jest.spyOn(UserSettingRepository.prototype, 'getAll').mockReturnValue(userSettings);
+        jest.spyOn(AvailableTimeRepository.prototype, 'getAll').mockReturnValue(availableTimes);
+        jest.spyOn(MeasurementRepository.prototype, 'getAll').mockReturnValue(measurements);
+        jest.spyOn(SummaryReportRepository.prototype, 'last').mockReturnValue(summaryReport);
 
         summaryReportNotifyInteractor.handle();
         expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(2);
@@ -200,12 +153,8 @@ describe('SummaryReportNotifyInteractor', () => {
 
     describe('when target user does not exist', () => {
       it('does not send message', () => {
-        jest
-          .spyOn(IsoWeekRepository.prototype, 'find')
-          .mockReturnValue(isoWeek);
-        jest
-          .spyOn(UserSettingRepository.prototype, 'getAll')
-          .mockReturnValue([]);
+        jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
+        jest.spyOn(UserSettingRepository.prototype, 'getAll').mockReturnValue([]);
 
         summaryReportNotifyInteractor.handle();
         expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(0);
@@ -214,15 +163,9 @@ describe('SummaryReportNotifyInteractor', () => {
 
     describe('when target available time does not exist', () => {
       it('does not send message', () => {
-        jest
-          .spyOn(IsoWeekRepository.prototype, 'find')
-          .mockReturnValue(isoWeek);
-        jest
-          .spyOn(UserSettingRepository.prototype, 'getAll')
-          .mockReturnValue(userSettings);
-        jest
-          .spyOn(AvailableTimeRepository.prototype, 'getAll')
-          .mockReturnValue([]);
+        jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
+        jest.spyOn(UserSettingRepository.prototype, 'getAll').mockReturnValue(userSettings);
+        jest.spyOn(AvailableTimeRepository.prototype, 'getAll').mockReturnValue([]);
 
         summaryReportNotifyInteractor.handle();
         expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(0);
@@ -231,18 +174,10 @@ describe('SummaryReportNotifyInteractor', () => {
 
     describe('when target measurement does not exist', () => {
       it('does not send message', () => {
-        jest
-          .spyOn(IsoWeekRepository.prototype, 'find')
-          .mockReturnValue(isoWeek);
-        jest
-          .spyOn(UserSettingRepository.prototype, 'getAll')
-          .mockReturnValue(userSettings);
-        jest
-          .spyOn(AvailableTimeRepository.prototype, 'getAll')
-          .mockReturnValue(availableTimes);
-        jest
-          .spyOn(MeasurementRepository.prototype, 'getAll')
-          .mockReturnValue([]);
+        jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
+        jest.spyOn(UserSettingRepository.prototype, 'getAll').mockReturnValue(userSettings);
+        jest.spyOn(AvailableTimeRepository.prototype, 'getAll').mockReturnValue(availableTimes);
+        jest.spyOn(MeasurementRepository.prototype, 'getAll').mockReturnValue([]);
 
         summaryReportNotifyInteractor.handle();
         expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(0);
@@ -251,21 +186,11 @@ describe('SummaryReportNotifyInteractor', () => {
 
     describe('when first report notification', () => {
       it('sends reports successfully', () => {
-        jest
-          .spyOn(IsoWeekRepository.prototype, 'find')
-          .mockReturnValue(isoWeek);
-        jest
-          .spyOn(UserSettingRepository.prototype, 'getAll')
-          .mockReturnValue(userSettings);
-        jest
-          .spyOn(AvailableTimeRepository.prototype, 'getAll')
-          .mockReturnValue(availableTimes);
-        jest
-          .spyOn(MeasurementRepository.prototype, 'getAll')
-          .mockReturnValue(measurements);
-        jest
-          .spyOn(SummaryReportRepository.prototype, 'last')
-          .mockReturnValue(null);
+        jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
+        jest.spyOn(UserSettingRepository.prototype, 'getAll').mockReturnValue(userSettings);
+        jest.spyOn(AvailableTimeRepository.prototype, 'getAll').mockReturnValue(availableTimes);
+        jest.spyOn(MeasurementRepository.prototype, 'getAll').mockReturnValue(measurements);
+        jest.spyOn(SummaryReportRepository.prototype, 'last').mockReturnValue(null);
 
         summaryReportNotifyInteractor.handle();
         expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(2);

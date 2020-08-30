@@ -20,11 +20,7 @@ describe('AvailableTimeRepository', () => {
 
   describe('#create', () => {
     it('creates successfully', () => {
-      const availableTime = availableTimeRepository.create(
-        'IM1234',
-        1,
-        10000000,
-      );
+      const availableTime = availableTimeRepository.create('IM1234', 1, 10000000);
       const userId = availableTime.getUserId().toString();
       const iosWeekId = availableTime.getIsoWeekId().toNumber();
       const totalTimes = availableTime.getTheoreticalImplementTime().toNumber();

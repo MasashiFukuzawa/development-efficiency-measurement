@@ -2,9 +2,7 @@ import { MeasurementStopUseCaseInterface } from '../../../../use_case/measuremen
 import TextOutput = GoogleAppsScript.Content.TextOutput;
 
 export class MeasurementStopController {
-  constructor(
-    private readonly measurementStopUseCase: MeasurementStopUseCaseInterface,
-  ) {}
+  constructor(private readonly measurementStopUseCase: MeasurementStopUseCaseInterface) {}
 
   stop(userId: string, userName: string): TextOutput {
     return this.measurementStopUseCase.handle(userId, userName);

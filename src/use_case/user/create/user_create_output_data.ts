@@ -6,9 +6,7 @@ export class UserCreateOutputData {
     const userId = user.getUserId().toString();
     const name = user.getName().toString();
     const googleCalendarId = userSetting.getGoogleCalendarId().toString();
-    const registeredAt = Moment.moment(user.getRegisteredAt()).format(
-      'YYYY/MM/DD HH:mm:ss',
-    );
+    const registeredAt = Moment.moment(user.getRegisteredAt()).format('YYYY/MM/DD HH:mm:ss');
     return `新規ユーザーを作成しました。
 UserInfo: { UserId: ${userId}, UserName: ${name}, GoogleCalendarId: ${googleCalendarId}, registeredAt: ${registeredAt} }`;
   }

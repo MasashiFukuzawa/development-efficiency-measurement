@@ -2,9 +2,7 @@ import { MeasurementStartUseCaseInterface } from '../../../../use_case/measureme
 import TextOutput = GoogleAppsScript.Content.TextOutput;
 
 export class MeasurementStartController {
-  constructor(
-    private readonly measurementStartUseCase: MeasurementStartUseCaseInterface,
-  ) {}
+  constructor(private readonly measurementStartUseCase: MeasurementStartUseCaseInterface) {}
 
   start(userId: string, userName: string, description?: string): TextOutput {
     return this.measurementStartUseCase.handle(userId, userName, description);

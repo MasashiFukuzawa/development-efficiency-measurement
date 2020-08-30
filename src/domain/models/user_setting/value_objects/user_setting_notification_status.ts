@@ -6,9 +6,7 @@ export class UserSettingNotificationStatus {
     }
 
     if (typeof notificationStatus !== 'string') {
-      throw new Error(
-        'UserSettingNotificationStatusはstring型でなければなりません',
-      );
+      throw new Error('UserSettingNotificationStatusはstring型でなければなりません');
     }
 
     if (notificationStatus === 'on' || notificationStatus === 'off') {

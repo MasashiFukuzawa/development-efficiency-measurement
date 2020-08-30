@@ -35,13 +35,9 @@ export class SummaryReport {
     this.id = new SummaryReportId(id);
     this.userId = new UserId(userId);
     this.isoWeekId = new IsoWeekId(isoWeekId);
-    this.totalImplementHour = new SummaryReportTotalImplementHour(
-      totalImplementHour,
-    );
+    this.totalImplementHour = new SummaryReportTotalImplementHour(totalImplementHour);
     this.measurementCount = new SummaryReportMeasurementCount(measurementCount);
-    this.averageImplementHour = new SummaryReportAverageImplementHour(
-      averageImplementHour,
-    );
+    this.averageImplementHour = new SummaryReportAverageImplementHour(averageImplementHour);
     this.theoreticalAvailableHour = new SummaryReportTheoreticalAvailableHour(
       theoreticalAvailableHour,
     );
@@ -114,16 +110,11 @@ export class SummaryReport {
     return measurementCount === 0 ? 0 : totalImplementHour / measurementCount;
   }
 
-  static calculateTheoreticalAvailableHour(
-    theoreticalAvailableTime: number,
-  ): number {
+  static calculateTheoreticalAvailableHour(theoreticalAvailableTime: number): number {
     return this.convertMilliSecToHour(theoreticalAvailableTime);
   }
 
-  static calculateAvailableRate(
-    theoreticalHour: number,
-    totalImplementHour: number,
-  ): number {
+  static calculateAvailableRate(theoreticalHour: number, totalImplementHour: number): number {
     return theoreticalHour === 0 ? 0 : totalImplementHour / theoreticalHour;
   }
 

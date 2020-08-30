@@ -5,9 +5,7 @@ export class StandardValueAverageImplementHour {
       throw new Error('StandardValueAverageImplementHourが存在しません');
     }
     if (isNaN(averageImplementHour)) {
-      throw new Error(
-        'StandardValueAverageImplementHourはnumber型でなければなりません',
-      );
+      throw new Error('StandardValueAverageImplementHourはnumber型でなければなりません');
     }
     this.averageImplementHour = averageImplementHour;
   }

@@ -8,9 +8,7 @@ export class UserSettingGoogleCalendarId {
     }
 
     if (typeof googleCalendarId !== 'string') {
-      throw new Error(
-        'UserSettingGoogleCalendarIdはstring型でなければなりません',
-      );
+      throw new Error('UserSettingGoogleCalendarIdはstring型でなければなりません');
     }
 
     if (!GlobalConstants.EMAIL_REGEXP.test(googleCalendarId)) {

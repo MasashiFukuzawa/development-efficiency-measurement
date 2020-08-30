@@ -10,18 +10,7 @@ export class SummaryReportRepository extends BaseRepository
 
   map(fullData: any[][]): readonly SummaryReport[] {
     return fullData.map((e) => {
-      return new SummaryReport(
-        e[0],
-        e[1],
-        e[2],
-        e[3],
-        e[4],
-        e[5],
-        e[6],
-        e[7],
-        e[8],
-        e[9],
-      );
+      return new SummaryReport(e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9]);
     });
   }
 
@@ -46,9 +35,7 @@ export class SummaryReportRepository extends BaseRepository
         e.getNotifiedAt().toDate(),
       ];
     });
-    this.sheet
-      .getRange(this.lastRow + 1, 1, count, this.lastCol)
-      .setValues(params);
+    this.sheet.getRange(this.lastRow + 1, 1, count, this.lastCol).setValues(params);
     return summaryReports.map((e) => e.getSummaryReportId().toNumber());
   }
 }

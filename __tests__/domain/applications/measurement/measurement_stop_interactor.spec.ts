@@ -55,18 +55,10 @@ describe('MeasurementStopInteractor', () => {
           const isoWeek = new IsoWeek(1, 2020, 10);
           const measurement = new Measurement(1, userId, 1, new Date(), void 0);
 
-          jest
-            .spyOn(UserRepository.prototype, 'findByUserId')
-            .mockReturnValue(user);
-          jest
-            .spyOn(IsoWeekRepository.prototype, 'find')
-            .mockReturnValue(isoWeek);
-          jest
-            .spyOn(MeasurementRepository.prototype, 'last')
-            .mockReturnValue(measurement);
-          jest
-            .spyOn(Measurement.prototype, 'calculateImplementTime')
-            .mockReturnValue(1800000);
+          jest.spyOn(UserRepository.prototype, 'findByUserId').mockReturnValue(user);
+          jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
+          jest.spyOn(MeasurementRepository.prototype, 'last').mockReturnValue(measurement);
+          jest.spyOn(Measurement.prototype, 'calculateImplementTime').mockReturnValue(1800000);
 
           measurementStopInteractor.handle(userId, userName);
           expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
@@ -77,9 +69,7 @@ describe('MeasurementStopInteractor', () => {
     describe('when invalid', () => {
       describe('when target user does not exist', () => {
         it('sends an error message', () => {
-          jest
-            .spyOn(UserRepository.prototype, 'findByUserId')
-            .mockReturnValue(null);
+          jest.spyOn(UserRepository.prototype, 'findByUserId').mockReturnValue(null);
 
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';
@@ -96,15 +86,9 @@ describe('MeasurementStopInteractor', () => {
           const isoWeek = new IsoWeek(1, 2020, 10);
           const measurement = null;
 
-          jest
-            .spyOn(UserRepository.prototype, 'findByUserId')
-            .mockReturnValue(user);
-          jest
-            .spyOn(IsoWeekRepository.prototype, 'find')
-            .mockReturnValue(isoWeek);
-          jest
-            .spyOn(MeasurementRepository.prototype, 'last')
-            .mockReturnValue(measurement);
+          jest.spyOn(UserRepository.prototype, 'findByUserId').mockReturnValue(user);
+          jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
+          jest.spyOn(MeasurementRepository.prototype, 'last').mockReturnValue(measurement);
 
           measurementStopInteractor.handle(userId, userName);
           expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
@@ -117,22 +101,10 @@ describe('MeasurementStopInteractor', () => {
           const userName = 'izuku.midoriya';
           const user = new User(userId, userName);
           const isoWeek = new IsoWeek(1, 2020, 10);
-          const measurement = new Measurement(
-            1,
-            userId,
-            1,
-            new Date(),
-            new Date(),
-          );
-          jest
-            .spyOn(UserRepository.prototype, 'findByUserId')
-            .mockReturnValue(user);
-          jest
-            .spyOn(IsoWeekRepository.prototype, 'find')
-            .mockReturnValue(isoWeek);
-          jest
-            .spyOn(MeasurementRepository.prototype, 'last')
-            .mockReturnValue(measurement);
+          const measurement = new Measurement(1, userId, 1, new Date(), new Date());
+          jest.spyOn(UserRepository.prototype, 'findByUserId').mockReturnValue(user);
+          jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
+          jest.spyOn(MeasurementRepository.prototype, 'last').mockReturnValue(measurement);
 
           measurementStopInteractor.handle(userId, userName);
           expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);

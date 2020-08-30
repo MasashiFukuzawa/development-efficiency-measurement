@@ -15,11 +15,7 @@ export class AvailableTime {
   private readonly userId: UserId;
   private readonly isoWeekId: IsoWeekId;
   private readonly theoreticalImplementTime: AvailableTimeTheoreticalImplementTime;
-  constructor(
-    userId: string,
-    isoWeekId: number,
-    theoreticalImplementTime: number,
-  ) {
+  constructor(userId: string, isoWeekId: number, theoreticalImplementTime: number) {
     this.userId = new UserId(userId);
     this.isoWeekId = new IsoWeekId(isoWeekId);
     this.theoreticalImplementTime = new AvailableTimeTheoreticalImplementTime(
@@ -81,9 +77,7 @@ export class AvailableTime {
       return e.end.getTime() - e.start.getTime();
     });
 
-    const theoreticalImplementTime = eventTimeLists.reduce(
-      (a: number, b: number) => a + b,
-    );
+    const theoreticalImplementTime = eventTimeLists.reduce((a: number, b: number) => a + b);
 
     const maxTime = availableWorkHours * 60 * 60 * 1000;
 
@@ -100,9 +94,7 @@ export class AvailableTime {
       .sort((a, b) => a.eventStartAt.getTime() - b.eventStartAt.getTime());
   }
 
-  private static trimTimeOverlapping(
-    sortedEvents: Event[],
-  ): { start: Date; end: Date }[] {
+  private static trimTimeOverlapping(sortedEvents: Event[]): { start: Date; end: Date }[] {
     const blocks = [];
     const block = {
       start: sortedEvents[0].eventStartAt,
