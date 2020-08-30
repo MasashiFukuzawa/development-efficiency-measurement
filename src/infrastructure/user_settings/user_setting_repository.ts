@@ -15,9 +15,7 @@ export class UserSettingRepository extends BaseRepository
   }
 
   findByUserId(userId: string): UserSetting | null {
-    const user = this.fullData.filter((e) => {
-      return e.getUserId().toString() === userId;
-    })[0];
+    const user = this.fullData.find((e) => e.getUserId().toString() === userId);
     return !!user ? user : null;
   }
 
