@@ -90,6 +90,10 @@ export class SummaryReport {
     return this.notifiedAt;
   }
 
+  static convertMilliSecToHour(ms: number): number {
+    return ms / (60 * 60 * 1000);
+  }
+
   static count(measurements: { start: Date; stop: Date }[]): number {
     return measurements.length;
   }
@@ -102,7 +106,7 @@ export class SummaryReport {
         return Math.abs(startAt.diff(stopAt));
       })
       .reduce((a: number, b: number) => {
-        return (a + b) / (60 * 60 * 1000);
+        return a + b;
       });
   }
 
@@ -113,7 +117,7 @@ export class SummaryReport {
   static calculateTheoreticalAvailableHour(
     theoreticalAvailableTime: number,
   ): number {
-    return theoreticalAvailableTime / (60 * 60 * 1000);
+    return this.convertMilliSecToHour(theoreticalAvailableTime);
   }
 
   static calculateAvailableRate(

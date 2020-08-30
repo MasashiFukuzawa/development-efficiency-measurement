@@ -90,7 +90,10 @@ export class SummaryReportNotifyInteractor
       const targetMeasurements = Measurement.cutOffBeforeAndAfterWorkHour(
         userMeasurements,
       );
-      const totalImplementHour = SummaryReport.sum(targetMeasurements);
+      const totalImplementMilliSec = SummaryReport.sum(targetMeasurements);
+      const totalImplementHour = SummaryReport.convertMilliSecToHour(
+        totalImplementMilliSec,
+      );
       const measurementCount = SummaryReport.count(targetMeasurements);
       const averageImplementHour = SummaryReport.average(
         measurementCount,
