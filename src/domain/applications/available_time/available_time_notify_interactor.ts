@@ -40,7 +40,11 @@ export class AvailableTimeNotifyInteractor
         AvailableTime.WORK_HOURS_PER_DAY,
       );
 
-      const message = outputData.getMessage(userId, todaysAvailableTime);
+      const availableHour = AvailableTime.convertMilliSecToHour(
+        todaysAvailableTime,
+      );
+
+      const message = outputData.getMessage(userId, availableHour);
 
       this.notifyPresenter.notify(message);
     });

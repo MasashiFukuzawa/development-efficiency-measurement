@@ -51,23 +51,8 @@ export class AvailableTime {
     return this.getUserId().toString() === userId;
   }
 
-  static convertMilliSecToHour(
-    weeklyEvents: Event[],
-    workStartHour: number,
-    workStartMinute: number,
-    workEndHour: number,
-    workEndMinute: number,
-    availableWorkHours: 8 | 40,
-  ): number {
-    const milliSec = this.calculateAvailableTime(
-      weeklyEvents,
-      workStartHour,
-      workStartMinute,
-      workEndHour,
-      workEndMinute,
-      availableWorkHours,
-    );
-    return milliSec / (60 * 60 * 1000);
+  static convertMilliSecToHour(ms: number): number {
+    return ms / (60 * 60 * 1000);
   }
 
   static calculateAvailableTime(
