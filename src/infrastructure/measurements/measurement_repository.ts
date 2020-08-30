@@ -10,7 +10,7 @@ export class MeasurementRepository extends BaseRepository
 
   map(data: any[][]): readonly Measurement[] {
     return data.map((e) => {
-      return new Measurement(e[0], e[1], e[2], e[3], e[4] || void 0, e[5] || void 0);
+      return new Measurement(e[0], e[1], e[2], e[3], e[4] || void 0);
     });
   }
 
@@ -20,13 +20,13 @@ export class MeasurementRepository extends BaseRepository
     return !!lastMeasurement ? lastMeasurement : null;
   }
 
-  stampStartAt(userId: string, isoWeekId: number, description?: string): Measurement {
+  stampStartAt(userId: string, isoWeekId: number): Measurement {
     const id = this.lastRow;
     const now = new Date();
-    const measurement = new Measurement(id, userId, isoWeekId, now, void 0, description);
+    const measurement = new Measurement(id, userId, isoWeekId, now, void 0);
     this.sheet
       .getRange(this.lastRow + 1, 1, 1, this.lastCol)
-      .setValues([[id, userId, isoWeekId, now, void 0, description]]);
+      .setValues([[id, userId, isoWeekId, now, void 0]]);
     return measurement;
   }
 
@@ -36,14 +36,10 @@ export class MeasurementRepository extends BaseRepository
     const isoWeekId = lastMeasurement.getIsoWeekId().toNumber();
     const startAt = lastMeasurement.getMeasurementStartAt().toDate();
     const now = new Date();
-    const description =
-      typeof lastMeasurement.getDescription() === 'undefined'
-        ? void 0
-        : lastMeasurement.getDescription()?.toString();
-    const measurement = new Measurement(id, userId, isoWeekId, startAt, now, description);
+    const measurement = new Measurement(id, userId, isoWeekId, startAt, now);
     this.sheet
       .getRange(id + 1, 1, 1, this.lastCol)
-      .setValues([[id, userId, isoWeekId, startAt, now, description]]);
+      .setValues([[id, userId, isoWeekId, startAt, now]]);
     return measurement;
   }
 }

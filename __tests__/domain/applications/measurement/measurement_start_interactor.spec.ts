@@ -65,7 +65,7 @@ describe('MeasurementStartInteractor', () => {
           jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
           jest.spyOn(MeasurementRepository.prototype, 'last').mockReturnValue(measurement);
 
-          measurementStartInteractor.handle(userId, userName, 'description');
+          measurementStartInteractor.handle(userId, userName);
           expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
         });
       });
@@ -82,7 +82,7 @@ describe('MeasurementStartInteractor', () => {
           jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
           jest.spyOn(MeasurementRepository.prototype, 'last').mockReturnValue(measurement);
 
-          measurementStartInteractor.handle(userId, userName, 'description');
+          measurementStartInteractor.handle(userId, userName);
           expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
         });
       });

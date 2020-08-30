@@ -1,10 +1,6 @@
 export class MeasurementStartOutputData {
-  getStartMessage(userName: string, description?: string): string {
-    if (typeof description === 'undefined') {
-      return `${userName} さんの実装開始時間を打刻しました！`;
-    } else {
-      return `${userName} さんの実装開始時間を打刻しました！ 作業名: ${description}`;
-    }
+  getStartMessage(userName: string): string {
+    return `${userName} さんの実装開始時間を打刻しました！`;
   }
 
   getUserNotFoundErrorMessage(userName: string): string {
