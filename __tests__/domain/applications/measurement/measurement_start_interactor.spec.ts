@@ -23,12 +23,6 @@ describe('MeasurementStartInteractor', () => {
     getProperty: jest.fn(() => 'xxxxxxx'),
   })) as any;
 
-  ContentService.createTextOutput = jest.fn(() => ({
-    setMimeType: jest.fn(),
-  })) as any;
-
-  ContentService.MimeType = jest.fn() as any;
-
   Moment.moment = jest.fn(() => ({
     get: jest.fn(() => 2020),
     isoWeek: jest.fn(() => 35),
@@ -65,8 +59,10 @@ describe('MeasurementStartInteractor', () => {
           jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
           jest.spyOn(MeasurementRepository.prototype, 'last').mockReturnValue(measurement);
 
-          measurementStartInteractor.handle(userId, userName);
-          expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
+          const result = measurementStartInteractor.handle(userId, userName);
+          expect(result.indexOf(`${userName} さんの実装開始時間を打刻しました！`) !== -1).toBe(
+            true,
+          );
         });
       });
 
@@ -82,8 +78,10 @@ describe('MeasurementStartInteractor', () => {
           jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
           jest.spyOn(MeasurementRepository.prototype, 'last').mockReturnValue(measurement);
 
-          measurementStartInteractor.handle(userId, userName);
-          expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
+          const result = measurementStartInteractor.handle(userId, userName);
+          expect(result.indexOf(`${userName} さんの実装開始時間を打刻しました！`) !== -1).toBe(
+            true,
+          );
         });
       });
     });
@@ -95,8 +93,10 @@ describe('MeasurementStartInteractor', () => {
 
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';
-          measurementStartInteractor.handle(userId, userName);
-          expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
+          const result = measurementStartInteractor.handle(userId, userName);
+          expect(result.indexOf(`${userName} さんのユーザーデータは存在しません。`) !== -1).toBe(
+            true,
+          );
         });
       });
 
@@ -118,8 +118,8 @@ describe('MeasurementStartInteractor', () => {
           jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
           jest.spyOn(MeasurementRepository.prototype, 'last').mockReturnValue(measurement);
 
-          measurementStartInteractor.handle(userId, userName);
-          expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
+          const result = measurementStartInteractor.handle(userId, userName);
+          expect(result.indexOf('前回の測定が続いたままになっています。') !== -1).toBe(true);
         });
       });
     });

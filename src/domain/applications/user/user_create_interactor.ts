@@ -5,7 +5,6 @@ import { ReplyPresenterInterface } from '../../../use_case/common/reply_presente
 import { User } from '../../models/user/user';
 import { UserSetting } from '../../models/user_setting/user_setting';
 import { UserCreateOutputData } from '../../../use_case/user/create/user_create_output_data';
-import TextOutput = GoogleAppsScript.Content.TextOutput;
 
 export class UserCreateInteractor implements UserCreateUseCaseInterface {
   constructor(
@@ -14,7 +13,7 @@ export class UserCreateInteractor implements UserCreateUseCaseInterface {
     private readonly replyPresenter: ReplyPresenterInterface,
   ) {}
 
-  handle(userId: string, userName: string, googleCalendarId: string): TextOutput {
+  handle(userId: string, userName: string, googleCalendarId: string): string {
     const outputData = new UserCreateOutputData();
 
     const user = this.userRepository.findByUserId(userId);

@@ -8,8 +8,8 @@ import { UserCreateController } from '../../webhook_app/user/controllers/create/
 import { MeasurementStartController } from '../../webhook_app/measurement/controllers/start/measurement_start_controller';
 import { MeasurementStopController } from '../../webhook_app/measurement/controllers/stop/measurement_stop_controller';
 import { MeasurementStopInteractor } from '../../domain/applications/measurement/measurement_stop_interactor';
-import TextOutput = GoogleAppsScript.Content.TextOutput;
 import { IsoWeekRepository } from '../../infrastructure/iso_weeks/iso_week_repository';
+import TextOutput = GoogleAppsScript.Content.TextOutput;
 
 function doPost(e: any): TextOutput {
   const token = PropertiesService.getScriptProperties().getProperty('SLACK_VERIFICATION_TOKEN');
@@ -18,37 +18,35 @@ function doPost(e: any): TextOutput {
   const userId: string = e.parameter.user_id;
   const userName: string = e.parameter.user_name;
   const doPost = new SlackDoPost();
-  return doPost.execControllerAction(text, userId, userName);
+  const message = doPost.execControllerAction(text, userId, userName);
+  return ContentService.createTextOutput(JSON.stringify({ text: message })).setMimeType(
+    ContentService.MimeType.JSON,
+  );
 }
 
 class SlackDoPost {
-  execControllerAction(text: string, userId: string, userName: string): TextOutput {
+  execControllerAction(text: string, userId: string, userName: string): string {
     const contents = text.split(' ');
     const [action, arg] = contents;
     if (!action) {
-      return this.getArgumentErrorMessage('実行したいコマンドが指定されていません');
+      return '実行したいコマンドが指定されていません';
     }
 
     switch (action) {
       case 'create_user':
-        if (arg) return this.execUserCreateAction(arg, userId, userName);
-        return this.getArgumentErrorMessage(
-          '`/kaihatsu create_user xxx@finc.com` のようにメールアドレスを入力して下さい',
-        );
+        if (!arg)
+          return '`/kaihatsu create_user xxx@finc.com` のようにメールアドレスを入力して下さい';
+        return this.execUserCreateAction(arg, userId, userName);
       case 'start':
         return this.execMeasurementStartAction(userId, userName);
       case 'stop':
         return this.execMeasurementStopAction(userId, userName);
       default:
-        return this.getArgumentErrorMessage(`/kaihatsu ${text} は設定されていないコマンドです`);
+        return `/kaihatsu ${text} は設定されていないコマンドです`;
     }
   }
 
-  private execUserCreateAction(
-    slackFormatGmail: string,
-    userId: string,
-    userName: string,
-  ): TextOutput {
+  private execUserCreateAction(slackFormatGmail: string, userId: string, userName: string): string {
     const userRepository = new UserRepository();
     const userSettingRepository = new UserSettingRepository();
     const replyPresenter = new ReplyPresenter();
@@ -61,7 +59,7 @@ class SlackDoPost {
     return userCreateController.create(slackFormatGmail, userId, userName);
   }
 
-  private execMeasurementStartAction(userId: string, userName: string): TextOutput {
+  private execMeasurementStartAction(userId: string, userName: string): string {
     const userRepository = new UserRepository();
     const measurementRepository = new MeasurementRepository();
     const isoWeekRepository = new IsoWeekRepository();
@@ -76,7 +74,7 @@ class SlackDoPost {
     return measurementStartController.start(userId, userName);
   }
 
-  private execMeasurementStopAction(userId: string, userName: string): TextOutput {
+  private execMeasurementStopAction(userId: string, userName: string): string {
     const userRepository = new UserRepository();
     const measurementRepository = new MeasurementRepository();
     const isoWeekRepository = new IsoWeekRepository();
@@ -89,11 +87,5 @@ class SlackDoPost {
     );
     const measurementStartController = new MeasurementStopController(measurementStopInteractor);
     return measurementStartController.stop(userId, userName);
-  }
-
-  private getArgumentErrorMessage(errorMessage: string): TextOutput {
-    return ContentService.createTextOutput(JSON.stringify({ text: errorMessage })).setMimeType(
-      ContentService.MimeType.JSON,
-    );
   }
 }

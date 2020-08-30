@@ -5,7 +5,6 @@ import { IsoWeekRepositoryInterface } from '../../models/iso_week/iso_week_repos
 import { Measurement } from '../../models/measurement/measurement';
 import { MeasurementRepositoryInterface } from '../../models/measurement/measurement_repository_interface';
 import { UserRepositoryInterface } from '../../models/user/user_repository_interface';
-import TextOutput = GoogleAppsScript.Content.TextOutput;
 
 export class MeasurementStopInteractor implements MeasurementStopUseCaseInterface {
   constructor(
@@ -15,7 +14,7 @@ export class MeasurementStopInteractor implements MeasurementStopUseCaseInterfac
     private readonly replyPresenter: ReplyPresenter,
   ) {}
 
-  handle(userId: string, userName: string): TextOutput {
+  handle(userId: string, userName: string): string {
     const outputData = new MeasurementStopOutputData();
 
     const user = this.userRepository.findByUserId(userId);
