@@ -4,8 +4,7 @@ export class UserSettingWorkEndHour {
     if (workEndHour === null) {
       throw new Error('UserSettingWorkEndHourが存在しません');
     }
-    if (isNaN(workEndHour))
-      throw new Error('UserSettingWorkEndHourはnumber型でなければなりません');
+    if (isNaN(workEndHour)) throw new Error('UserSettingWorkEndHourはnumber型でなければなりません');
 
     this.workEndHour = workEndHour;
   }

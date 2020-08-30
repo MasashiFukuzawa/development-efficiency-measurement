@@ -5,9 +5,7 @@ export class StandardValueMeasurementCount {
       throw new Error('StandardValueMeasurementCountが存在しません');
     }
     if (isNaN(measurementCount)) {
-      throw new Error(
-        'StandardValueMeasurementCountはnumber型でなければなりません',
-      );
+      throw new Error('StandardValueMeasurementCountはnumber型でなければなりません');
     }
     this.measurementCount = measurementCount;
   }

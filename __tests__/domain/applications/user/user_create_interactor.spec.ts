@@ -43,12 +43,8 @@ describe('UserCreateInteractor', () => {
   describe('#handle', () => {
     describe('when valid', () => {
       it('sends a create message successfully', () => {
-        jest
-          .spyOn(UserRepository.prototype, 'findByUserId')
-          .mockReturnValue(null);
-        jest
-          .spyOn(UserSettingRepository.prototype, 'findByUserId')
-          .mockReturnValue(null);
+        jest.spyOn(UserRepository.prototype, 'findByUserId').mockReturnValue(null);
+        jest.spyOn(UserSettingRepository.prototype, 'findByUserId').mockReturnValue(null);
 
         const userId = 'IM1234';
         const userName = 'izuku.midoriya';
@@ -75,14 +71,10 @@ describe('UserCreateInteractor', () => {
 
       describe('when found target user setting', () => {
         it('sends a create error message successfully', () => {
-          jest
-            .spyOn(UserRepository.prototype, 'findByUserId')
-            .mockReturnValue(null);
+          jest.spyOn(UserRepository.prototype, 'findByUserId').mockReturnValue(null);
           jest
             .spyOn(UserSettingRepository.prototype, 'findByUserId')
-            .mockReturnValue(
-              new UserSetting('IM1234', 'izuku.midoriya@exmaple.com'),
-            );
+            .mockReturnValue(new UserSetting('IM1234', 'izuku.midoriya@exmaple.com'));
 
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';
@@ -94,12 +86,8 @@ describe('UserCreateInteractor', () => {
 
       describe('when googleCalendarId is null', () => {
         it('sends a create error message successfully', () => {
-          jest
-            .spyOn(UserRepository.prototype, 'findByUserId')
-            .mockReturnValue(null);
-          jest
-            .spyOn(UserSettingRepository.prototype, 'findByUserId')
-            .mockReturnValue(null);
+          jest.spyOn(UserRepository.prototype, 'findByUserId').mockReturnValue(null);
+          jest.spyOn(UserSettingRepository.prototype, 'findByUserId').mockReturnValue(null);
 
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';

@@ -63,55 +63,15 @@ describe('AvailableTimeCalculateInteractor', () => {
   describe('#handle', () => {
     it('sends a create message successfully', () => {
       const userSettings = [
-        new UserSetting(
-          'IM1234',
-          'izuku.midoriya@example.com',
-          10,
-          0,
-          19,
-          0,
-          'on',
-          new Date(),
-        ),
-        new UserSetting(
-          'KB5678',
-          'katsuki.bakugo@example.com',
-          10,
-          0,
-          19,
-          0,
-          'on',
-          new Date(),
-        ),
-        new UserSetting(
-          'OU1234',
-          'ochako.uraraka@example.com',
-          10,
-          0,
-          19,
-          0,
-          'on',
-          new Date(),
-        ),
-        new UserSetting(
-          'ST5678',
-          'shoto.todoroki@example.com',
-          10,
-          0,
-          19,
-          0,
-          'on',
-          new Date(),
-        ),
+        new UserSetting('IM1234', 'izuku.midoriya@example.com', 10, 0, 19, 0, 'on', new Date()),
+        new UserSetting('KB5678', 'katsuki.bakugo@example.com', 10, 0, 19, 0, 'on', new Date()),
+        new UserSetting('OU1234', 'ochako.uraraka@example.com', 10, 0, 19, 0, 'on', new Date()),
+        new UserSetting('ST5678', 'shoto.todoroki@example.com', 10, 0, 19, 0, 'on', new Date()),
       ];
 
-      jest
-        .spyOn(UserSettingRepository.prototype, 'getAll')
-        .mockReturnValue(userSettings);
+      jest.spyOn(UserSettingRepository.prototype, 'getAll').mockReturnValue(userSettings);
       jest.spyOn(AvailableTimeRepository.prototype, 'create');
-      jest
-        .spyOn(IsoWeekRepository.prototype, 'find')
-        .mockReturnValue(new IsoWeek(1, 2020, 35));
+      jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(new IsoWeek(1, 2020, 35));
       jest.spyOn(console, 'log');
 
       userCalculateInteractor.handle();

@@ -12,9 +12,7 @@ import TextOutput = GoogleAppsScript.Content.TextOutput;
 import { IsoWeekRepository } from '../../infrastructure/iso_weeks/iso_week_repository';
 
 function doPost(e: any): TextOutput {
-  const token = PropertiesService.getScriptProperties().getProperty(
-    'SLACK_VERIFICATION_TOKEN',
-  );
+  const token = PropertiesService.getScriptProperties().getProperty('SLACK_VERIFICATION_TOKEN');
   if (token !== e.parameter.token) throw new Error('Invalid Token');
   const text: string = e.parameter.text;
   const userId: string = e.parameter.user_id;
@@ -24,17 +22,11 @@ function doPost(e: any): TextOutput {
 }
 
 class SlackDoPost {
-  execControllerAction(
-    text: string,
-    userId: string,
-    userName: string,
-  ): TextOutput {
+  execControllerAction(text: string, userId: string, userName: string): TextOutput {
     const contents = text.split(' ');
     const [action, arg] = contents;
     if (!action) {
-      return this.getArgumentErrorMessage(
-        '実行したいコマンドが指定されていません',
-      );
+      return this.getArgumentErrorMessage('実行したいコマンドが指定されていません');
     }
 
     switch (action) {
@@ -48,9 +40,7 @@ class SlackDoPost {
       case 'stop':
         return this.execMeasurementStopAction(userId, userName);
       default:
-        return this.getArgumentErrorMessage(
-          `/kaihatsu ${text} は設定されていないコマンドです`,
-        );
+        return this.getArgumentErrorMessage(`/kaihatsu ${text} は設定されていないコマンドです`);
     }
   }
 
@@ -86,16 +76,11 @@ class SlackDoPost {
       isoWeekRepository,
       replyPresenter,
     );
-    const measurementStartController = new MeasurementStartController(
-      measurementStartInteractor,
-    );
+    const measurementStartController = new MeasurementStartController(measurementStartInteractor);
     return measurementStartController.start(userId, userName, description);
   }
 
-  private execMeasurementStopAction(
-    userId: string,
-    userName: string,
-  ): TextOutput {
+  private execMeasurementStopAction(userId: string, userName: string): TextOutput {
     const userRepository = new UserRepository();
     const measurementRepository = new MeasurementRepository();
     const isoWeekRepository = new IsoWeekRepository();
@@ -106,15 +91,13 @@ class SlackDoPost {
       isoWeekRepository,
       replyPresenter,
     );
-    const measurementStartController = new MeasurementStopController(
-      measurementStopInteractor,
-    );
+    const measurementStartController = new MeasurementStopController(measurementStopInteractor);
     return measurementStartController.stop(userId, userName);
   }
 
   private getArgumentErrorMessage(errorMessage: string): TextOutput {
-    return ContentService.createTextOutput(
-      JSON.stringify({ text: errorMessage }),
-    ).setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput(JSON.stringify({ text: errorMessage })).setMimeType(
+      ContentService.MimeType.JSON,
+    );
   }
 }

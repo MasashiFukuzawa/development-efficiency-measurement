@@ -86,9 +86,7 @@ export class Measurement {
       const stop = e.getMeasurementStopAt()?.toDate();
       if (typeof stop === 'undefined') {
         throw new Error(
-          `MeasurementStopAt is undefined. measurementId=${e
-            .getMeasurementId()
-            .toNumber()}`,
+          `MeasurementStopAt is undefined. measurementId=${e.getMeasurementId().toNumber()}`,
         );
       }
 
@@ -108,9 +106,7 @@ export class Measurement {
       const stop = e.getMeasurementStopAt()?.toDate();
       if (typeof stop === 'undefined') {
         throw new Error(
-          `MeasurementStopAt is undefined. measurementId=${e
-            .getMeasurementId()
-            .toNumber()}`,
+          `MeasurementStopAt is undefined. measurementId=${e.getMeasurementId().toNumber()}`,
         );
       }
 

@@ -14,11 +14,7 @@ export class AvailableTimeRepository extends BaseRepository
     });
   }
 
-  create(
-    userId: string,
-    isoWeekId: number,
-    availableTime: number,
-  ): AvailableTime {
+  create(userId: string, isoWeekId: number, availableTime: number): AvailableTime {
     this.sheet
       .getRange(this.lastRow + 1, 1, 1, this.lastCol)
       .setValues([[userId, isoWeekId, availableTime]]);

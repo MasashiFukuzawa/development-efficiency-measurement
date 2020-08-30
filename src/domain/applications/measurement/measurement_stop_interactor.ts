@@ -7,8 +7,7 @@ import { MeasurementRepositoryInterface } from '../../models/measurement/measure
 import { UserRepositoryInterface } from '../../models/user/user_repository_interface';
 import TextOutput = GoogleAppsScript.Content.TextOutput;
 
-export class MeasurementStopInteractor
-  implements MeasurementStopUseCaseInterface {
+export class MeasurementStopInteractor implements MeasurementStopUseCaseInterface {
   constructor(
     private readonly userRepository: UserRepositoryInterface,
     private readonly measurementRepository: MeasurementRepositoryInterface,
@@ -43,10 +42,7 @@ export class MeasurementStopInteractor
 
     const measurement = this.measurementRepository.stampStopAt(lastMeasurement);
 
-    const startMessage = outputData.getStopMessage(
-      userName,
-      measurement.calculateImplementTime(),
-    );
+    const startMessage = outputData.getStopMessage(userName, measurement.calculateImplementTime());
     return this.replyPresenter.reply(startMessage);
   }
 }

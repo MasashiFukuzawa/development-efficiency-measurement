@@ -7,8 +7,7 @@ import { MeasurementRepositoryInterface } from '../../models/measurement/measure
 import { UserRepositoryInterface } from '../../models/user/user_repository_interface';
 import TextOutput = GoogleAppsScript.Content.TextOutput;
 
-export class MeasurementStartInteractor
-  implements MeasurementStartUseCaseInterface {
+export class MeasurementStartInteractor implements MeasurementStartUseCaseInterface {
   constructor(
     private readonly userRepository: UserRepositoryInterface,
     private readonly measurementRepository: MeasurementRepositoryInterface,

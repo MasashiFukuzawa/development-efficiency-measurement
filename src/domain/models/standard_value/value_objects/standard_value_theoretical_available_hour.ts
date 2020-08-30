@@ -5,9 +5,7 @@ export class StandardValueTheoreticalAvailableHour {
       throw new Error('StandardValueTheoreticalAvailableHourが存在しません');
     }
     if (isNaN(theoreticalAvailableHour)) {
-      throw new Error(
-        'StandardValueTheoreticalAvailableHourはnumber型でなければなりません',
-      );
+      throw new Error('StandardValueTheoreticalAvailableHourはnumber型でなければなりません');
     }
     this.theoreticalAvailableHour = theoreticalAvailableHour;
   }

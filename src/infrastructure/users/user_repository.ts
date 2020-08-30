@@ -2,8 +2,7 @@ import { UserRepositoryInterface } from '../../domain/models/user/user_repositor
 import { User } from '../../domain/models/user/user';
 import { BaseRepository } from '../base_repository';
 
-export class UserRepository extends BaseRepository
-  implements UserRepositoryInterface {
+export class UserRepository extends BaseRepository implements UserRepositoryInterface {
   constructor(sheetName = 'users') {
     super(sheetName);
   }

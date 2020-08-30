@@ -17,9 +17,7 @@ export class AvailableTimeSlackNotifyView {
   private getWebhookUrl(): string {
     if (this.webhookUrl) return this.webhookUrl;
 
-    const url = PropertiesService.getScriptProperties().getProperty(
-      'SLACK_WEBHOOK_URL',
-    );
+    const url = PropertiesService.getScriptProperties().getProperty('SLACK_WEBHOOK_URL');
 
     if (!url) throw new Error('SLACK_WEBHOOK_URL is not found.');
     return url;

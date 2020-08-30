@@ -5,9 +5,7 @@ export class SummaryReportAvailableRate {
       throw new Error('SummaryReportAvailableRateが存在しません');
     }
     if (isNaN(availableRate)) {
-      throw new Error(
-        'SummaryReportAvailableRateはnumber型でなければなりません',
-      );
+      throw new Error('SummaryReportAvailableRateはnumber型でなければなりません');
     }
     this.availableRate = availableRate;
   }

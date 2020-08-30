@@ -5,9 +5,7 @@ export class SummaryReportMeasurementCount {
       throw new Error('SummaryReportMeasurementCountが存在しません');
     }
     if (isNaN(measurementCount)) {
-      throw new Error(
-        'SummaryReportMeasurementCountはnumber型でなければなりません',
-      );
+      throw new Error('SummaryReportMeasurementCountはnumber型でなければなりません');
     }
     this.measurementCount = measurementCount;
   }

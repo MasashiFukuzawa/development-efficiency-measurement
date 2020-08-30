@@ -5,9 +5,7 @@ export class SummaryReportAverageImplementHour {
       throw new Error('SummaryReportAverageImplementHourが存在しません');
     }
     if (isNaN(averageImplementHour)) {
-      throw new Error(
-        'SummaryReportAverageImplementHourはnumber型でなければなりません',
-      );
+      throw new Error('SummaryReportAverageImplementHourはnumber型でなければなりません');
     }
     this.averageImplementHour = averageImplementHour;
   }

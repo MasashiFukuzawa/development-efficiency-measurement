@@ -25,13 +25,9 @@ export class StandardValue {
     kpiValue: number,
   ) {
     this.isoWeekId = new IsoWeekId(isoWeekId);
-    this.totalImplementHour = new StandardValueTotalImplementHour(
-      totalImplementHour,
-    );
+    this.totalImplementHour = new StandardValueTotalImplementHour(totalImplementHour);
     this.measurementCount = new StandardValueMeasurementCount(measurementCount);
-    this.averageImplementHour = new StandardValueAverageImplementHour(
-      averageImplementHour,
-    );
+    this.averageImplementHour = new StandardValueAverageImplementHour(averageImplementHour);
     this.theoreticalAvailableHour = new StandardValueTheoreticalAvailableHour(
       theoreticalAvailableHour,
     );
@@ -81,9 +77,7 @@ export class StandardValue {
     );
   }
 
-  private static sumTotalImplementHour(
-    summaryReports: SummaryReport[],
-  ): number {
+  private static sumTotalImplementHour(summaryReports: SummaryReport[]): number {
     return summaryReports
       .map((e) => {
         return e.getTotalImplementHour().toNumber();
@@ -103,9 +97,7 @@ export class StandardValue {
       });
   }
 
-  private static sumAverageImplementHour(
-    summaryReports: SummaryReport[],
-  ): number {
+  private static sumAverageImplementHour(summaryReports: SummaryReport[]): number {
     return summaryReports
       .map((e) => {
         return e.getAverageImplementHour().toNumber();
@@ -115,9 +107,7 @@ export class StandardValue {
       });
   }
 
-  private static sumTheoreticalAvailableHour(
-    summaryReports: SummaryReport[],
-  ): number {
+  private static sumTheoreticalAvailableHour(summaryReports: SummaryReport[]): number {
     return summaryReports
       .map((e) => {
         return e.getTheoreticalAvailableHour().toNumber();

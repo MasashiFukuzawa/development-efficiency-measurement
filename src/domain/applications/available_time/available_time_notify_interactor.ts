@@ -5,8 +5,7 @@ import { AvailableTimeNotifyUseCaseInterface } from '../../../use_case/available
 import { AvailableTime } from '../../models/available_time/available_time';
 import { UserSettingRepositoryInterface } from '../../models/user_setting/user_setting_repository_interface';
 
-export class AvailableTimeNotifyInteractor
-  implements AvailableTimeNotifyUseCaseInterface {
+export class AvailableTimeNotifyInteractor implements AvailableTimeNotifyUseCaseInterface {
   constructor(
     private readonly userSettingRepository: UserSettingRepositoryInterface,
     private readonly notifyPresenter: NotifyPresenterInterface,
@@ -28,9 +27,7 @@ export class AvailableTimeNotifyInteractor
       const workEndHour = e.getWorkEndHour().toNumber();
       const workEndMinute = e.getWorkEndMinute().toNumber();
 
-      const weeklyEvents = inputData.mapEvents(
-        inputData.getEvents(googleCalendarId),
-      );
+      const weeklyEvents = inputData.mapEvents(inputData.getEvents(googleCalendarId));
       const todaysAvailableTime = AvailableTime.calculateAvailableTime(
         weeklyEvents,
         workStartHour,
@@ -40,9 +37,7 @@ export class AvailableTimeNotifyInteractor
         AvailableTime.WORK_HOURS_PER_DAY,
       );
 
-      const availableHour = AvailableTime.convertMilliSecToHour(
-        todaysAvailableTime,
-      );
+      const availableHour = AvailableTime.convertMilliSecToHour(todaysAvailableTime);
 
       const message = outputData.getMessage(userId, availableHour);
 

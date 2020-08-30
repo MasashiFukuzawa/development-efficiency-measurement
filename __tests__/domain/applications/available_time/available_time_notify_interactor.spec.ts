@@ -63,51 +63,13 @@ describe('AvailableTimeNotifyInteractor', () => {
   describe('#handle', () => {
     it("sends today's available time", () => {
       const userSettings = [
-        new UserSetting(
-          'IM1234',
-          'izuku.midoriya@example.com',
-          10,
-          0,
-          19,
-          0,
-          'off',
-          new Date(),
-        ),
-        new UserSetting(
-          'KB5678',
-          'katsuki.bakugo@example.com',
-          10,
-          0,
-          19,
-          0,
-          'on',
-          new Date(),
-        ),
-        new UserSetting(
-          'OU1234',
-          'ochako.uraraka@example.com',
-          10,
-          0,
-          19,
-          0,
-          'off',
-          new Date(),
-        ),
-        new UserSetting(
-          'ST5678',
-          'shoto.todoroki@example.com',
-          10,
-          0,
-          19,
-          0,
-          'on',
-          new Date(),
-        ),
+        new UserSetting('IM1234', 'izuku.midoriya@example.com', 10, 0, 19, 0, 'off', new Date()),
+        new UserSetting('KB5678', 'katsuki.bakugo@example.com', 10, 0, 19, 0, 'on', new Date()),
+        new UserSetting('OU1234', 'ochako.uraraka@example.com', 10, 0, 19, 0, 'off', new Date()),
+        new UserSetting('ST5678', 'shoto.todoroki@example.com', 10, 0, 19, 0, 'on', new Date()),
       ];
 
-      jest
-        .spyOn(UserSettingRepository.prototype, 'getAll')
-        .mockReturnValue(userSettings);
+      jest.spyOn(UserSettingRepository.prototype, 'getAll').mockReturnValue(userSettings);
 
       userNotifyInteractor.handle();
       expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(2);

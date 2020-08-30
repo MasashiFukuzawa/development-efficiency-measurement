@@ -5,9 +5,7 @@ export class StandardValueAvailableRate {
       throw new Error('StandardValueAvailableRateが存在しません');
     }
     if (isNaN(availableRate)) {
-      throw new Error(
-        'StandardValueAvailableRateはnumber型でなければなりません',
-      );
+      throw new Error('StandardValueAvailableRateはnumber型でなければなりません');
     }
     this.availableRate = availableRate;
   }

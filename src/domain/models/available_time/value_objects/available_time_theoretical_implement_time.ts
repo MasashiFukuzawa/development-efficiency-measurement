@@ -6,9 +6,7 @@ export class AvailableTimeTheoreticalImplementTime {
     }
 
     if (isNaN(theoreticalImplementTime)) {
-      throw new Error(
-        'AvailableTimeTheoreticalImplementTimeはnumber型でなければなりません',
-      );
+      throw new Error('AvailableTimeTheoreticalImplementTimeはnumber型でなければなりません');
     }
 
     this.theoreticalImplementTime = theoreticalImplementTime;

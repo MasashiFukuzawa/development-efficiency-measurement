@@ -5,9 +5,7 @@ export class StandardValueTotalImplementHour {
       throw new Error('StandardValueTotalImplementHourが存在しません');
     }
     if (isNaN(totalImplementHour)) {
-      throw new Error(
-        'StandardValueTotalImplementHourはnumber型でなければなりません',
-      );
+      throw new Error('StandardValueTotalImplementHourはnumber型でなければなりません');
     }
     this.totalImplementHour = totalImplementHour;
   }

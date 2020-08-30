@@ -14,11 +14,7 @@ export class UserCreateInteractor implements UserCreateUseCaseInterface {
     private readonly replyPresenter: ReplyPresenterInterface,
   ) {}
 
-  handle(
-    userId: string,
-    userName: string,
-    googleCalendarId: string,
-  ): TextOutput {
+  handle(userId: string, userName: string, googleCalendarId: string): TextOutput {
     const outputData = new UserCreateOutputData();
 
     const user = this.userRepository.findByUserId(userId);
@@ -34,27 +30,18 @@ export class UserCreateInteractor implements UserCreateUseCaseInterface {
 
     const userSetting = this.userSettingRepository.findByUserId(userId);
     if (userSetting) {
-      const errorMessage = outputData.getGoogleCalendarIdNotUniqueErrorMessage(
-        googleCalendarId,
-      );
+      const errorMessage = outputData.getGoogleCalendarIdNotUniqueErrorMessage(googleCalendarId);
       return this.replyPresenter.reply(errorMessage);
     }
 
-    const userSettingValidationErrorMessage = UserSetting.validate(
-      googleCalendarId,
-    );
+    const userSettingValidationErrorMessage = UserSetting.validate(googleCalendarId);
     if (userSettingValidationErrorMessage) {
       return this.replyPresenter.reply(userSettingValidationErrorMessage);
     }
 
     const createdUser = this.userRepository.create(userId, userName);
-    const createdUserSetting = this.userSettingRepository.create(
-      userId,
-      googleCalendarId,
-    );
+    const createdUserSetting = this.userSettingRepository.create(userId, googleCalendarId);
 
-    return this.replyPresenter.reply(
-      outputData.getMessage(createdUser, createdUserSetting),
-    );
+    return this.replyPresenter.reply(outputData.getMessage(createdUser, createdUserSetting));
   }
 }

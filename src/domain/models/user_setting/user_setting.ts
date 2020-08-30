@@ -31,9 +31,7 @@ export class UserSetting {
     this.workStartMinute = new UserSettingWorkStartMinute(workStartMinute);
     this.workEndHour = new UserSettingWorkEndHour(workEndHour);
     this.workEndMinute = new UserSettingWorkEndMinute(workEndMinute);
-    this.notificationStatus = new UserSettingNotificationStatus(
-      notificationStatus,
-    );
+    this.notificationStatus = new UserSettingNotificationStatus(notificationStatus);
     this.updatedAt = updatedAt;
   }
 

@@ -5,9 +5,7 @@ export class SummaryReportTheoreticalHour {
       throw new Error('SummaryReportTheoreticalHourが存在しません');
     }
     if (isNaN(theoreticalHour)) {
-      throw new Error(
-        'SummaryReportTheoreticalHourはnumber型でなければなりません',
-      );
+      throw new Error('SummaryReportTheoreticalHourはnumber型でなければなりません');
     }
     this.theoreticalHour = theoreticalHour;
   }
