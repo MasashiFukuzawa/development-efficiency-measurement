@@ -1,17 +1,24 @@
 import { Measurement } from '../../domain/models/measurement/measurement';
 import { MeasurementRepositoryInterface } from '../../domain/models/measurement/measurement_repository_interface';
-import Sheet = GoogleAppsScript.Spreadsheet.Sheet;
+import { BaseRepository } from '../base_repository';
 
-export class MeasurementRepository implements MeasurementRepositoryInterface {
-  private readonly sheet: Sheet;
-  private readonly lastRow: number;
-  private readonly lastCol: number;
-  private readonly fullData: readonly Measurement[];
-  constructor() {
-    this.sheet = this.getSheet();
-    this.lastRow = this.getLastRow();
-    this.lastCol = this.getLastColumn();
-    this.fullData = this.getAll();
+export class MeasurementRepository extends BaseRepository
+  implements MeasurementRepositoryInterface {
+  constructor(sheetName = 'measurements') {
+    super(sheetName);
+  }
+
+  map(data: any[][]): readonly Measurement[] {
+    return data.map((e) => {
+      return new Measurement(
+        e[0],
+        e[1],
+        e[2],
+        e[3],
+        e[4] || void 0,
+        e[5] || void 0,
+      );
+    });
   }
 
   last(userId: string): Measurement | null {
@@ -52,7 +59,7 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
     const description =
       typeof lastMeasurement.getDescription() === 'undefined'
         ? void 0
-        : lastMeasurement.getDescription().toString();
+        : lastMeasurement.getDescription()?.toString();
     const measurement = new Measurement(
       id,
       userId,
@@ -65,54 +72,5 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
       .getRange(id + 1, 1, 1, this.lastCol)
       .setValues([[id, userId, isoWeekId, startAt, now, description]]);
     return measurement;
-  }
-
-  getAll(): readonly Measurement[] {
-    if (this.fullData) return this.fullData;
-    const rawData = this.sheet
-      .getRange(2, 1, this.lastRow - 1, this.lastCol)
-      .getValues();
-    const fullData = rawData.filter((e) => !!e[0]);
-    return this.map(fullData);
-  }
-
-  private getSheet(): Sheet {
-    if (this.sheet) return this.sheet;
-
-    const spreadsheetId = PropertiesService.getScriptProperties().getProperty(
-      'SPREAD_SHEET_ID',
-    );
-
-    if (!spreadsheetId) throw new Error('SPREAD_SHEET_ID is not found.');
-    const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
-
-    if (!spreadsheet) throw new Error('Target spreadsheet is not found.');
-    const sheet = spreadsheet.getSheetByName('measurements');
-
-    if (!sheet) throw new Error('Target table is not found.');
-    return sheet;
-  }
-
-  private getLastRow(): number {
-    if (this.lastRow) return this.lastRow;
-    return this.sheet.getLastRow();
-  }
-
-  private getLastColumn(): number {
-    if (this.lastCol) return this.lastCol;
-    return this.sheet.getLastColumn();
-  }
-
-  private map(fullData: any[][]): readonly Measurement[] {
-    return fullData.map((e) => {
-      return new Measurement(
-        e[0],
-        e[1],
-        e[2],
-        e[3],
-        e[4] || void 0,
-        e[5] || void 0,
-      );
-    });
   }
 }
