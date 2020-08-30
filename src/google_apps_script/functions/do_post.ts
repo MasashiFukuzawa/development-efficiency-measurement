@@ -10,6 +10,7 @@ import { MeasurementStopController } from '../../webhook_app/controllers/measure
 import { MeasurementStopInteractor } from '../../domain/applications/measurement/measurement_stop_interactor';
 import { IsoWeekRepository } from '../../infrastructure/iso_weeks/iso_week_repository';
 import TextOutput = GoogleAppsScript.Content.TextOutput;
+import { HelpController } from '../../webhook_app/controllers/help_controller';
 
 function doPost(e: any): TextOutput {
   const token = PropertiesService.getScriptProperties().getProperty('SLACK_VERIFICATION_TOKEN');
@@ -28,21 +29,17 @@ class SlackDoPost {
   execControllerAction(text: string, userId: string, userName: string): string {
     const contents = text.split(' ');
     const [action, arg] = contents;
-    if (!action) {
-      return '実行したいコマンドが指定されていません';
-    }
-
     switch (action) {
       case 'create_user':
         if (!arg)
-          return '`/kaihatsu create_user xxx@finc.com` のようにメールアドレスを入力して下さい';
+          return `\`/kaihatsu create_user xxx@finc.com\` のようにメールアドレスを入力して下さい`;
         return this.execUserCreateAction(arg, userId, userName);
       case 'start':
         return this.execMeasurementStartAction(userId, userName);
       case 'stop':
         return this.execMeasurementStopAction(userId, userName);
       default:
-        return `/kaihatsu ${text} は設定されていないコマンドです`;
+        return this.execHelpAction(userId);
     }
   }
 
@@ -87,5 +84,10 @@ class SlackDoPost {
     );
     const measurementStartController = new MeasurementStopController(measurementStopInteractor);
     return measurementStartController.stop(userId, userName);
+  }
+
+  private execHelpAction(userId: string): string {
+    const helpController = new HelpController();
+    return helpController.help(userId);
   }
 }
