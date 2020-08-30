@@ -23,4 +23,11 @@ export class IsoWeek {
   getIsoWeekIsoWeek(): IsoWeekIsoWeek {
     return this.isoWeek;
   }
+
+  isTargetWeek(year: number, isoWeek: number): boolean {
+    return (
+      this.getIsoWeekYear().toNumber() === year &&
+      this.getIsoWeekIsoWeek().toNumber() === isoWeek
+    );
+  }
 }

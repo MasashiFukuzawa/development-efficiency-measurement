@@ -15,7 +15,7 @@ export class UserRepository extends BaseRepository
   }
 
   findByUserId(userId: string): User | null {
-    const user = this.fullData.find((e) => e.getUserId().toString() === userId);
+    const user = this.fullData.find((e) => e.isTargetUser(userId));
     return !!user ? user : null;
   }
 

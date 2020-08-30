@@ -22,9 +22,7 @@ export class MeasurementRepository extends BaseRepository
   }
 
   last(userId: string): Measurement | null {
-    const measurement = this.fullData.filter((e) => {
-      return e.getUserId().toString() === userId;
-    });
+    const measurement = this.fullData.filter((e) => e.isTargetUser(userId));
     const lastMeasurement = measurement[measurement.length - 1];
     return !!lastMeasurement ? lastMeasurement : null;
   }

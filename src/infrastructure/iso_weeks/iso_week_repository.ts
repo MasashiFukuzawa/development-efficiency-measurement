@@ -15,12 +15,7 @@ export class IsoWeekRepository extends BaseRepository
   }
 
   find(year: number, isoWeek: number): IsoWeek | null {
-    const isoWeekObj = this.fullData.find((e) => {
-      return (
-        e.getIsoWeekYear().toNumber() === year &&
-        e.getIsoWeekIsoWeek().toNumber() === isoWeek
-      );
-    });
+    const isoWeekObj = this.fullData.find((e) => e.isTargetWeek(year, isoWeek));
     return !!isoWeekObj ? isoWeekObj : null;
   }
 }
