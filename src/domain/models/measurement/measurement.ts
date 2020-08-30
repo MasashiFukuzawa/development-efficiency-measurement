@@ -67,7 +67,7 @@ export class Measurement {
   }
 
   isAssociatedWithUser(userIds: string[]): boolean {
-    return userIds.indexOf(this.getUserId().toString()) !== 1;
+    return userIds.indexOf(this.getUserId().toString()) !== -1;
   }
 
   isTargetUser(userId: string): boolean {

@@ -15,8 +15,9 @@ export class SummaryReportRepository
     this.fullData = this.getAll();
   }
 
-  last(): SummaryReport {
-    return this.fullData[this.fullData.length - 1];
+  last(): SummaryReport | null {
+    const lastSummaryReport = this.fullData[this.fullData.length - 1];
+    return !!lastSummaryReport ? lastSummaryReport : null;
   }
 
   bulkInsert(summaryReports: SummaryReport[]): void {

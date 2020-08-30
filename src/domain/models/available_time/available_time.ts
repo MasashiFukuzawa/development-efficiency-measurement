@@ -44,7 +44,7 @@ export class AvailableTime {
   }
 
   isAssociatedWithUser(userIds: string[]): boolean {
-    return userIds.indexOf(this.getUserId().toString()) !== 1;
+    return userIds.indexOf(this.getUserId().toString()) !== -1;
   }
 
   isTargetUser(userId: string): boolean {
@@ -97,7 +97,7 @@ export class AvailableTime {
     });
 
     const theoreticalImplementTime = eventTimeLists.reduce(
-      (accumulator: number, currentValue: number) => accumulator + currentValue,
+      (a: number, b: number) => a + b,
     );
 
     const maxTime = availableWorkHours * 60 * 60 * 1000;

@@ -1,6 +1,6 @@
 import { SummaryReport } from './summary_report';
 
 export interface SummaryReportRepositoryInterface {
-  last(): SummaryReport;
+  last(): SummaryReport | null;
   bulkInsert(summaryReports: SummaryReport[]): void;
 }

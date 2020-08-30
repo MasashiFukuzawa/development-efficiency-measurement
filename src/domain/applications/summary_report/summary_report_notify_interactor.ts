@@ -149,7 +149,12 @@ export class SummaryReportNotifyInteractor
   }
 
   private getLastSummaryReportId(): number {
-    return this.summaryReportRepository.last().getSummaryReportId().toNumber();
+    const lastSummaryReport = this.summaryReportRepository.last();
+    if (lastSummaryReport) {
+      return lastSummaryReport.getSummaryReportId().toNumber();
+    } else {
+      return 0;
+    }
   }
 
   private getAvailableTimeAssociatedWithUser(

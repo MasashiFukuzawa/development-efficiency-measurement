@@ -8,7 +8,6 @@ import { SummaryReportTheoreticalAvailableHour } from './value_objects/summary_r
 import { SummaryReportAvailableRate } from './value_objects/summary_report_available_rate';
 import { SummaryReportTotalImplementHour } from './value_objects/summary_report_total_implement_hour';
 import { SummaryReportId } from './value_objects/summary_report_id';
-import { Measurement } from '../measurement/measurement';
 
 export class SummaryReport {
   private readonly id: SummaryReportId;
@@ -96,19 +95,15 @@ export class SummaryReport {
   }
 
   static sum(measurements: { start: Date; stop: Date }[]): number {
-    return (
-      measurements
-        .map((e) => {
-          const startAt = Moment.moment(e.start);
-          const stopAt = Moment.moment(e.stop);
-          return Math.abs(startAt.diff(stopAt));
-        })
-        .reduce(
-          (accumulator: number, currentValue: number) =>
-            accumulator + currentValue,
-        ) /
-      (60 * 60 * 1000)
-    );
+    return measurements
+      .map((e) => {
+        const startAt = Moment.moment(e.start);
+        const stopAt = Moment.moment(e.stop);
+        return Math.abs(startAt.diff(stopAt));
+      })
+      .reduce((a: number, b: number) => {
+        return (a + b) / (60 * 60 * 1000);
+      });
   }
 
   static average(measurementCount: number, totalImplementHour: number): number {

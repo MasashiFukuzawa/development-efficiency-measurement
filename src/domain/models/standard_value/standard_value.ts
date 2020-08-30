@@ -90,8 +90,8 @@ export class StandardValue {
       .map((e) => {
         return e.getTotalImplementHour().toNumber();
       })
-      .reduce((accumulator: number, currentValue: number) => {
-        return accumulator + currentValue;
+      .reduce((a: number, b: number) => {
+        return a + b;
       });
   }
 
@@ -102,8 +102,8 @@ export class StandardValue {
       .map((e) => {
         return e.getMeasurementCount().toNumber();
       })
-      .reduce((accumulator: number, currentValue: number) => {
-        return accumulator + currentValue;
+      .reduce((a: number, b: number) => {
+        return a + b;
       });
   }
 
@@ -114,8 +114,8 @@ export class StandardValue {
       .map((e) => {
         return e.getAverageImplementHour().toNumber();
       })
-      .reduce((accumulator: number, currentValue: number) => {
-        return accumulator + currentValue;
+      .reduce((a: number, b: number) => {
+        return a + b;
       });
   }
 
@@ -126,8 +126,8 @@ export class StandardValue {
       .map((e) => {
         return e.getTheoreticalAvailableHour().toNumber();
       })
-      .reduce((accumulator: number, currentValue: number) => {
-        return accumulator + currentValue;
+      .reduce((a: number, b: number) => {
+        return a + b;
       });
   }
 
@@ -138,8 +138,8 @@ export class StandardValue {
       .map((e) => {
         return e.getAvailableRate().toNumber();
       })
-      .reduce((accumulator: number, currentValue: number) => {
-        return accumulator + currentValue;
+      .reduce((a: number, b: number) => {
+        return a + b;
       });
   }
 
@@ -150,8 +150,8 @@ export class StandardValue {
       .map((e) => {
         return e.getKpiValue().toNumber();
       })
-      .reduce((accumulator: number, currentValue: number) => {
-        return accumulator + currentValue;
+      .reduce((a: number, b: number) => {
+        return a + b;
       });
   }
 }
