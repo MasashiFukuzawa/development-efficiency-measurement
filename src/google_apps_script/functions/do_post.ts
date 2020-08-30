@@ -36,7 +36,7 @@ class SlackDoPost {
           '`/kaihatsu create_user xxx@finc.com` のようにメールアドレスを入力して下さい',
         );
       case 'start':
-        return this.execMeasurementStartAction(userId, userName, arg);
+        return this.execMeasurementStartAction(userId, userName);
       case 'stop':
         return this.execMeasurementStopAction(userId, userName);
       default:
@@ -61,11 +61,7 @@ class SlackDoPost {
     return userCreateController.create(slackFormatGmail, userId, userName);
   }
 
-  private execMeasurementStartAction(
-    userId: string,
-    userName: string,
-    description?: string,
-  ): TextOutput {
+  private execMeasurementStartAction(userId: string, userName: string): TextOutput {
     const userRepository = new UserRepository();
     const measurementRepository = new MeasurementRepository();
     const isoWeekRepository = new IsoWeekRepository();
@@ -77,7 +73,7 @@ class SlackDoPost {
       replyPresenter,
     );
     const measurementStartController = new MeasurementStartController(measurementStartInteractor);
-    return measurementStartController.start(userId, userName, description);
+    return measurementStartController.start(userId, userName);
   }
 
   private execMeasurementStopAction(userId: string, userName: string): TextOutput {

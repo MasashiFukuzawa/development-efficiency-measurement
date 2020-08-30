@@ -15,7 +15,7 @@ export class MeasurementStartInteractor implements MeasurementStartUseCaseInterf
     private readonly replyPresenter: ReplyPresenter,
   ) {}
 
-  handle(userId: string, userName: string, description?: string): TextOutput {
+  handle(userId: string, userName: string): TextOutput {
     const outputData = new MeasurementStartOutputData();
 
     const user = this.userRepository.findByUserId(userId);
@@ -35,9 +35,9 @@ export class MeasurementStartInteractor implements MeasurementStartUseCaseInterf
       return this.replyPresenter.reply(errorMessage);
     }
 
-    this.measurementRepository.stampStartAt(userId, isoWeekId, description);
+    this.measurementRepository.stampStartAt(userId, isoWeekId);
 
-    const startMessage = outputData.getStartMessage(userName, description);
+    const startMessage = outputData.getStartMessage(userName);
     return this.replyPresenter.reply(startMessage);
   }
 }

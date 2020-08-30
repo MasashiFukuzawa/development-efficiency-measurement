@@ -4,7 +4,7 @@ import TextOutput = GoogleAppsScript.Content.TextOutput;
 export class MeasurementStartController {
   constructor(private readonly measurementStartUseCase: MeasurementStartUseCaseInterface) {}
 
-  start(userId: string, userName: string, description?: string): TextOutput {
-    return this.measurementStartUseCase.handle(userId, userName, description);
+  start(userId: string, userName: string): TextOutput {
+    return this.measurementStartUseCase.handle(userId, userName);
   }
 }
