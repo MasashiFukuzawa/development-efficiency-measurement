@@ -20,7 +20,7 @@ export class SummaryReportRepository
     return !!lastSummaryReport ? lastSummaryReport : null;
   }
 
-  bulkInsert(summaryReports: SummaryReport[]): void {
+  bulkInsert(summaryReports: SummaryReport[]): number[] {
     const count = summaryReports.length;
     const params = summaryReports.map((e) => {
       return [
@@ -39,6 +39,7 @@ export class SummaryReportRepository
     this.sheet
       .getRange(this.lastRow + 1, 1, count, this.lastCol)
       .setValues(params);
+    return summaryReports.map((e) => e.getSummaryReportId().toNumber());
   }
 
   private getAll(): readonly SummaryReport[] {
