@@ -3,38 +3,36 @@ import { SummaryReport } from '../../../domain/models/summary_report/summary_rep
 
 export class SummaryReportNotifyOutputData {
   getMessage(summaryReport: SummaryReport, standardValue: StandardValue): string {
+    const developmentEfficiency = Math.round(summaryReport.getKpiValue().toNumber() * 100) / 100;
+    const totalImplementHour =
+      Math.round(summaryReport.getTotalImplementHour().toNumber() * 100) / 100;
+    const averageImplementHour =
+      Math.round(summaryReport.getAverageImplementHour().toNumber() * 100) / 100;
+    const slotRate = 1 - Math.round(summaryReport.getAvailableRate().toNumber() * 100) / 100;
+
+    const avgOfDevelopmentEfficiency =
+      Math.round(standardValue.getKpiValue().toNumber() * 100) / 100;
+    const avgOfTotalImplementHour =
+      Math.round(standardValue.getTotalImplementHour().toNumber() * 100) / 100;
+    const avgOfAverageImplementHour =
+      Math.round(standardValue.getAverageImplementHour().toNumber() * 100) / 100;
+    const avgOfSlotRate = 1 - Math.round(standardValue.getAvailableRate().toNumber() * 100) / 100;
+
     return `<@${summaryReport.getUserId().toString()}>
 
 今週もお疲れ様でした！今週の開発効率の計測結果をお知らせします！
 
 ======================================================
-開発効率指数: ${Math.round(summaryReport.getKpiValue().toNumber() * 100) / 100}
+*開発効率指数: ${developmentEfficiency}（全体平均${avgOfDevelopmentEfficiency}）*
 
 
-    内訳:
-        実装時間合計: ${Math.round(summaryReport.getTotalImplementHour().toNumber() * 100) / 100}h
-        計測回数: ${summaryReport.getMeasurementCount().toNumber()}回
-        平均実装時間: ${Math.round(summaryReport.getAverageImplementHour().toNumber() * 100) / 100}h
-        カレンダー上での空き時間合計: ${
-          Math.round(summaryReport.getTheoreticalAvailableHour().toNumber() * 100) / 100
-        }h
-        差し込み率: ${1 - Math.round(summaryReport.getAvailableRate().toNumber() * 100) / 100}
+(※) 開発効率指数 = 実装時間合計 × 平均実装時間 × (1 - 差し込み率)
 
 
------
-
-
-(参考) 今週のユーザー全体の平均値:
-
-
-    開発効率指標: ${Math.round(standardValue.getKpiValue().toNumber() * 100) / 100}
-    実装時間合計: ${Math.round(standardValue.getTotalImplementHour().toNumber() * 100) / 100}h
-    計測回数: ${Math.round(standardValue.getMeasurementCount().toNumber() * 100) / 100}回
-    平均実装時間: ${Math.round(standardValue.getAverageImplementHour().toNumber() * 100) / 100}h
-    カレンダー上での空き時間合計: ${
-      Math.round(standardValue.getTheoreticalAvailableHour().toNumber() * 100) / 100
-    }h
-    差し込み率: ${1 - Math.round(standardValue.getAvailableRate().toNumber() * 100) / 100}
+内訳:
+    実装時間合計: ${totalImplementHour}h（全体平均${avgOfTotalImplementHour}h）
+    平均実装時間: ${averageImplementHour}h（全体平均${avgOfAverageImplementHour}h）
+    差し込み率: ${slotRate}（全体平均${avgOfSlotRate}）
 ======================================================`;
   }
 }
