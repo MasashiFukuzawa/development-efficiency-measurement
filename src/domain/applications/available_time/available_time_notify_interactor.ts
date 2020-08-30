@@ -1,4 +1,4 @@
-import { NotifyPresenterInterface } from '../../../use_case/common/notify_presenter_interface';
+import { NotifyPresenterInterface } from '../../../use_case/notify_presenter_interface';
 import { AvailableTimeNotifyInputData } from '../../../use_case/available_time/notify/available_time_notify_input_data';
 import { AvailableTimeNotifyOutputData } from '../../../use_case/available_time/notify/available_time_notify_output_data';
 import { AvailableTimeNotifyUseCaseInterface } from '../../../use_case/available_time/notify/available_time_notify_use_case_interface';

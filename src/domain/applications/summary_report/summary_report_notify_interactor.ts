@@ -1,4 +1,4 @@
-import { NotifyPresenterInterface } from '../../../use_case/common/notify_presenter_interface';
+import { NotifyPresenterInterface } from '../../../use_case/notify_presenter_interface';
 import { SummaryReportNotifyUseCaseInterface } from '../../../use_case/summary_report/notify/summary_report_notify_use_case_interface';
 import { MeasurementRepositoryInterface } from '../../models/measurement/measurement_repository_interface';
 import { SummaryReportRepositoryInterface } from '../../models/summary_report/summary_report_repository_interface';
