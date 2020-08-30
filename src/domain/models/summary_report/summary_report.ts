@@ -91,19 +91,24 @@ export class SummaryReport {
     return this.notifiedAt;
   }
 
-  static count(measurements: Measurement[]): number {
+  static count(measurements: { start: Date; stop: Date }[]): number {
     return measurements.length;
   }
 
-  static sum(measurements: Measurement[]): number {
-    return measurements
-      .map((e) => {
-        return e.calculateImplementTime();
-      })
-      .reduce(
-        (accumulator: number, currentValue: number) =>
-          accumulator + currentValue,
-      );
+  static sum(measurements: { start: Date; stop: Date }[]): number {
+    return (
+      measurements
+        .map((e) => {
+          const startAt = Moment.moment(e.start);
+          const stopAt = Moment.moment(e.stop);
+          return Math.abs(startAt.diff(stopAt));
+        })
+        .reduce(
+          (accumulator: number, currentValue: number) =>
+            accumulator + currentValue,
+        ) /
+      (60 * 60 * 1000)
+    );
   }
 
   static average(measurementCount: number, totalImplementHour: number): number {

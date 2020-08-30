@@ -74,6 +74,85 @@ export class Measurement {
     return this.getUserId().toString() === userId;
   }
 
+  static cutOffBeforeAndAfterWorkHour(
+    measurements: Measurement[],
+    workStartHour = 10,
+    workStartMinute = 0,
+    workEndHour = 19,
+    workEndMinute = 0,
+  ): { start: Date; stop: Date }[] {
+    const filteredMeasurements = measurements.filter((e) => {
+      const start = e.getMeasurementStartAt().toDate();
+      const stop = e.getMeasurementStopAt()?.toDate();
+      if (typeof stop === 'undefined') {
+        throw new Error(
+          `MeasurementStopAt is undefined. measurementId=${e
+            .getMeasurementId()
+            .toNumber()}`,
+        );
+      }
+
+      const workTime = this.getWorkTime(
+        { start, stop },
+        workStartHour,
+        workStartMinute,
+        workEndHour,
+        workEndMinute,
+      );
+
+      return workTime.start < stop && start < workTime.stop;
+    });
+
+    return filteredMeasurements.map((e) => {
+      const start = e.getMeasurementStartAt().toDate();
+      const stop = e.getMeasurementStopAt()?.toDate();
+      if (typeof stop === 'undefined') {
+        throw new Error(
+          `MeasurementStopAt is undefined. measurementId=${e
+            .getMeasurementId()
+            .toNumber()}`,
+        );
+      }
+
+      const workTime = this.getWorkTime(
+        { start, stop },
+        workStartHour,
+        workStartMinute,
+        workEndHour,
+        workEndMinute,
+      );
+
+      const mStart = start < workTime.start ? workTime.start : start;
+      const mStop = workTime.stop < stop ? workTime.stop : stop;
+
+      return { start: mStart, stop: mStop };
+    });
+  }
+
+  private static getWorkTime(
+    event: { start: Date; stop: Date },
+    workStartHour = 10,
+    workStartMinute = 0,
+    workEndHour = 19,
+    workEndMinute = 0,
+  ): { start: Date; stop: Date } {
+    const start = new Date(
+      event.start.getFullYear(),
+      event.start.getMonth(),
+      event.start.getDate(),
+      workStartHour,
+      workStartMinute,
+    );
+    const stop = new Date(
+      event.stop.getFullYear(),
+      event.stop.getMonth(),
+      event.stop.getDate(),
+      workEndHour,
+      workEndMinute,
+    );
+    return { start, stop };
+  }
+
   static isConflicting(lastMeasurement: Measurement | null): boolean {
     if (lastMeasurement === null) return false;
     return this.isAlreadyStarted(lastMeasurement);

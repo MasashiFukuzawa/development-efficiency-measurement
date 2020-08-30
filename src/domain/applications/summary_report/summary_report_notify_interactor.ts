@@ -67,6 +67,7 @@ export class SummaryReportNotifyInteractor
     });
   }
 
+  // TODO: ロジックが適当なので、後からリファクタリングする
   private getSummaryReports(
     userIds: string[],
     availableTimes: AvailableTime[],
@@ -86,8 +87,11 @@ export class SummaryReportNotifyInteractor
         isoWeekId,
       );
 
-      const measurementCount = SummaryReport.count(userMeasurements);
-      const totalImplementHour = SummaryReport.sum(userMeasurements);
+      const targetMeasurements = Measurement.cutOffBeforeAndAfterWorkHour(
+        userMeasurements,
+      );
+      const totalImplementHour = SummaryReport.sum(targetMeasurements);
+      const measurementCount = SummaryReport.count(targetMeasurements);
       const averageImplementHour = SummaryReport.average(
         measurementCount,
         totalImplementHour,
