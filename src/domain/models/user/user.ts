@@ -24,6 +24,10 @@ export class User {
     return this.registeredAt;
   }
 
+  isTargetUser(userId: string): boolean {
+    return this.getUserId().toString() === userId;
+  }
+
   static validate(id: string, name: string): string | null {
     try {
       new UserId(id);
