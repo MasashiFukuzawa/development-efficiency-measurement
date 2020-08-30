@@ -1,6 +1,55 @@
 import { AvailableTime } from '../../../../src/domain/models/available_time/available_time';
 
 describe('AvailableTime', () => {
+  describe('#isTargetWeek', () => {
+    const availableTime = new AvailableTime('xxx', 35, 1000000);
+
+    it('returns true', () => {
+      const result = availableTime.isTargetWeek(35);
+      expect(result).toBe(true);
+    });
+
+    it('returns false', () => {
+      const result = availableTime.isTargetWeek(36);
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('#isAssociatedWithUser', () => {
+    const availableTime = new AvailableTime('xxx', 35, 1000000);
+
+    it('returns true', () => {
+      const result = availableTime.isAssociatedWithUser(['xxx', 'yyy', 'zzz']);
+      expect(result).toBe(true);
+    });
+
+    it('returns false', () => {
+      const result = availableTime.isAssociatedWithUser(['aaa', 'bbb', 'ccc']);
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('#isTargetUser', () => {
+    const availableTime = new AvailableTime('xxx', 35, 1000000);
+
+    it('returns true', () => {
+      const result = availableTime.isTargetUser('xxx');
+      expect(result).toBe(true);
+    });
+
+    it('returns false', () => {
+      const result = availableTime.isTargetUser('aaa');
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('.convertMilliSecToHour', () => {
+    it('returns hour', () => {
+      const result = AvailableTime.convertMilliSecToHour(10800000);
+      expect(result).toBe(3);
+    });
+  });
+
   describe('.calculateAvailableTime', () => {
     const workStartHour = 10;
     const workStartMinute = 0;

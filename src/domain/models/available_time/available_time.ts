@@ -35,8 +35,24 @@ export class AvailableTime {
     return this.isoWeekId;
   }
 
-  getAvailableTimeTheoreticalImplementTime(): AvailableTimeTheoreticalImplementTime {
+  getTheoreticalImplementTime(): AvailableTimeTheoreticalImplementTime {
     return this.theoreticalImplementTime;
+  }
+
+  isTargetWeek(isoWeekId: number): boolean {
+    return this.getIsoWeekId().toNumber() === isoWeekId;
+  }
+
+  isAssociatedWithUser(userIds: string[]): boolean {
+    return userIds.indexOf(this.getUserId().toString()) !== -1;
+  }
+
+  isTargetUser(userId: string): boolean {
+    return this.getUserId().toString() === userId;
+  }
+
+  static convertMilliSecToHour(ms: number): number {
+    return ms / (60 * 60 * 1000);
   }
 
   static calculateAvailableTime(
@@ -66,7 +82,7 @@ export class AvailableTime {
     });
 
     const theoreticalImplementTime = eventTimeLists.reduce(
-      (accumulator: number, currentValue: number) => accumulator + currentValue,
+      (a: number, b: number) => a + b,
     );
 
     const maxTime = availableWorkHours * 60 * 60 * 1000;

@@ -1,1 +1,3 @@
-export interface SummaryReportNotifyUseCaseInterface {}
+export interface SummaryReportNotifyUseCaseInterface {
+  handle(): void;
+}

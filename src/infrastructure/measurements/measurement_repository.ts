@@ -52,7 +52,7 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
     const description =
       typeof lastMeasurement.getDescription() === 'undefined'
         ? void 0
-        : lastMeasurement.getDescription()?.toString();
+        : lastMeasurement.getDescription().toString();
     const measurement = new Measurement(
       id,
       userId,
@@ -67,7 +67,7 @@ export class MeasurementRepository implements MeasurementRepositoryInterface {
     return measurement;
   }
 
-  private getAll(): readonly Measurement[] {
+  getAll(): readonly Measurement[] {
     if (this.fullData) return this.fullData;
     const rawData = this.sheet
       .getRange(2, 1, this.lastRow - 1, this.lastCol)

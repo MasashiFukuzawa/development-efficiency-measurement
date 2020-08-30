@@ -1,16 +1,17 @@
 import { IsoWeekId } from '../iso_week/domain_objects/ios_week_id';
-import { StandardValueAverageHour } from './value_objects/standard_value_average_hour';
+import { StandardValueAverageImplementHour } from './value_objects/standard_value_average_implement_hour';
 import { StandardValueKpiValue } from './value_objects/standard_value_kpi_value';
 import { StandardValueMeasurementCount } from './value_objects/standard_value_measurement_count';
 import { StandardValueTheoreticalAvailableHour } from './value_objects/standard_value_theoretical_available_hour';
 import { StandardValueAvailableRate } from './value_objects/standard_value_available_rate';
 import { StandardValueTotalImplementHour } from './value_objects/standard_value_total_implement_hour';
+import { SummaryReport } from '../summary_report/summary_report';
 
 export class StandardValue {
   private readonly isoWeekId: IsoWeekId;
   private readonly totalImplementHour: StandardValueTotalImplementHour;
   private readonly measurementCount: StandardValueMeasurementCount;
-  private readonly averageHour: StandardValueAverageHour;
+  private readonly averageImplementHour: StandardValueAverageImplementHour;
   private readonly theoreticalAvailableHour: StandardValueTheoreticalAvailableHour;
   private readonly availableRate: StandardValueAvailableRate;
   private readonly kpiValue: StandardValueKpiValue;
@@ -18,7 +19,7 @@ export class StandardValue {
     isoWeekId: number,
     totalImplementHour: number,
     measurementCount: number,
-    averageHour: number,
+    averageImplementHour: number,
     theoreticalAvailableHour: number,
     availableRate: number,
     kpiValue: number,
@@ -28,7 +29,9 @@ export class StandardValue {
       totalImplementHour,
     );
     this.measurementCount = new StandardValueMeasurementCount(measurementCount);
-    this.averageHour = new StandardValueAverageHour(averageHour);
+    this.averageImplementHour = new StandardValueAverageImplementHour(
+      averageImplementHour,
+    );
     this.theoreticalAvailableHour = new StandardValueTheoreticalAvailableHour(
       theoreticalAvailableHour,
     );
@@ -40,7 +43,7 @@ export class StandardValue {
     return this.isoWeekId;
   }
 
-  getTotalHour(): StandardValueTotalImplementHour {
+  getTotalImplementHour(): StandardValueTotalImplementHour {
     return this.totalImplementHour;
   }
 
@@ -48,19 +51,99 @@ export class StandardValue {
     return this.measurementCount;
   }
 
-  getAverageHour(): StandardValueAverageHour {
-    return this.averageHour;
+  getAverageImplementHour(): StandardValueAverageImplementHour {
+    return this.averageImplementHour;
   }
 
-  getTheoreticalHour(): StandardValueTheoreticalAvailableHour {
+  getTheoreticalAvailableHour(): StandardValueTheoreticalAvailableHour {
     return this.theoreticalAvailableHour;
   }
 
-  getTheoreticalRate(): StandardValueAvailableRate {
+  getAvailableRate(): StandardValueAvailableRate {
     return this.availableRate;
   }
 
   getKpiValue(): StandardValueKpiValue {
     return this.kpiValue;
+  }
+
+  // TODO: もっと効率の良いロジックに修正する
+  static calculateAverage(summaryReports: SummaryReport[]): StandardValue {
+    const count = summaryReports.length;
+    return new StandardValue(
+      summaryReports[0].getIsoWeekId().toNumber(),
+      this.sumTotalImplementHour(summaryReports) / count,
+      this.sumMeasurementCount(summaryReports) / count,
+      this.sumAverageImplementHour(summaryReports) / count,
+      this.sumTheoreticalAvailableHour(summaryReports) / count,
+      this.sumAvailableRate(summaryReports) / count,
+      this.sumKpiValue(summaryReports) / count,
+    );
+  }
+
+  private static sumTotalImplementHour(
+    summaryReports: SummaryReport[],
+  ): number {
+    return summaryReports
+      .map((e) => {
+        return e.getTotalImplementHour().toNumber();
+      })
+      .reduce((a: number, b: number) => {
+        return a + b;
+      });
+  }
+
+  private static sumMeasurementCount(summaryReports: SummaryReport[]): number {
+    return summaryReports
+      .map((e) => {
+        return e.getMeasurementCount().toNumber();
+      })
+      .reduce((a: number, b: number) => {
+        return a + b;
+      });
+  }
+
+  private static sumAverageImplementHour(
+    summaryReports: SummaryReport[],
+  ): number {
+    return summaryReports
+      .map((e) => {
+        return e.getAverageImplementHour().toNumber();
+      })
+      .reduce((a: number, b: number) => {
+        return a + b;
+      });
+  }
+
+  private static sumTheoreticalAvailableHour(
+    summaryReports: SummaryReport[],
+  ): number {
+    return summaryReports
+      .map((e) => {
+        return e.getTheoreticalAvailableHour().toNumber();
+      })
+      .reduce((a: number, b: number) => {
+        return a + b;
+      });
+  }
+
+  private static sumAvailableRate(summaryReports: SummaryReport[]): number {
+    return summaryReports
+      .map((e) => {
+        return e.getAvailableRate().toNumber();
+      })
+      .reduce((a: number, b: number) => {
+        return a + b;
+      });
+  }
+
+  private static sumKpiValue(summaryReports: SummaryReport[]): number {
+    return summaryReports
+      .map((e) => {
+        return e.getKpiValue().toNumber();
+      })
+      .reduce((a: number, b: number) => {
+        return a + b;
+      });
   }
 }

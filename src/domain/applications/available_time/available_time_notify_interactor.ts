@@ -14,9 +14,11 @@ export class AvailableTimeNotifyInteractor
 
   handle(): void {
     const userSettings = this.userSettingRepository.getAll();
+    const day: number = Moment.moment().isoWeekday();
     const inputData = new AvailableTimeNotifyInputData();
     const outputData = new AvailableTimeNotifyOutputData();
     userSettings.forEach((e) => {
+      if (day === 6 || day === 7) return; // 6: Saturday, 7: Sunday
       if (e.getNotificationStatus().toString() === 'off') return;
 
       const userId = e.getUserId().toString();
@@ -38,7 +40,11 @@ export class AvailableTimeNotifyInteractor
         AvailableTime.WORK_HOURS_PER_DAY,
       );
 
-      const message = outputData.getMessage(userId, todaysAvailableTime);
+      const availableHour = AvailableTime.convertMilliSecToHour(
+        todaysAvailableTime,
+      );
+
+      const message = outputData.getMessage(userId, availableHour);
 
       this.notifyPresenter.notify(message);
     });

@@ -48,9 +48,9 @@ export class AvailableTimeCalculateInteractor
       this.availableTimeRepository.create(userId, isoWeekId, availableTime);
 
       console.log(
-        `userId: ${userId} のAvailableTimeを記録しました。availableHours: ${
-          availableTime / (60 * 60 * 1000)
-        } hours`,
+        `userId: ${userId}のAvailableTimeを記録しました。availableHours: ${AvailableTime.convertMilliSecToHour(
+          availableTime,
+        )} hours`,
       );
     });
   }

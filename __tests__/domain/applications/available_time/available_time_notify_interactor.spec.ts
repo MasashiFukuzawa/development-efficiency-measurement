@@ -50,6 +50,7 @@ describe('AvailableTimeNotifyInteractor', () => {
     endOf: jest.fn(() => ({
       toDate: jest.fn(() => new Date()),
     })),
+    isoWeekday: jest.fn(() => 3),
   }));
 
   const userSettingRepository = new UserSettingRepository();

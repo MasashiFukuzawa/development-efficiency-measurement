@@ -1,12 +1,11 @@
-import { UserRepositoryInterface } from '../../domain/models/user/user_repository_interface';
-import { User } from '../../domain/models/user/user';
+import { StandardValue } from '../../domain/models/standard_value/standard_value';
 import Sheet = GoogleAppsScript.Spreadsheet.Sheet;
 
-export class UserRepository implements UserRepositoryInterface {
+export class StandardValueRepository {
   private readonly sheet: Sheet;
   private readonly lastRow: number;
   private readonly lastCol: number;
-  private readonly fullData: readonly User[];
+  private readonly fullData: readonly StandardValue[];
   constructor() {
     this.sheet = this.getSheet();
     this.lastRow = this.getLastRow();
@@ -14,22 +13,24 @@ export class UserRepository implements UserRepositoryInterface {
     this.fullData = this.getAll();
   }
 
-  findByUserId(userId: string): User | null {
-    const user = this.fullData.filter((e) => {
-      return e.getUserId().toString() === userId;
-    })[0];
-    return !!user ? user : null;
-  }
-
-  create(userId: string, userName: string): User {
-    const user = new User(userId, userName);
+  create(standardValue: StandardValue): StandardValue {
     this.sheet
       .getRange(this.lastRow + 1, 1, 1, this.lastCol)
-      .setValues([[userId, userName, user.getRegisteredAt().toDate()]]);
-    return user;
+      .setValues([
+        [
+          standardValue.getIsoWeekId().toNumber(),
+          standardValue.getTotalImplementHour().toNumber(),
+          standardValue.getMeasurementCount().toNumber(),
+          standardValue.getAverageImplementHour().toNumber(),
+          standardValue.getTheoreticalAvailableHour().toNumber(),
+          standardValue.getAvailableRate().toNumber(),
+          standardValue.getKpiValue().toNumber(),
+        ],
+      ]);
+    return standardValue;
   }
 
-  getAll(): readonly User[] {
+  private getAll(): readonly StandardValue[] {
     if (this.fullData) return this.fullData;
     const rawData = this.sheet
       .getRange(2, 1, this.lastRow - 1, this.lastCol)
@@ -49,7 +50,7 @@ export class UserRepository implements UserRepositoryInterface {
     const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
 
     if (!spreadsheet) throw new Error('Target spreadsheet is not found.');
-    const sheet = spreadsheet.getSheetByName('users');
+    const sheet = spreadsheet.getSheetByName('standard_values');
 
     if (!sheet) throw new Error('Target table is not found.');
     return sheet;
@@ -65,9 +66,9 @@ export class UserRepository implements UserRepositoryInterface {
     return this.sheet.getLastColumn();
   }
 
-  private map(fullData: any[][]): readonly User[] {
+  private map(fullData: any[][]): readonly StandardValue[] {
     return fullData.map((e) => {
-      return new User(e[0], e[1], e[2]);
+      return new StandardValue(e[0], e[1], e[2], e[3], e[4], e[5], e[6]);
     });
   }
 }

@@ -27,9 +27,7 @@ describe('AvailableTimeRepository', () => {
       );
       const userId = availableTime.getUserId().toString();
       const iosWeekId = availableTime.getIsoWeekId().toNumber();
-      const totalTimes = availableTime
-        .getAvailableTimeTheoreticalImplementTime()
-        .toNumber();
+      const totalTimes = availableTime.getTheoreticalImplementTime().toNumber();
       expect(userId).toBe('IM1234');
       expect(iosWeekId).toBe(1);
       expect(totalTimes).toBe(10000000);

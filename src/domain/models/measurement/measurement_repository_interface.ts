@@ -8,4 +8,5 @@ export interface MeasurementRepositoryInterface {
     description?: string,
   ): Measurement;
   stampStopAt(lastMeasurement: Measurement): Measurement;
+  getAll(): readonly Measurement[];
 }
