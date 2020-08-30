@@ -3,7 +3,7 @@ import { UserRepository } from '../../../../src/infrastructure/users/user_reposi
 import { MeasurementRepository } from '../../../../src/infrastructure/measurements/measurement_repository';
 import { IsoWeekRepository } from '../../../../src/infrastructure/iso_weeks/iso_week_repository';
 import { User } from '../../../../src/domain/models/user/user';
-import { ReplyPresenter } from '../../../../src/webhook_app/common/presenters/reply/reply_presenter';
+import { ReplyPresenter } from '../../../../src/webhook_app/presenters/reply/reply_presenter';
 import { MeasurementStopInteractor } from '../../../../src/domain/applications/measurement/measurement_stop_interactor';
 import { IsoWeek } from '../../../../src/domain/models/iso_week/iso_week';
 
@@ -22,12 +22,6 @@ describe('MeasurementStopInteractor', () => {
   PropertiesService.getScriptProperties = jest.fn(() => ({
     getProperty: jest.fn(() => 'xxxxxxx'),
   })) as any;
-
-  ContentService.createTextOutput = jest.fn(() => ({
-    setMimeType: jest.fn(),
-  })) as any;
-
-  ContentService.MimeType = jest.fn() as any;
 
   Moment.moment = jest.fn(() => ({
     get: jest.fn(() => 2020),
@@ -60,8 +54,8 @@ describe('MeasurementStopInteractor', () => {
           jest.spyOn(MeasurementRepository.prototype, 'last').mockReturnValue(measurement);
           jest.spyOn(Measurement.prototype, 'calculateImplementTime').mockReturnValue(1800000);
 
-          measurementStopInteractor.handle(userId, userName);
-          expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
+          const result = measurementStopInteractor.handle(userId, userName);
+          expect(result.indexOf(`${userName} さんの実装終了時間を打刻しました`) !== -1).toBe(true);
         });
       });
     });
@@ -73,8 +67,10 @@ describe('MeasurementStopInteractor', () => {
 
           const userId = 'IM1234';
           const userName = 'izuku.midoriya';
-          measurementStopInteractor.handle(userId, userName);
-          expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
+          const result = measurementStopInteractor.handle(userId, userName);
+          expect(result.indexOf(`${userName} さんのユーザーデータは存在しません。`) !== -1).toBe(
+            true,
+          );
         });
       });
 
@@ -90,8 +86,10 @@ describe('MeasurementStopInteractor', () => {
           jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
           jest.spyOn(MeasurementRepository.prototype, 'last').mockReturnValue(measurement);
 
-          measurementStopInteractor.handle(userId, userName);
-          expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
+          const result = measurementStopInteractor.handle(userId, userName);
+          expect(result.indexOf(`${userName} さんはこれが初めての計測のようです。`) !== -1).toBe(
+            true,
+          );
         });
       });
 
@@ -106,8 +104,8 @@ describe('MeasurementStopInteractor', () => {
           jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
           jest.spyOn(MeasurementRepository.prototype, 'last').mockReturnValue(measurement);
 
-          measurementStopInteractor.handle(userId, userName);
-          expect(ContentService.createTextOutput).toHaveBeenCalledTimes(1);
+          const result = measurementStopInteractor.handle(userId, userName);
+          expect(result.indexOf('現在計測中のデータが見つかりませんでした') !== -1).toBe(true);
         });
       });
     });

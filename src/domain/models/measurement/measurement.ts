@@ -42,7 +42,7 @@ export class Measurement {
 
   calculateImplementTime(): number {
     const startAt = Moment.moment(this.getMeasurementStartAt().toDate());
-    const stopAt = Moment.moment(this.getMeasurementStopAt()?.toDate());
+    const stopAt = Moment.moment(this.getMeasurementStopAt().toDate());
     return Math.abs(startAt.diff(stopAt));
   }
 
@@ -67,7 +67,7 @@ export class Measurement {
   ): { start: Date; stop: Date }[] {
     const filteredMeasurements = measurements.filter((e) => {
       const start = e.getMeasurementStartAt().toDate();
-      const stop = e.getMeasurementStopAt()?.toDate();
+      const stop = e.getMeasurementStopAt().toDate();
       if (typeof stop === 'undefined') {
         throw new Error(
           `MeasurementStopAt is undefined. measurementId=${e.getMeasurementId().toNumber()}`,
@@ -87,7 +87,7 @@ export class Measurement {
 
     return filteredMeasurements.map((e) => {
       const start = e.getMeasurementStartAt().toDate();
-      const stop = e.getMeasurementStopAt()?.toDate();
+      const stop = e.getMeasurementStopAt().toDate();
       if (typeof stop === 'undefined') {
         throw new Error(
           `MeasurementStopAt is undefined. measurementId=${e.getMeasurementId().toNumber()}`,

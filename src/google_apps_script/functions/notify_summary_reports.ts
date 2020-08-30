@@ -5,8 +5,8 @@ import { MeasurementRepository } from '../../infrastructure/measurements/measure
 import { StandardValueRepository } from '../../infrastructure/standard_values/standard_value_repository';
 import { SummaryReportRepository } from '../../infrastructure/summary_reports/summary_report_repository';
 import { UserSettingRepository } from '../../infrastructure/user_settings/user_setting_repository';
-import { NotifyPresenter } from '../../webhook_app/common/presenters/notify/notify_presenter';
-import { SummaryReportNotifyController } from '../../webhook_app/summary_report/controllers/notify/summary_report_notify_controller';
+import { NotifyPresenter } from '../../webhook_app/presenters/notify/notify_presenter';
+import { SummaryReportNotifyController } from '../../webhook_app/controllers/summary_report/notify/summary_report_notify_controller';
 
 function notifySummaryReports(): void {
   const isoWeekRepository = new IsoWeekRepository();
