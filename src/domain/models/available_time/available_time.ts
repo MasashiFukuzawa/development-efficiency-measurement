@@ -62,7 +62,7 @@ export class AvailableTime {
   ): number {
     const attendEvents = this.cutOffNotAttendEvents(weeklyEvents);
 
-    const eventsWithoutBreakTime = this.trimBreakTime(attendEvents);
+    const eventsWithoutBreakTime = this.trimBreakEvents(attendEvents);
 
     const sortedEvents = this.sortEvent(eventsWithoutBreakTime);
 
@@ -82,18 +82,33 @@ export class AvailableTime {
 
     const theoreticalImplementTime = eventTimeLists.reduce((a: number, b: number) => a + b);
 
-    // NOTE: trimBreakTime関数で休憩イベントをトリミングしたので、最終的にここで休憩時間を1時間分付与して帳尻を合わせている
-    const maxTime = (availableWorkHours + 1) * 60 * 60 * 1000;
+    const maxTime = availableWorkHours * 60 * 60 * 1000;
 
-    return maxTime - theoreticalImplementTime;
+    const result = maxTime - theoreticalImplementTime;
+
+    // NOTE: 定時の間にフルで予定が入っている場合、休憩時間が考慮されずに9時間働くことになり、
+    // 実装可能な時間が-1時間として通知されてしまうため、計算結果が負の値になったら0を返す
+    return result > 0 ? result : 0;
   }
 
   private static cutOffNotAttendEvents(weeklyEvents: Event[]): Event[] {
     return weeklyEvents.filter((e) => e.willAttend);
   }
 
-  private static trimBreakTime(attendEvents: Event[]): Event[] {
-    const breakKeyWords = ['休憩', 'ランチ', 'ご飯', 'ごはん', 'Lunch', 'lunch', 'Break', 'break'];
+  private static trimBreakEvents(attendEvents: Event[]): Event[] {
+    const breakKeyWords = [
+      '休憩',
+      'ランチ',
+      '飯',
+      '食',
+      '歓迎会',
+      'ごはん',
+      '離席',
+      'Lunch',
+      'lunch',
+      'Break',
+      'break',
+    ];
     return attendEvents.filter((e) => !breakKeyWords.includes(e.title));
   }
 
