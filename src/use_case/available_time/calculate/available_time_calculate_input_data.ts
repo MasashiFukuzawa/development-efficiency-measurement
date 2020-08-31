@@ -4,12 +4,8 @@ import CalendarEvent = GoogleAppsScript.Calendar.CalendarEvent;
 export class AvailableTimeCalculateInputData extends AvailableTimeInputDataBase {
   getEvents(googleCalendarId: string): CalendarEvent[] {
     const calendar = CalendarApp.getCalendarById(googleCalendarId);
-    const nextMonday = Moment.moment()
-      .day(1 + 7)
-      .toDate();
-    const nextFriday = Moment.moment()
-      .day(5 + 7)
-      .toDate();
-    return calendar.getEvents(nextMonday, nextFriday);
+    const thisMonday = Moment.moment().day(1).toDate();
+    const thisFriday = Moment.moment().day(5).toDate();
+    return calendar.getEvents(thisMonday, thisFriday);
   }
 }

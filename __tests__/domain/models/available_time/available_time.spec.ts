@@ -80,7 +80,7 @@ describe('AvailableTime', () => {
         ];
 
         const availableWorkHours = AvailableTime.WORK_HOURS_PER_WEEK;
-        const maxTime = (availableWorkHours + 1) * 60 * 60 * 1000;
+        const maxTime = availableWorkHours * 60 * 60 * 1000;
 
         const result = AvailableTime.calculateAvailableTime(
           weeklyEvents,
@@ -124,7 +124,7 @@ describe('AvailableTime', () => {
         ];
 
         const availableWorkHours = AvailableTime.WORK_HOURS_PER_WEEK;
-        const maxTime = (availableWorkHours + 1) * 60 * 60 * 1000;
+        const maxTime = availableWorkHours * 60 * 60 * 1000;
 
         const result = AvailableTime.calculateAvailableTime(
           weeklyEvents,
@@ -168,7 +168,7 @@ describe('AvailableTime', () => {
         ];
 
         const availableWorkHours = AvailableTime.WORK_HOURS_PER_WEEK;
-        const maxTime = (availableWorkHours + 1) * 60 * 60 * 1000;
+        const maxTime = availableWorkHours * 60 * 60 * 1000;
 
         const result = AvailableTime.calculateAvailableTime(
           weeklyEvents,
@@ -212,7 +212,7 @@ describe('AvailableTime', () => {
         ];
 
         const availableWorkHours = AvailableTime.WORK_HOURS_PER_WEEK;
-        const maxTime = (availableWorkHours + 1) * 60 * 60 * 1000;
+        const maxTime = availableWorkHours * 60 * 60 * 1000;
 
         const result = AvailableTime.calculateAvailableTime(
           weeklyEvents,
@@ -256,7 +256,7 @@ describe('AvailableTime', () => {
         ];
 
         const availableWorkHours = AvailableTime.WORK_HOURS_PER_WEEK;
-        const maxTime = (availableWorkHours + 1) * 60 * 60 * 1000;
+        const maxTime = availableWorkHours * 60 * 60 * 1000;
 
         const result = AvailableTime.calculateAvailableTime(
           weeklyEvents,
@@ -300,7 +300,7 @@ describe('AvailableTime', () => {
         ];
 
         const availableWorkHours = AvailableTime.WORK_HOURS_PER_DAY;
-        const maxTime = (availableWorkHours + 1) * 60 * 60 * 1000;
+        const maxTime = availableWorkHours * 60 * 60 * 1000;
 
         const result = AvailableTime.calculateAvailableTime(
           weeklyEvents,
