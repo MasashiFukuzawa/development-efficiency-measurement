@@ -1,3 +1,4 @@
+import { GlobalConstants } from '../constants';
 import SpreadSheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
 
 export class HelpInputData {
@@ -50,8 +51,8 @@ export class HelpInputData {
 
 (6) その他要望やバグについて
 
-    お手数ですが、下記スプレッドシートにアクセスし、直接ご記入して下さい。
-    ${this.getSpreadSheetUrl('requests')}`;
+    お手数ですが、下記リンクからIssueをご記入いただければ幸いです。
+    ${GlobalConstants.GITHUB_URL}`;
   }
 
   private getSpreadSheetUrl(sheetName: string): string {
