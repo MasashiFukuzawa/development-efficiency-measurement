@@ -6,10 +6,11 @@ export abstract class AvailableTimeInputDataBase {
 
   mapEvents(calendarEvents: CalendarEvent[]): Event[] {
     return calendarEvents.map((e) => {
+      const title = e.getTitle();
       const willAttend = this.willAttend(e.getMyStatus());
       const eventStartAt: Date = Moment.moment(e.getStartTime()).toDate();
       const eventEndAt: Date = Moment.moment(e.getEndTime()).toDate();
-      return { willAttend, eventStartAt, eventEndAt };
+      return { title, willAttend, eventStartAt, eventEndAt };
     });
   }
 
