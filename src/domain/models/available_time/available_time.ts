@@ -3,6 +3,7 @@ import { UserId } from '../user/value_objects/user_id';
 import { AvailableTimeTheoreticalImplementTime } from './value_objects/available_time_theoretical_implement_time';
 
 export interface Event {
+  title: string;
   willAttend: boolean;
   eventStartAt: Date;
   eventEndAt: Date;
@@ -61,7 +62,9 @@ export class AvailableTime {
   ): number {
     const attendEvents = this.cutOffNotAttendEvents(weeklyEvents);
 
-    const sortedEvents = this.sortEvent(attendEvents);
+    const eventsWithoutBreakTime = this.trimBreakTime(attendEvents);
+
+    const sortedEvents = this.sortEvent(eventsWithoutBreakTime);
 
     const eventsWithoutTimeOverlapping = this.trimTimeOverlapping(sortedEvents);
 
@@ -79,13 +82,19 @@ export class AvailableTime {
 
     const theoreticalImplementTime = eventTimeLists.reduce((a: number, b: number) => a + b);
 
-    const maxTime = availableWorkHours * 60 * 60 * 1000;
+    // NOTE: trimBreakTime関数で休憩イベントをトリミングしたので、最終的にここで休憩時間を1時間分付与して帳尻を合わせている
+    const maxTime = (availableWorkHours + 1) * 60 * 60 * 1000;
 
     return maxTime - theoreticalImplementTime;
   }
 
   private static cutOffNotAttendEvents(weeklyEvents: Event[]): Event[] {
     return weeklyEvents.filter((e) => e.willAttend);
+  }
+
+  private static trimBreakTime(attendEvents: Event[]): Event[] {
+    const breakKeyWords = ['休憩', 'ランチ', 'ご飯', 'ごはん', 'Lunch', 'lunch', 'Break', 'break'];
+    return attendEvents.filter((e) => !breakKeyWords.includes(e.title));
   }
 
   private static sortEvent(attendEvents: Event[]): Event[] {
