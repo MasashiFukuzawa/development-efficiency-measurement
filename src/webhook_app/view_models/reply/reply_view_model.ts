@@ -1,8 +1,8 @@
-import { SlackReplyView } from '../../views/slack/reply/slack_reply_view';
+import { ReplyView } from '../../views/reply/reply_view';
 
 export class ReplyViewModel {
   reply(message: string): string {
-    const slack = new SlackReplyView();
+    const slack = new ReplyView();
     return slack.reply(message);
   }
 }
