@@ -3,30 +3,54 @@ import { UserCreateInteractor } from '../../domain/applications/user/user_create
 import { MeasurementRepository } from '../../infrastructure/measurements/measurement_repository';
 import { UserRepository } from '../../infrastructure/users/user_repository';
 import { UserSettingRepository } from '../../infrastructure/user_settings/user_setting_repository';
-import { ReplyPresenter } from '../../webhook_app/presenters/reply/reply_presenter';
-import { UserCreateController } from '../../webhook_app/controllers/user/create/user_create_controller';
-import { MeasurementStartController } from '../../webhook_app/controllers/measurement/start/measurement_start_controller';
-import { MeasurementStopController } from '../../webhook_app/controllers/measurement/stop/measurement_stop_controller';
+import { ReplyPresenter } from '../../app/presenters/reply/reply_presenter';
+import { UserCreateController } from '../../app/controllers/user/create/user_create_controller';
+import { MeasurementStartController } from '../../app/controllers/measurement/start/measurement_start_controller';
+import { MeasurementStopController } from '../../app/controllers/measurement/stop/measurement_stop_controller';
 import { MeasurementStopInteractor } from '../../domain/applications/measurement/measurement_stop_interactor';
 import { IsoWeekRepository } from '../../infrastructure/iso_weeks/iso_week_repository';
+import { HelpController } from '../../app/controllers/help_controller';
 import TextOutput = GoogleAppsScript.Content.TextOutput;
-import { HelpController } from '../../webhook_app/controllers/help_controller';
 
 function doPost(e: any): TextOutput {
-  const token = PropertiesService.getScriptProperties().getProperty('SLACK_VERIFICATION_TOKEN');
-  if (token !== e.parameter.token) throw new Error('Invalid Token');
-  const text: string = e.parameter.text;
-  const userId: string = e.parameter.user_id;
-  const userName: string = e.parameter.user_name;
-  const doPost = new SlackDoPost();
-  const message = doPost.execControllerAction(text, userId, userName);
-  return ContentService.createTextOutput(JSON.stringify({ text: message })).setMimeType(
-    ContentService.MimeType.JSON,
-  );
+  if (typeof e.parameter === 'undefined') throw new Error('Bad Request');
+
+  const receivedToken = e.parameter.token;
+  if (SlackDoPost.isSlackToken(receivedToken) || CliDoPost.isCliToken(receivedToken)) {
+    const text = e.parameter.text;
+    const userId = e.parameter.user_id;
+    const userName = e.parameter.user_name;
+    const message = DoPost.execControllerAction(text, userId, userName);
+    return ContentService.createTextOutput(JSON.stringify({ text: message })).setMimeType(
+      ContentService.MimeType.JSON,
+    );
+  } else {
+    throw new Error('Invalid Token');
+  }
 }
 
 class SlackDoPost {
-  execControllerAction(text: string, userId: string, userName: string): string {
+  static isSlackToken(token: string): boolean {
+    return token === this.getSlackToken();
+  }
+
+  private static getSlackToken(): string | null {
+    return PropertiesService.getScriptProperties().getProperty('SLACK_VERIFICATION_TOKEN');
+  }
+}
+
+class CliDoPost {
+  static isCliToken(token: string): boolean {
+    return token === this.getCliToken();
+  }
+
+  private static getCliToken(): string | null {
+    return PropertiesService.getScriptProperties().getProperty('CLI_VERIFICATION_TOKEN');
+  }
+}
+
+class DoPost {
+  static execControllerAction(text: string, userId: string, userName: string): string {
     const contents = text.split(' ');
     const [action, arg] = contents;
     switch (action) {
@@ -43,7 +67,11 @@ class SlackDoPost {
     }
   }
 
-  private execUserCreateAction(slackFormatGmail: string, userId: string, userName: string): string {
+  private static execUserCreateAction(
+    slackFormatGmail: string,
+    userId: string,
+    userName: string,
+  ): string {
     const userRepository = new UserRepository();
     const userSettingRepository = new UserSettingRepository();
     const replyPresenter = new ReplyPresenter();
@@ -56,7 +84,7 @@ class SlackDoPost {
     return userCreateController.create(slackFormatGmail, userId, userName);
   }
 
-  private execMeasurementStartAction(userId: string, userName: string): string {
+  private static execMeasurementStartAction(userId: string, userName: string): string {
     const userRepository = new UserRepository();
     const measurementRepository = new MeasurementRepository();
     const isoWeekRepository = new IsoWeekRepository();
@@ -71,7 +99,7 @@ class SlackDoPost {
     return measurementStartController.start(userId, userName);
   }
 
-  private execMeasurementStopAction(userId: string, userName: string): string {
+  private static execMeasurementStopAction(userId: string, userName: string): string {
     const userRepository = new UserRepository();
     const measurementRepository = new MeasurementRepository();
     const isoWeekRepository = new IsoWeekRepository();
@@ -86,7 +114,7 @@ class SlackDoPost {
     return measurementStartController.stop(userId, userName);
   }
 
-  private execHelpAction(userId: string): string {
+  private static execHelpAction(userId: string): string {
     const helpController = new HelpController();
     return helpController.help(userId);
   }
