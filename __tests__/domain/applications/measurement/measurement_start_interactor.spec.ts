@@ -3,7 +3,7 @@ import { UserRepository } from '../../../../src/infrastructure/users/user_reposi
 import { MeasurementRepository } from '../../../../src/infrastructure/measurements/measurement_repository';
 import { IsoWeekRepository } from '../../../../src/infrastructure/iso_weeks/iso_week_repository';
 import { User } from '../../../../src/domain/models/user/user';
-import { ReplyPresenter } from '../../../../src/webhook_app/presenters/reply/reply_presenter';
+import { ReplyPresenter } from '../../../../src/app/presenters/reply/reply_presenter';
 import { MeasurementStartInteractor } from '../../../../src/domain/applications/measurement/measurement_start_interactor';
 import { IsoWeek } from '../../../../src/domain/models/iso_week/iso_week';
 

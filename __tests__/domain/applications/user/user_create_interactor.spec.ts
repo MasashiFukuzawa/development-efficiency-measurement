@@ -2,7 +2,7 @@ import { User } from '../../../../src/domain/models/user/user';
 import { UserSetting } from '../../../../src/domain/models/user_setting/user_setting';
 import { UserRepository } from '../../../../src/infrastructure/users/user_repository';
 import { UserSettingRepository } from '../../../../src/infrastructure/user_settings/user_setting_repository';
-import { ReplyPresenter } from '../../../../src/webhook_app/presenters/reply/reply_presenter';
+import { ReplyPresenter } from '../../../../src/app/presenters/reply/reply_presenter';
 import { UserCreateInteractor } from '../../../../src/domain/applications/user/user_create_interactor';
 
 describe('UserCreateInteractor', () => {

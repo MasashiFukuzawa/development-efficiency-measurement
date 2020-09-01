@@ -5,7 +5,7 @@ import { UserSetting } from '../../../../src/domain/models/user_setting/user_set
 import { SummaryReport } from '../../../../src/domain/models/summary_report/summary_report';
 import { SummaryReportRepository } from '../../../../src/infrastructure/summary_reports/summary_report_repository';
 import { StandardValueRepository } from '../../../../src/infrastructure/standard_values/standard_value_repository';
-import { NotifyPresenter } from '../../../../src/webhook_app/presenters/notify/notify_presenter';
+import { NotifyPresenter } from '../../../../src/app/presenters/notify/notify_presenter';
 import { IsoWeekRepository } from '../../../../src/infrastructure/iso_weeks/iso_week_repository';
 import { SummaryReportNotifyInteractor } from '../../../../src/domain/applications/summary_report/summary_report_notify_interactor';
 import { IsoWeek } from '../../../../src/domain/models/iso_week/iso_week';
