@@ -17,7 +17,7 @@ export class HelpInputData {
 
 (1) 開発効率計測botを初めて使用する時
 
-    \`/kaihatshu create_user xxx@finc.com\` と打つことでユーザーが登録されます。
+    \`/kaihatshu user xxx@finc.com\` と打つことでユーザーが登録されます。
 
     ユーザー登録すると、以下の機能が使えるようになります。
         - 実装時間の計測

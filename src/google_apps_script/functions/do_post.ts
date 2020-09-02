@@ -54,9 +54,9 @@ class DoPost {
     const contents = text.split(' ');
     const [action, arg] = contents;
     switch (action) {
-      case 'create_user':
+      case 'user':
         if (!arg)
-          return `\`/kaihatsu create_user xxx@finc.com\` のようにメールアドレスを入力して下さい`;
+          return `\`/measurement user xxx@finc.com\` のようにメールアドレスを入力して下さい`;
         return this.execUserCreateAction(arg, userId, userName);
       case 'start':
         return this.execMeasurementStartAction(userId, userName);
