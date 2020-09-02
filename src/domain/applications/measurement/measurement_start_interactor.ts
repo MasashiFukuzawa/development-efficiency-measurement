@@ -1,6 +1,6 @@
 import { MeasurementStartOutputData } from '../../../use_case/measurement/start/measurement_start_output_data';
 import { MeasurementStartUseCaseInterface } from '../../../use_case/measurement/start/measurement_start_use_case_interface';
-import { ReplyPresenter } from '../../../webhook_app/presenters/reply/reply_presenter';
+import { ReplyPresenter } from '../../../app/presenters/reply/reply_presenter';
 import { IsoWeekRepositoryInterface } from '../../models/iso_week/iso_week_repository_interface';
 import { Measurement } from '../../models/measurement/measurement';
 import { MeasurementRepositoryInterface } from '../../models/measurement/measurement_repository_interface';

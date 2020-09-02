@@ -1,6 +1,6 @@
 import { UserSetting } from '../../../../src/domain/models/user_setting/user_setting';
 import { UserSettingRepository } from '../../../../src/infrastructure/user_settings/user_setting_repository';
-import { NotifyPresenter } from '../../../../src/webhook_app/presenters/notify/notify_presenter';
+import { NotifyPresenter } from '../../../../src/app/presenters/notify/notify_presenter';
 import { AvailableTimeNotifyInteractor } from '../../../../src/domain/applications/available_time/available_time_notify_interactor';
 
 describe('AvailableTimeNotifyInteractor', () => {

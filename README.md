@@ -9,6 +9,7 @@
   - カレンダーの空き時間のうち、実際に開発に費やすことができた時間の割合（単位：なし）
     - 差し込まれなかった割合を意味する
 - 毎朝、その日の実装可能時間を Slack に通知
+- 自身のターミナルに設定情報を書くことで、CLI からも実行可能
 
 # 動作環境
 
@@ -96,4 +97,47 @@ src/appscript.json を編集
 
 ```sh:
 $ clasp push
+```
+
+# CLI Setting
+
+以下のように設定することで CLI からコマンドを実行することが可能になります。
+
+## config file
+
+```zsh
+$ mkdir ~/.development_efficiency_measurement
+$ vim ~/.development_efficiency_measurement/config
+```
+
+config ファイルを作成し、以下のように curl するのに必要な情報を管理して下さい。
+以下に注意点を記載します。
+
+- GAS の特性上、URL を知っている人は誰でも curl できてしまうので、安易に公開しないようにご注意下さい。
+- `TOKEN_FOR_CLI`はアプリ管理者が作成した任意の文字列が入ります。
+
+```text
+url={YOUR_GOOGLE_APPS_SCRIPT_ENDPOINT}
+token={TOKEN_FOR_CLI}
+user_id={SLACK_USER_ID}
+user_name={SLACK_USER_NAME}
+```
+
+## zshrc
+
+一例ですが、~/.zshrc に関数を用意し、以下のように alias を貼っておくと便利です。
+
+```sh
+alias start='kaihatsu start'
+alias stop='kaihatsu stop'
+
+function kaihatsu() {
+  config_path="${HOME}/.development_efficiency_measurement/config"
+  url=`cat ${config_path} | grep url | sed s/url=// | awk '{ print }'`
+  token=`cat ${config_path} | grep token | sed s/token=// | awk '{ print }'`
+  user_id=`cat ${config_path} | grep user_id | sed s/user_id=// | awk '{ print }'`
+  user_name=`cat ${config_path} | grep user_name | sed s/user_name=// | awk '{ print }'`
+  curl -L "${url}?token=${token}&user_id=${user_id}&user_name=${user_name}&text=$1" \
+    -d "" -H "Content-Type: application/json"
+}
 ```

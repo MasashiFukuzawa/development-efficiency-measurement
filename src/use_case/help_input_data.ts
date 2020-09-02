@@ -49,10 +49,16 @@ export class HelpInputData {
     ${this.getSpreadSheetUrl('user_settings')}
 
 
-(6) その他要望やバグについて
+(6) CLIから実行したい時
+
+    下記リンクを参考に自身のターミナルで実行できるように設定してみて下さい。
+    エンドポイントおよびトークンについては管理者にお問い合わせ下さい。
+    ${GlobalConstants.GITHUB_README_URL}
+
+(7) その他要望やバグについて
 
     お手数ですが、下記リンクからIssueをご記入いただければ幸いです。
-    ${GlobalConstants.GITHUB_URL}`;
+    ${GlobalConstants.GITHUB_ISSUE_URL}`;
   }
 
   private getSpreadSheetUrl(sheetName: string): string {
