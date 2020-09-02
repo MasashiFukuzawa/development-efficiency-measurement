@@ -17,7 +17,7 @@ export class HelpInputData {
 
 (1) 開発効率計測botを初めて使用する時
 
-    \`/kaihatshu user xxx@finc.com\` と打つことでユーザーが登録されます。
+    \`/measurement user xxx@finc.com\` と打つことでユーザーが登録されます。
 
     ユーザー登録すると、以下の機能が使えるようになります。
         - 実装時間の計測
@@ -27,12 +27,12 @@ export class HelpInputData {
 
 (2) 実装開始時間の打刻をしたい時
 
-    \`/kaihatshu start\` と打つことで実装開始時間が登録されます。
+    \`/measurement start\` と打つことで実装開始時間が登録されます。
 
 
 (3) 実装終了時間の打刻をしたい時
 
-    \`/kaihatshu stop\` と打つことで実装終了時間が登録されます。
+    \`/measurement stop\` と打つことで実装終了時間が登録されます。
 
 
 (4) 打刻した時間を修正したい時
