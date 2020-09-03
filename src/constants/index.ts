@@ -5,3 +5,7 @@ export class GlobalConstants {
   static readonly GITHUB_README_URL =
     'https://github.com/MasashiFukuzawa/development-efficiency-measurement#cli-setting';
 }
+
+export class GoogleAppsScriptConstants {
+  static readonly MAX_CACHE_EXPIRATION_IN_SECONDS = 21600;
+}
