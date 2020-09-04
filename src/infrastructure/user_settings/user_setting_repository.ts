@@ -1,6 +1,7 @@
 import { UserSettingRepositoryInterface } from '../../domain/models/user_setting/user_setting_repository_interface';
 import { UserSetting } from '../../domain/models/user_setting/user_setting';
 import { BaseRepository } from '../base_repository';
+import { GoogleAppsScriptConstants } from '../../constants';
 
 export class UserSettingRepository extends BaseRepository
   implements UserSettingRepositoryInterface {
@@ -21,20 +22,73 @@ export class UserSettingRepository extends BaseRepository
 
   create(userId: string, googleCalendarId: string): UserSetting {
     const userSetting = new UserSetting(userId, googleCalendarId);
+
+    const workStartHour = userSetting.getWorkStartHour().toNumber();
+    const workStartMinute = userSetting.getWorkStartMinute().toNumber();
+    const workEndHour = userSetting.getWorkEndHour().toNumber();
+    const workEndMinute = userSetting.getWorkEndMinute().toNumber();
+    const notificationStatus = userSetting.getNotificationStatus().toString();
+    const updatedAt = userSetting.getUpdatedAt();
+
     this.sheet
       .getRange(this.lastRow + 1, 1, 1, this.lastCol)
       .setValues([
         [
           userId,
           googleCalendarId,
-          userSetting.getWorkStartHour().toNumber(),
-          userSetting.getWorkStartMinute().toNumber(),
-          userSetting.getWorkEndHour().toNumber(),
-          userSetting.getWorkEndMinute().toNumber(),
-          userSetting.getNotificationStatus().toString(),
-          userSetting.getUpdatedAt(),
+          workStartHour,
+          workStartMinute,
+          workEndHour,
+          workEndMinute,
+          notificationStatus,
+          updatedAt,
         ],
       ]);
+
+    this.putCache(
+      userId,
+      googleCalendarId,
+      workStartHour,
+      workStartMinute,
+      workEndHour,
+      workEndMinute,
+      notificationStatus,
+      updatedAt,
+    );
+
     return userSetting;
+  }
+
+  putCache(
+    userId: string,
+    googleCalendarId: string,
+    workStartHour: number,
+    workStartMinute: number,
+    workEndHour: number,
+    workEndMinute: number,
+    notificationStatus: string,
+    updatedAt: Date,
+  ): void {
+    const userSettingsCache: readonly any[][] = !this.dbCache
+      ? this.getRawData()
+      : JSON.parse(this.dbCache);
+
+    const userSettingsCacheClone = [...userSettingsCache];
+    userSettingsCacheClone.push([
+      userId,
+      googleCalendarId,
+      workStartHour,
+      workStartMinute,
+      workEndHour,
+      workEndMinute,
+      notificationStatus,
+      updatedAt,
+    ]);
+
+    this.cache?.put(
+      'data:user_settings',
+      JSON.stringify(userSettingsCacheClone),
+      GoogleAppsScriptConstants.MAX_CACHE_EXPIRATION_IN_SECONDS,
+    );
   }
 }
