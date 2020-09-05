@@ -1,6 +1,7 @@
+import { Singleton } from './singleton';
+import Cache = GoogleAppsScript.Cache.Cache;
 import Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
 import Sheet = GoogleAppsScript.Spreadsheet.Sheet;
-import Cache = GoogleAppsScript.Cache.Cache;
 
 export abstract class BaseRepository {
   readonly cache: Cache | null;
@@ -11,9 +12,12 @@ export abstract class BaseRepository {
   readonly lastCol: number;
   readonly fullData: readonly any[];
   constructor(sheetName: string) {
-    this.cache = this.getCache();
+    const singleton = Singleton.getInstance();
+    this.cache = singleton.cache;
+    this.spreadsheet = singleton.spreadsheet;
+
     this.dbCache = this.cache?.get(`data:${sheetName}`);
-    this.spreadsheet = this.getSpreadsheet();
+
     this.sheet = this.getSheet(sheetName);
     this.lastRow = this.getLastRow();
     this.lastCol = this.getLastColumn();
@@ -34,26 +38,6 @@ export abstract class BaseRepository {
   }
 
   abstract map(data: any[][]): readonly any[];
-
-  private getCache(): Cache | null {
-    if (this.cache) return this.cache;
-    return CacheService.getScriptCache();
-  }
-
-  private getSpreadsheet(): Spreadsheet {
-    if (this.spreadsheet) return this.spreadsheet;
-
-    const spreadsheetIdCache = this.cache?.get('spreadsheetId');
-    const spreadsheetId = !spreadsheetIdCache
-      ? PropertiesService.getScriptProperties().getProperty('SPREAD_SHEET_ID')
-      : spreadsheetIdCache;
-    if (!spreadsheetId) throw new Error('SPREAD_SHEET_ID is not found.');
-
-    const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
-    if (!spreadsheet) throw new Error('Target spreadsheet is not found.');
-
-    return spreadsheet;
-  }
 
   private getSheet(sheetName: string): Sheet {
     const sheet = this.spreadsheet.getSheetByName(sheetName);
