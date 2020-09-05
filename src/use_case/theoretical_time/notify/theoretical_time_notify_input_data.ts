@@ -1,4 +1,4 @@
-import { AvailableTimeInputDataBase } from '../available_time_input_data_base';
+import { AvailableTimeInputDataBase } from '../theoretical_time_input_data_base';
 import CalendarEvent = GoogleAppsScript.Calendar.CalendarEvent;
 
 export class AvailableTimeNotifyInputData extends AvailableTimeInputDataBase {

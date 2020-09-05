@@ -1,4 +1,4 @@
-import { AvailableTime } from '../../../../src/domain/models/available_time/available_time';
+import { AvailableTime } from '../../../../src/domain/models/theoretical_time/theoretical_time';
 
 describe('AvailableTime', () => {
   describe('#isTargetWeek', () => {

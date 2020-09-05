@@ -1,4 +1,4 @@
-import { AvailableTimeRepository } from '../../../src/infrastructure/available_times/available_time_repository';
+import { AvailableTimeRepository } from '../../../src/infrastructure/theoretical_times/theoretical_time_repository';
 
 describe('AvailableTimeRepository', () => {
   SpreadsheetApp.openById = jest.fn(() => ({

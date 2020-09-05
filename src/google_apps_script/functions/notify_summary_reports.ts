@@ -1,5 +1,5 @@
 import { SummaryReportNotifyInteractor } from '../../domain/applications/summary_report/summary_report_notify_interactor';
-import { AvailableTimeRepository } from '../../infrastructure/available_times/available_time_repository';
+import { AvailableTimeRepository } from '../../infrastructure/theoretical_times/theoretical_time_repository';
 import { IsoWeekRepository } from '../../infrastructure/iso_weeks/iso_week_repository';
 import { MeasurementRepository } from '../../infrastructure/measurements/measurement_repository';
 import { StandardValueRepository } from '../../infrastructure/standard_values/standard_value_repository';

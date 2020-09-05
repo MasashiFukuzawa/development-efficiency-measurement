@@ -1,7 +1,7 @@
-import { AvailableTimeCalculateInputData } from '../../../use_case/available_time/calculate/available_time_calculate_input_data';
-import { AvailableTimeCalculateUseCaseInterface } from '../../../use_case/available_time/calculate/available_time_calculate_use_case_interface';
-import { AvailableTime } from '../../models/available_time/available_time';
-import { AvailableTimeRepositoryInterface } from '../../models/available_time/available_time_repository_interface';
+import { AvailableTimeCalculateInputData } from '../../../use_case/theoretical_time/calculate/theoretical_time_calculate_input_data';
+import { AvailableTimeCalculateUseCaseInterface } from '../../../use_case/theoretical_time/calculate/theoretical_time_calculate_use_case_interface';
+import { AvailableTime } from '../../models/theoretical_time/theoretical_time';
+import { AvailableTimeRepositoryInterface } from '../../models/theoretical_time/theoretical_time_repository_interface';
 import { IsoWeekRepositoryInterface } from '../../models/iso_week/iso_week_repository_interface';
 import { UserSettingRepositoryInterface } from '../../models/user_setting/user_setting_repository_interface';
 

@@ -1,4 +1,4 @@
-import { AvailableTime } from './available_time';
+import { AvailableTime } from './theoretical_time';
 
 export interface AvailableTimeRepositoryInterface {
   getAll(): readonly AvailableTime[];
