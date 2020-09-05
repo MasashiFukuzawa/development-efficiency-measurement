@@ -65,7 +65,7 @@ export class HelpInputData {
   }
 
   private getSpreadSheetUrl(sheetName: string): string {
-    const sheetIdCache = this.cache?.get(`sheetId:${sheetName}`);
+    const sheetIdCache = this.cache?.get(`sheet_id:${sheetName}`);
     if (sheetIdCache) return `${this.url}#gid=${sheetIdCache}`;
 
     const sheet = this.spreadsheet.getSheetByName(sheetName);
@@ -75,7 +75,7 @@ export class HelpInputData {
   }
 
   private getSpreadSheetId(): string {
-    const spreadsheetIdCache = this.cache?.get('spreadsheetId');
+    const spreadsheetIdCache = this.cache?.get('spreadsheet_id');
     const spreadsheetId = !spreadsheetIdCache
       ? PropertiesService.getScriptProperties().getProperty('SPREAD_SHEET_ID')
       : spreadsheetIdCache;
@@ -90,7 +90,7 @@ export class HelpInputData {
   }
 
   private getUrl(): string {
-    const urlCache = this.cache?.get('spreadsheetUrl');
+    const urlCache = this.cache?.get('spreadsheet_url');
     const url = !urlCache ? this.spreadsheet.getUrl() : urlCache;
     return (this.url = url);
   }
