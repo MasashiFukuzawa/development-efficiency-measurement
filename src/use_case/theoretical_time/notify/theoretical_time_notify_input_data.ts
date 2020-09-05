@@ -1,4 +1,4 @@
-import { TheoreticalTimeInputDataBase } from '../theoretical_time_input_data_base';
+import { TheoreticalTimeInputDataBase } from '../base_input_data';
 import CalendarEvent = GoogleAppsScript.Calendar.CalendarEvent;
 
 export class TheoreticalTimeNotifyInputData extends TheoreticalTimeInputDataBase {
