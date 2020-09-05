@@ -1,11 +1,11 @@
-import { AvailableTimeCalculateUseCaseInterface } from '../../../../use_case/theoretical_time/calculate/theoretical_time_calculate_use_case_interface';
+import { TheoreticalTimeCalculateUseCaseInterface } from '../../../../use_case/theoretical_time/calculate/theoretical_time_calculate_use_case_interface';
 
-export class AvailableTimeCalculateController {
+export class TheoreticalTimeCalculateController {
   constructor(
-    private readonly availableTimeCalculateUseCase: AvailableTimeCalculateUseCaseInterface,
+    private readonly theoreticalTimeCalculateUseCase: TheoreticalTimeCalculateUseCaseInterface,
   ) {}
 
   calculate(): void {
-    this.availableTimeCalculateUseCase.handle();
+    this.theoreticalTimeCalculateUseCase.handle();
   }
 }

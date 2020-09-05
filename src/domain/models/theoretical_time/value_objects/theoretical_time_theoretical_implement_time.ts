@@ -1,12 +1,12 @@
-export class AvailableTimeTheoreticalImplementTime {
+export class TheoreticalTimeTheoreticalImplementTime {
   theoreticalImplementTime: number;
   constructor(theoreticalImplementTime: number) {
     if (!theoreticalImplementTime) {
-      throw new Error('AvailableTimeTheoreticalImplementTimeが存在しません');
+      throw new Error('TheoreticalTimeTheoreticalImplementTimeが存在しません');
     }
 
     if (isNaN(theoreticalImplementTime)) {
-      throw new Error('AvailableTimeTheoreticalImplementTimeはnumber型でなければなりません');
+      throw new Error('TheoreticalTimeTheoreticalImplementTimeはnumber型でなければなりません');
     }
 
     this.theoreticalImplementTime = theoreticalImplementTime;

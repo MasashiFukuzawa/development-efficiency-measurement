@@ -1,6 +1,6 @@
-import { AvailableTimeRepository } from '../../../src/infrastructure/theoretical_times/theoretical_time_repository';
+import { TheoreticalTimeRepository } from '../../../src/infrastructure/theoretical_times/theoretical_time_repository';
 
-describe('AvailableTimeRepository', () => {
+describe('TheoreticalTimeRepository', () => {
   SpreadsheetApp.openById = jest.fn(() => ({
     getSheetByName: jest.fn(() => ({
       getLastRow: jest.fn(() => 4),
@@ -16,14 +16,14 @@ describe('AvailableTimeRepository', () => {
     getProperty: jest.fn(() => 'SPREAD_SHEET_ID'),
   })) as any;
 
-  const availableTimeRepository = new AvailableTimeRepository();
+  const theoreticalTimeRepository = new TheoreticalTimeRepository();
 
   describe('#create', () => {
     it('creates successfully', () => {
-      const availableTime = availableTimeRepository.create('IM1234', 1, 10000000);
-      const userId = availableTime.getUserId().toString();
-      const iosWeekId = availableTime.getIsoWeekId().toNumber();
-      const totalTimes = availableTime.getTheoreticalImplementTime().toNumber();
+      const theoreticalTime = theoreticalTimeRepository.create('IM1234', 1, 10000000);
+      const userId = theoreticalTime.getUserId().toString();
+      const iosWeekId = theoreticalTime.getIsoWeekId().toNumber();
+      const totalTimes = theoreticalTime.getTheoreticalImplementTime().toNumber();
       expect(userId).toBe('IM1234');
       expect(iosWeekId).toBe(1);
       expect(totalTimes).toBe(10000000);

@@ -1,7 +1,7 @@
 import { Event } from '../../domain/models/theoretical_time/theoretical_time';
 import CalendarEvent = GoogleAppsScript.Calendar.CalendarEvent;
 
-export abstract class AvailableTimeInputDataBase {
+export abstract class TheoreticalTimeInputDataBase {
   abstract getEvents(googleCalendarId: string): CalendarEvent[];
 
   mapEvents(calendarEvents: CalendarEvent[]): Event[] {

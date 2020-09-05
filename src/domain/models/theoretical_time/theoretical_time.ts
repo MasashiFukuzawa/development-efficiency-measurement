@@ -1,6 +1,6 @@
 import { IsoWeekId } from '../iso_week/domain_objects/ios_week_id';
 import { UserId } from '../user/value_objects/user_id';
-import { AvailableTimeTheoreticalImplementTime } from './value_objects/theoretical_time_theoretical_implement_time';
+import { TheoreticalTimeTheoreticalImplementTime } from './value_objects/theoretical_time_theoretical_implement_time';
 
 export interface Event {
   title: string;
@@ -9,17 +9,17 @@ export interface Event {
   eventEndAt: Date;
 }
 
-export class AvailableTime {
+export class TheoreticalTime {
   static readonly WORK_HOURS_PER_DAY = 8;
   static readonly WORK_HOURS_PER_WEEK = 40;
 
   private readonly userId: UserId;
   private readonly isoWeekId: IsoWeekId;
-  private readonly theoreticalImplementTime: AvailableTimeTheoreticalImplementTime;
+  private readonly theoreticalImplementTime: TheoreticalTimeTheoreticalImplementTime;
   constructor(userId: string, isoWeekId: number, theoreticalImplementTime: number) {
     this.userId = new UserId(userId);
     this.isoWeekId = new IsoWeekId(isoWeekId);
-    this.theoreticalImplementTime = new AvailableTimeTheoreticalImplementTime(
+    this.theoreticalImplementTime = new TheoreticalTimeTheoreticalImplementTime(
       theoreticalImplementTime,
     );
   }
@@ -32,7 +32,7 @@ export class AvailableTime {
     return this.isoWeekId;
   }
 
-  getTheoreticalImplementTime(): AvailableTimeTheoreticalImplementTime {
+  getTheoreticalImplementTime(): TheoreticalTimeTheoreticalImplementTime {
     return this.theoreticalImplementTime;
   }
 
@@ -52,7 +52,7 @@ export class AvailableTime {
     return ms / (60 * 60 * 1000);
   }
 
-  static calculateAvailableTime(
+  static calculateTheoreticalTime(
     weeklyEvents: Event[],
     workStartHour: number,
     workStartMinute: number,
@@ -157,7 +157,7 @@ export class AvailableTime {
     workEndMinute: number,
   ): { start: Date; end: Date }[] {
     const filteredEvents = eventsWithoutTimeOverlapping.filter((e) => {
-      const workTime = AvailableTime.getWorkTime(
+      const workTime = TheoreticalTime.getWorkTime(
         e,
         workStartHour,
         workStartMinute,
@@ -169,7 +169,7 @@ export class AvailableTime {
     });
 
     return filteredEvents.map((e) => {
-      const workTime = AvailableTime.getWorkTime(
+      const workTime = TheoreticalTime.getWorkTime(
         e,
         workStartHour,
         workStartMinute,
