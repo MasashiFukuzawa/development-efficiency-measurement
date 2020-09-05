@@ -62,10 +62,10 @@ export abstract class BaseRepository {
   }
 
   private getLastRow(): number {
-    return this.sheet.getLastRow();
+    return !this.dbCache ? this.sheet.getLastRow() : JSON.parse(this.dbCache).length + 1;
   }
 
   private getLastColumn(): number {
-    return this.sheet.getLastColumn();
+    return !this.dbCache ? this.sheet.getLastColumn() : JSON.parse(this.dbCache)[0].length;
   }
 }
