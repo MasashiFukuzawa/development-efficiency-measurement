@@ -21,6 +21,11 @@ describe('UserRepository', () => {
     getProperty: jest.fn(() => 'SPREAD_SHEET_ID'),
   })) as any;
 
+  CacheService.getScriptCache = jest.fn(() => ({
+    get: jest.fn(() => null),
+    put: jest.fn(),
+  })) as any;
+
   const userRepository = new UserRepository();
 
   describe('#findByUserId', () => {
