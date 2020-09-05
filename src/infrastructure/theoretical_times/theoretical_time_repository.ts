@@ -1,5 +1,5 @@
-import { AvailableTimeRepositoryInterface } from '../../domain/models/available_time/available_time_repository_interface';
-import { AvailableTime } from '../../domain/models/available_time/available_time';
+import { AvailableTimeRepositoryInterface } from '../../domain/models/theoretical/theoretical_time_repository_interface';
+import { AvailableTime } from '../../domain/models/theoretical/theoretical_time';
 import { BaseRepository } from '../base_repository';
 
 export class AvailableTimeRepository extends BaseRepository

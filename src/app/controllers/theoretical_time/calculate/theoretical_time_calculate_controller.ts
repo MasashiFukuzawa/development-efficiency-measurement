@@ -1,4 +1,4 @@
-import { AvailableTimeCalculateUseCaseInterface } from '../../../../use_case/available_time/calculate/available_time_calculate_use_case_interface';
+import { AvailableTimeCalculateUseCaseInterface } from '../../../../use_case/theoretical_time/calculate/theoretical_time_calculate_use_case_interface';
 
 export class AvailableTimeCalculateController {
   constructor(

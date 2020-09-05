@@ -1,8 +1,8 @@
 import { NotifyPresenterInterface } from '../../../use_case/notify_presenter_interface';
-import { AvailableTimeNotifyInputData } from '../../../use_case/available_time/notify/available_time_notify_input_data';
-import { AvailableTimeNotifyOutputData } from '../../../use_case/available_time/notify/available_time_notify_output_data';
-import { AvailableTimeNotifyUseCaseInterface } from '../../../use_case/available_time/notify/available_time_notify_use_case_interface';
-import { AvailableTime } from '../../models/available_time/available_time';
+import { AvailableTimeNotifyInputData } from '../../../use_case/theoretical_time/notify/theoretical_time_notify_input_data';
+import { AvailableTimeNotifyOutputData } from '../../../use_case/theoretical_time/notify/theoretical_time_notify_output_data';
+import { AvailableTimeNotifyUseCaseInterface } from '../../../use_case/theoretical_time/notify/theoretical_time_notify_use_case_interface';
+import { AvailableTime } from '../../models/theoretical_time/theoretical_time';
 import { UserSettingRepositoryInterface } from '../../models/user_setting/user_setting_repository_interface';
 
 export class AvailableTimeNotifyInteractor implements AvailableTimeNotifyUseCaseInterface {

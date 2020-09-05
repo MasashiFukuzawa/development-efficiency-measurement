@@ -1,8 +1,8 @@
 import { UserSetting } from '../../../../src/domain/models/user_setting/user_setting';
-import { AvailableTimeRepository } from '../../../../src/infrastructure/available_times/available_time_repository';
+import { AvailableTimeRepository } from '../../../../src/infrastructure/theoretical_times/theoretical_time_repository';
 import { UserSettingRepository } from '../../../../src/infrastructure/user_settings/user_setting_repository';
 import { IsoWeekRepository } from '../../../../src/infrastructure/iso_weeks/iso_week_repository';
-import { AvailableTimeCalculateInteractor } from '../../../../src/domain/applications/available_time/available_time_calculate_interactor';
+import { AvailableTimeCalculateInteractor } from '../../../../src/domain/applications/theoretical_time/theoretical_time_calculate_interactor';
 import { IsoWeek } from '../../../../src/domain/models/iso_week/iso_week';
 
 describe('AvailableTimeCalculateInteractor', () => {

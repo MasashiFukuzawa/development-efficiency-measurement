@@ -1,6 +1,6 @@
 import { IsoWeekId } from '../iso_week/domain_objects/ios_week_id';
 import { UserId } from '../user/value_objects/user_id';
-import { AvailableTimeTheoreticalImplementTime } from './value_objects/available_time_theoretical_implement_time';
+import { AvailableTimeTheoreticalImplementTime } from './value_objects/theoretical_time_theoretical_implement_time';
 
 export interface Event {
   title: string;
