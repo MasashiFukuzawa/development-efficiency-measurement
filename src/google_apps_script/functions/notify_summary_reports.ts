@@ -1,5 +1,5 @@
 import { SummaryReportNotifyInteractor } from '../../domain/applications/summary_report/summary_report_notify_interactor';
-import { AvailableTimeRepository } from '../../infrastructure/theoretical_times/theoretical_time_repository';
+import { TheoreticalTimeRepository } from '../../infrastructure/theoretical_times/theoretical_time_repository';
 import { IsoWeekRepository } from '../../infrastructure/iso_weeks/iso_week_repository';
 import { MeasurementRepository } from '../../infrastructure/measurements/measurement_repository';
 import { StandardValueRepository } from '../../infrastructure/standard_values/standard_value_repository';
@@ -11,7 +11,7 @@ import { SummaryReportNotifyController } from '../../app/controllers/summary_rep
 function notifySummaryReports(): void {
   const isoWeekRepository = new IsoWeekRepository();
   const userSettingRepository = new UserSettingRepository();
-  const availableTimeRepository = new AvailableTimeRepository();
+  const theoreticalTimeRepository = new TheoreticalTimeRepository();
   const measurementRepository = new MeasurementRepository();
   const summaryReportRepository = new SummaryReportRepository();
   const standardValueRepository = new StandardValueRepository();
@@ -20,7 +20,7 @@ function notifySummaryReports(): void {
   const summaryReportNotifyInteractor = new SummaryReportNotifyInteractor(
     isoWeekRepository,
     userSettingRepository,
-    availableTimeRepository,
+    theoreticalTimeRepository,
     measurementRepository,
     summaryReportRepository,
     standardValueRepository,

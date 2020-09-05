@@ -1,9 +1,11 @@
-import { AvailableTimeNotifyUseCaseInterface } from '../../../../use_case/theoretical_time/notify/theoretical_time_notify_use_case_interface';
+import { TheoreticalTimeNotifyUseCaseInterface } from '../../../../use_case/theoretical_time/notify/theoretical_time_notify_use_case_interface';
 
-export class AvailableTimeNotifyController {
-  constructor(private readonly availableTimeNotifyUseCase: AvailableTimeNotifyUseCaseInterface) {}
+export class TheoreticalTimeNotifyController {
+  constructor(
+    private readonly theoreticalTimeNotifyUseCase: TheoreticalTimeNotifyUseCaseInterface,
+  ) {}
 
   notify(): void {
-    this.availableTimeNotifyUseCase.handle();
+    this.theoreticalTimeNotifyUseCase.handle();
   }
 }

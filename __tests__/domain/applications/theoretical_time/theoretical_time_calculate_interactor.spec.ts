@@ -1,11 +1,11 @@
 import { UserSetting } from '../../../../src/domain/models/user_setting/user_setting';
-import { AvailableTimeRepository } from '../../../../src/infrastructure/theoretical_times/theoretical_time_repository';
+import { TheoreticalTimeRepository } from '../../../../src/infrastructure/theoretical_times/theoretical_time_repository';
 import { UserSettingRepository } from '../../../../src/infrastructure/user_settings/user_setting_repository';
 import { IsoWeekRepository } from '../../../../src/infrastructure/iso_weeks/iso_week_repository';
-import { AvailableTimeCalculateInteractor } from '../../../../src/domain/applications/theoretical_time/theoretical_time_calculate_interactor';
+import { TheoreticalTimeCalculateInteractor } from '../../../../src/domain/applications/theoretical_time/theoretical_time_calculate_interactor';
 import { IsoWeek } from '../../../../src/domain/models/iso_week/iso_week';
 
-describe('AvailableTimeCalculateInteractor', () => {
+describe('TheoreticalTimeCalculateInteractor', () => {
   SpreadsheetApp.openById = jest.fn(() => ({
     getSheetByName: jest.fn(() => ({
       getLastRow: jest.fn(() => 1),
@@ -56,10 +56,10 @@ describe('AvailableTimeCalculateInteractor', () => {
     })),
   }));
 
-  const userRepository = new AvailableTimeRepository();
+  const userRepository = new TheoreticalTimeRepository();
   const userSettingRepository = new UserSettingRepository();
   const isoWeekRepository = new IsoWeekRepository();
-  const userCalculateInteractor = new AvailableTimeCalculateInteractor(
+  const userCalculateInteractor = new TheoreticalTimeCalculateInteractor(
     userRepository,
     userSettingRepository,
     isoWeekRepository,
@@ -75,7 +75,7 @@ describe('AvailableTimeCalculateInteractor', () => {
       ];
 
       jest.spyOn(UserSettingRepository.prototype, 'getAll').mockReturnValue(userSettings);
-      jest.spyOn(AvailableTimeRepository.prototype, 'create');
+      jest.spyOn(TheoreticalTimeRepository.prototype, 'create');
       jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(new IsoWeek(1, 2020, 35));
       jest.spyOn(console, 'log');
 

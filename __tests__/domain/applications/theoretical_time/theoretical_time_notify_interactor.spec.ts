@@ -1,9 +1,9 @@
 import { UserSetting } from '../../../../src/domain/models/user_setting/user_setting';
 import { UserSettingRepository } from '../../../../src/infrastructure/user_settings/user_setting_repository';
 import { NotifyPresenter } from '../../../../src/app/presenters/notify/notify_presenter';
-import { AvailableTimeNotifyInteractor } from '../../../../src/domain/applications/theoretical_time/theoretical_time_notify_interactor';
+import { TheoreticalTimeNotifyInteractor } from '../../../../src/domain/applications/theoretical_time/theoretical_time_notify_interactor';
 
-describe('AvailableTimeNotifyInteractor', () => {
+describe('TheoreticalTimeNotifyInteractor', () => {
   SpreadsheetApp.openById = jest.fn(() => ({
     getSheetByName: jest.fn(() => ({
       getLastRow: jest.fn(() => 1),
@@ -60,7 +60,7 @@ describe('AvailableTimeNotifyInteractor', () => {
 
   const userSettingRepository = new UserSettingRepository();
   const notifyPresenter = new NotifyPresenter();
-  const userNotifyInteractor = new AvailableTimeNotifyInteractor(
+  const userNotifyInteractor = new TheoreticalTimeNotifyInteractor(
     userSettingRepository,
     notifyPresenter,
   );

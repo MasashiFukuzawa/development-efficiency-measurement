@@ -1,8 +1,8 @@
-import { AvailableTime } from './theoretical_time';
+import { TheoreticalTime } from './theoretical_time';
 
-export interface AvailableTimeRepositoryInterface {
-  getAll(): readonly AvailableTime[];
+export interface TheoreticalTimeRepositoryInterface {
+  getAll(): readonly TheoreticalTime[];
   getRawData(): readonly any[][];
-  map(data: any[][]): readonly AvailableTime[];
-  create(userId: string, isoWeekId: number, theoreticalImplementTime: number): AvailableTime;
+  map(data: any[][]): readonly TheoreticalTime[];
+  create(userId: string, isoWeekId: number, theoreticalImplementTime: number): TheoreticalTime;
 }

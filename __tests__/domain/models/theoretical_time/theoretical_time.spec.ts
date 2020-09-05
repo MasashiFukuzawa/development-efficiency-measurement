@@ -1,56 +1,56 @@
-import { AvailableTime } from '../../../../src/domain/models/theoretical_time/theoretical_time';
+import { TheoreticalTime } from '../../../../src/domain/models/theoretical_time/theoretical_time';
 
-describe('AvailableTime', () => {
+describe('TheoreticalTime', () => {
   describe('#isTargetWeek', () => {
-    const availableTime = new AvailableTime('xxx', 35, 1000000);
+    const theoreticalTime = new TheoreticalTime('xxx', 35, 1000000);
 
     it('returns true', () => {
-      const result = availableTime.isTargetWeek(35);
+      const result = theoreticalTime.isTargetWeek(35);
       expect(result).toBe(true);
     });
 
     it('returns false', () => {
-      const result = availableTime.isTargetWeek(36);
+      const result = theoreticalTime.isTargetWeek(36);
       expect(result).toBe(false);
     });
   });
 
   describe('#isAssociatedWithUser', () => {
-    const availableTime = new AvailableTime('xxx', 35, 1000000);
+    const theoreticalTime = new TheoreticalTime('xxx', 35, 1000000);
 
     it('returns true', () => {
-      const result = availableTime.isAssociatedWithUser(['xxx', 'yyy', 'zzz']);
+      const result = theoreticalTime.isAssociatedWithUser(['xxx', 'yyy', 'zzz']);
       expect(result).toBe(true);
     });
 
     it('returns false', () => {
-      const result = availableTime.isAssociatedWithUser(['aaa', 'bbb', 'ccc']);
+      const result = theoreticalTime.isAssociatedWithUser(['aaa', 'bbb', 'ccc']);
       expect(result).toBe(false);
     });
   });
 
   describe('#isTargetUser', () => {
-    const availableTime = new AvailableTime('xxx', 35, 1000000);
+    const theoreticalTime = new TheoreticalTime('xxx', 35, 1000000);
 
     it('returns true', () => {
-      const result = availableTime.isTargetUser('xxx');
+      const result = theoreticalTime.isTargetUser('xxx');
       expect(result).toBe(true);
     });
 
     it('returns false', () => {
-      const result = availableTime.isTargetUser('aaa');
+      const result = theoreticalTime.isTargetUser('aaa');
       expect(result).toBe(false);
     });
   });
 
   describe('.convertMilliSecToHour', () => {
     it('returns hour', () => {
-      const result = AvailableTime.convertMilliSecToHour(10800000);
+      const result = TheoreticalTime.convertMilliSecToHour(10800000);
       expect(result).toBe(3);
     });
   });
 
-  describe('.calculateAvailableTime', () => {
+  describe('.calculateTheoreticalTime', () => {
     const workStartHour = 10;
     const workStartMinute = 0;
     const workEndHour = 19;
@@ -79,10 +79,10 @@ describe('AvailableTime', () => {
           },
         ];
 
-        const availableWorkHours = AvailableTime.WORK_HOURS_PER_WEEK;
+        const availableWorkHours = TheoreticalTime.WORK_HOURS_PER_WEEK;
         const maxTime = availableWorkHours * 60 * 60 * 1000;
 
-        const result = AvailableTime.calculateAvailableTime(
+        const result = TheoreticalTime.calculateTheoreticalTime(
           weeklyEvents,
           workStartHour,
           workStartMinute,
@@ -123,10 +123,10 @@ describe('AvailableTime', () => {
           },
         ];
 
-        const availableWorkHours = AvailableTime.WORK_HOURS_PER_WEEK;
+        const availableWorkHours = TheoreticalTime.WORK_HOURS_PER_WEEK;
         const maxTime = availableWorkHours * 60 * 60 * 1000;
 
-        const result = AvailableTime.calculateAvailableTime(
+        const result = TheoreticalTime.calculateTheoreticalTime(
           weeklyEvents,
           workStartHour,
           workStartMinute,
@@ -167,10 +167,10 @@ describe('AvailableTime', () => {
           },
         ];
 
-        const availableWorkHours = AvailableTime.WORK_HOURS_PER_WEEK;
+        const availableWorkHours = TheoreticalTime.WORK_HOURS_PER_WEEK;
         const maxTime = availableWorkHours * 60 * 60 * 1000;
 
-        const result = AvailableTime.calculateAvailableTime(
+        const result = TheoreticalTime.calculateTheoreticalTime(
           weeklyEvents,
           workStartHour,
           workStartMinute,
@@ -211,10 +211,10 @@ describe('AvailableTime', () => {
           },
         ];
 
-        const availableWorkHours = AvailableTime.WORK_HOURS_PER_WEEK;
+        const availableWorkHours = TheoreticalTime.WORK_HOURS_PER_WEEK;
         const maxTime = availableWorkHours * 60 * 60 * 1000;
 
-        const result = AvailableTime.calculateAvailableTime(
+        const result = TheoreticalTime.calculateTheoreticalTime(
           weeklyEvents,
           workStartHour,
           workStartMinute,
@@ -255,10 +255,10 @@ describe('AvailableTime', () => {
           },
         ];
 
-        const availableWorkHours = AvailableTime.WORK_HOURS_PER_WEEK;
+        const availableWorkHours = TheoreticalTime.WORK_HOURS_PER_WEEK;
         const maxTime = availableWorkHours * 60 * 60 * 1000;
 
-        const result = AvailableTime.calculateAvailableTime(
+        const result = TheoreticalTime.calculateTheoreticalTime(
           weeklyEvents,
           workStartHour,
           workStartMinute,
@@ -299,10 +299,10 @@ describe('AvailableTime', () => {
           },
         ];
 
-        const availableWorkHours = AvailableTime.WORK_HOURS_PER_DAY;
+        const availableWorkHours = TheoreticalTime.WORK_HOURS_PER_DAY;
         const maxTime = availableWorkHours * 60 * 60 * 1000;
 
-        const result = AvailableTime.calculateAvailableTime(
+        const result = TheoreticalTime.calculateTheoreticalTime(
           weeklyEvents,
           workStartHour,
           workStartMinute,

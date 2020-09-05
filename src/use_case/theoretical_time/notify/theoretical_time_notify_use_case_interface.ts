@@ -1,3 +1,3 @@
-export interface AvailableTimeNotifyUseCaseInterface {
+export interface TheoreticalTimeNotifyUseCaseInterface {
   handle(): void;
 }
