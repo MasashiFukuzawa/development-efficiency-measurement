@@ -23,6 +23,11 @@ describe('MeasurementStopInteractor', () => {
     getProperty: jest.fn(() => 'xxxxxxx'),
   })) as any;
 
+  CacheService.getScriptCache = jest.fn(() => ({
+    get: jest.fn(() => null),
+    put: jest.fn(),
+  })) as any;
+
   Moment.moment = jest.fn(() => ({
     get: jest.fn(() => 2020),
     isoWeek: jest.fn(() => 35),
@@ -52,6 +57,13 @@ describe('MeasurementStopInteractor', () => {
           jest.spyOn(UserRepository.prototype, 'findByUserId').mockReturnValue(user);
           jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
           jest.spyOn(MeasurementRepository.prototype, 'last').mockReturnValue(measurement);
+          jest.spyOn(MeasurementRepository.prototype, 'getRawData').mockReturnValue([
+            [1, 'IM1234', 6, new Date(2020, 1, 1, 10, 0, 0, 0), new Date(2020, 1, 1, 11, 0, 0, 0)],
+            [2, 'KB5678', 7, new Date(2020, 2, 1, 10, 0, 0, 0), new Date(2020, 2, 1, 11, 0, 0, 0)],
+            [3, 'IM1234', 8, new Date(2020, 3, 1, 10, 0, 0, 0), new Date(2020, 3, 1, 11, 0, 0, 0)],
+            [4, 'ST5678', 9, new Date(2020, 4, 1, 10, 0, 0, 0), new Date(2020, 4, 1, 11, 0, 0, 0)],
+            [5, 'IM1234', 10, new Date(2020, 5, 1, 10, 0, 0, 0), new Date(2020, 5, 1, 11, 0, 0, 0)],
+          ]);
           jest.spyOn(Measurement.prototype, 'calculateImplementTime').mockReturnValue(1800000);
 
           const result = measurementStopInteractor.handle(userId, userName);

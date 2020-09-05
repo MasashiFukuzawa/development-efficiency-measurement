@@ -21,6 +21,11 @@ describe('UserCreateInteractor', () => {
     getProperty: jest.fn(() => 'xxxxxxx'),
   })) as any;
 
+  CacheService.getScriptCache = jest.fn(() => ({
+    get: jest.fn(() => null),
+    put: jest.fn(),
+  })) as any;
+
   Moment.moment = jest.fn(() => ({
     format: jest.fn(() => '2020/8/23 11:22:00'),
   }));

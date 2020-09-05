@@ -43,6 +43,11 @@ describe('AvailableTimeNotifyInteractor', () => {
 
   UrlFetchApp.fetch = jest.fn();
 
+  CacheService.getScriptCache = jest.fn(() => ({
+    get: jest.fn(() => null),
+    put: jest.fn(),
+  })) as any;
+
   Moment.moment = jest.fn(() => ({
     startOf: jest.fn(() => ({
       toDate: jest.fn(() => new Date()),

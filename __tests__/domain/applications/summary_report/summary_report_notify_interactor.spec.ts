@@ -30,6 +30,11 @@ describe('SummaryReportNotifyInteractor', () => {
 
   UrlFetchApp.fetch = jest.fn() as any;
 
+  CacheService.getScriptCache = jest.fn(() => ({
+    get: jest.fn(() => null),
+    put: jest.fn(),
+  })) as any;
+
   Moment.moment = jest.fn(() => ({
     get: jest.fn(() => 2020),
     isoWeek: jest.fn(() => 35),

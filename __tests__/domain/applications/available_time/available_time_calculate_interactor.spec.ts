@@ -43,6 +43,11 @@ describe('AvailableTimeCalculateInteractor', () => {
     })),
   })) as any;
 
+  CacheService.getScriptCache = jest.fn(() => ({
+    get: jest.fn(() => null),
+    put: jest.fn(),
+  })) as any;
+
   Moment.moment = jest.fn(() => ({
     isoWeek: jest.fn(() => 35),
     get: jest.fn(() => 2020),

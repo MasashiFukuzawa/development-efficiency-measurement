@@ -1,11 +1,14 @@
-import { GlobalConstants } from '../constants';
+import { GlobalConstants, GoogleAppsScriptConstants } from '../constants';
 import SpreadSheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
+import Cache = GoogleAppsScript.Cache.Cache;
 
 export class HelpInputData {
+  private cache: Cache | null;
   private spreadsheetId: string;
   private spreadsheet: SpreadSheet;
   private url: string;
   constructor() {
+    this.cache = CacheService.getScriptCache();
     this.spreadsheetId = this.getSpreadSheetId();
     this.spreadsheet = this.getSpreadSheet();
     this.url = this.getUrl();
@@ -62,26 +65,33 @@ export class HelpInputData {
   }
 
   private getSpreadSheetUrl(sheetName: string): string {
+    const sheetIdCache = this.cache?.get(`sheetId:${sheetName}`);
+    if (sheetIdCache) return `${this.url}#gid=${sheetIdCache}`;
+
     const sheet = this.spreadsheet.getSheetByName(sheetName);
     if (!sheet) throw new Error('Target table is not found.');
+
     return `${this.url}#gid=${sheet.getSheetId()}`;
   }
 
   private getSpreadSheetId(): string {
-    if (this.spreadsheetId) return this.spreadsheetId;
-    const spreadsheetId = PropertiesService.getScriptProperties().getProperty('SPREAD_SHEET_ID');
+    const spreadsheetIdCache = this.cache?.get('spreadsheetId');
+    const spreadsheetId = !spreadsheetIdCache
+      ? PropertiesService.getScriptProperties().getProperty('SPREAD_SHEET_ID')
+      : spreadsheetIdCache;
     if (!spreadsheetId) throw new Error('SPREAD_SHEET_ID is not found.');
+
     return (this.spreadsheetId = spreadsheetId);
   }
 
   private getSpreadSheet(): SpreadSheet {
-    if (this.spreadsheet) return this.spreadsheet;
     const spreadsheet = SpreadsheetApp.openById(this.spreadsheetId);
     return (this.spreadsheet = spreadsheet);
   }
 
   private getUrl(): string {
-    if (this.url) return this.url;
-    return (this.url = this.spreadsheet.getUrl());
+    const urlCache = this.cache?.get('spreadsheetUrl');
+    const url = !urlCache ? this.spreadsheet.getUrl() : urlCache;
+    return (this.url = url);
   }
 }
