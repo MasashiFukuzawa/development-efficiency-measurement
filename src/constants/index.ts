@@ -3,7 +3,7 @@ export class GlobalConstants {
   static readonly GITHUB_ISSUE_URL =
     'https://github.com/MasashiFukuzawa/development-efficiency-measurement/issues';
   static readonly GITHUB_README_URL =
-    'https://github.com/MasashiFukuzawa/development-efficiency-measurement#cli-setting';
+    'https://github.com/MasashiFukuzawa/development-efficiency-measurement#optional-cli-setting';
 }
 
 export class GoogleAppsScriptConstants {
