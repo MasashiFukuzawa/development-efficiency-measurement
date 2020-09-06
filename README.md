@@ -48,6 +48,10 @@ $ clasp open # GASファイルを開いてコードがpushされているか確�
 1. CLI から`$ clasp run 'createTablesInSpreadsheet'`を実行（CLI から`$ clasp run`コマンドを実行するには、事前に Google Cloud Console から諸々の設定をする必要があります。）
 2. `$ clasp open`した後、`google_apps_script/functions/create_tables_in_spreadsheet.gs`を開き、`createTablesInSpreadsheet`関数を実行
 
+## Slack の設定
+
+Slack 上でのコマンドの実行や、bot 通知の受信機能をご利用したい場合は、公式ドキュメントまたは解説記事などから Slack の設定をして下さい。
+
 ## secrets の設定
 
 `$ clasp open`した後、ファイル > プロジェクトのプロパティ > スクリプトのプロパティ から以下の情報を入れていきます。
@@ -78,12 +82,6 @@ $ clasp open # GASファイルを開いてコードがpushされているか確�
 1. CLI から`$ clasp run 'setNewTriggers'`を実行（CLI から`$ clasp run`コマンドを実行するには、事前に Google Cloud Console から諸々の設定をする必要があります。）
 2. `$ clasp open`した後、`google_apps_script/functions/set_new_triggers.gs`を開き、`setNewTriggers`関数を実行
 3. `$ clasp open`した後、編集 > 現在のプロジェクトのトリガー からトリガー追加画面に行き、GUI で新規トリガーを作成
-
-## (WIP) Slack の設定
-
-- Slack アプリを作成
-- Slash コマンド設定
-- Webhook 設定
 
 ## (Optional) CLI Setting
 
