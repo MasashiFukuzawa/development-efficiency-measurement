@@ -45,7 +45,7 @@ $ clasp open # GASファイルを開いてコードがpushされているか確�
 
 下記 2 通りのいずれかで自動的に必要なシートおよびカラムを作成できます。
 
-1. CLI から`$ clasp run 'createTablesInSpreadsheet'`を実行（CLI から`$ clasp run 'createTablesInSpreadsheet'`を実行するには、事前に Google Cloud Console から諸々の設定をする必要があります。）
+1. CLI から`$ clasp run 'createTablesInSpreadsheet'`を実行（CLI から`$ clasp run`コマンドを実行するには、事前に Google Cloud Console から諸々の設定をする必要があります。）
 2. `$ clasp open`した後、`google_apps_script/functions/create_tables_in_spreadsheet.gs`を開き、`createTablesInSpreadsheet`関数を実行
 
 ## secrets の設定
@@ -71,9 +71,13 @@ $ clasp open # GASファイルを開いてコードがpushされているか確�
 
 - SLACK から bot を送信する実行する際に必要な認証用の文字列です。Slack でアプリを作成すると発行されます。
 
-## (WIP) GAS のトリガーの設定
+## GAS のトリガーの設定
 
-- 更新予定
+下記 3 通りのいずれかで GAS のトリガー (= cron) を設定できます。
+
+1. CLI から`$ clasp run 'setNewTriggers'`を実行（CLI から`$ clasp run`コマンドを実行するには、事前に Google Cloud Console から諸々の設定をする必要があります。）
+2. `$ clasp open`した後、`google_apps_script/functions/set_new_triggers.gs`を開き、`setNewTriggers`関数を実行
+3. `$ clasp open`した後、編集 > 現在のプロジェクトのトリガー からトリガー追加画面に行き、GUI で新規トリガーを作成
 
 ## (WIP) Slack の設定
 
