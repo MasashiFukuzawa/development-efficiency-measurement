@@ -45,4 +45,13 @@ describe('IsoWeekRepository', () => {
       });
     });
   });
+
+  describe('#create', () => {
+    it('returns a user resource', () => {
+      const isoWeek = isoWeekRepository.create(2020, 37);
+      expect(isoWeek.getIsoWeekId().toNumber()).toBe(5);
+      expect(isoWeek.getIsoWeekYear().toNumber()).toBe(2020);
+      expect(isoWeek.getIsoWeekIsoWeek().toNumber()).toBe(37);
+    });
+  });
 });
