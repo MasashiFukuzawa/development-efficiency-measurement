@@ -1,5 +1,5 @@
 import { UserSettingRepository } from '../../../../src/infrastructure/user_settings/user_setting_repository';
-import { AvailableTimeRepository } from '../../../../src/infrastructure/available_times/available_time_repository';
+import { TheoreticalTimeRepository } from '../../../../src/infrastructure/theoretical_times/theoretical_time_repository';
 import { MeasurementRepository } from '../../../../src/infrastructure/measurements/measurement_repository';
 import { UserSetting } from '../../../../src/domain/models/user_setting/user_setting';
 import { SummaryReport } from '../../../../src/domain/models/summary_report/summary_report';
@@ -9,7 +9,7 @@ import { NotifyPresenter } from '../../../../src/app/presenters/notify/notify_pr
 import { IsoWeekRepository } from '../../../../src/infrastructure/iso_weeks/iso_week_repository';
 import { SummaryReportNotifyInteractor } from '../../../../src/domain/applications/summary_report/summary_report_notify_interactor';
 import { IsoWeek } from '../../../../src/domain/models/iso_week/iso_week';
-import { AvailableTime } from '../../../../src/domain/models/available_time/available_time';
+import { TheoreticalTime } from '../../../../src/domain/models/theoretical_time/theoretical_time';
 import { Measurement } from '../../../../src/domain/models/measurement/measurement';
 
 describe('SummaryReportNotifyInteractor', () => {
@@ -43,7 +43,7 @@ describe('SummaryReportNotifyInteractor', () => {
 
   const isoWeekRepository = new IsoWeekRepository();
   const userSettingRepository = new UserSettingRepository();
-  const availableTimeRepository = new AvailableTimeRepository();
+  const theoreticalTimeRepository = new TheoreticalTimeRepository();
   const measurementRepository = new MeasurementRepository();
   const summaryReportRepository = new SummaryReportRepository();
   const standardValueRepository = new StandardValueRepository();
@@ -51,7 +51,7 @@ describe('SummaryReportNotifyInteractor', () => {
   const summaryReportNotifyInteractor = new SummaryReportNotifyInteractor(
     isoWeekRepository,
     userSettingRepository,
-    availableTimeRepository,
+    theoreticalTimeRepository,
     measurementRepository,
     summaryReportRepository,
     standardValueRepository,
@@ -70,10 +70,10 @@ describe('SummaryReportNotifyInteractor', () => {
     new UserSetting(userId2, 'katsuki.bakugo@example.com', 10, 0, 19, 0, 'off', new Date()),
     new UserSetting(userId3, 'ochako.uraraka@example.com', 10, 0, 19, 0, 'on', new Date()),
   ];
-  const availableTimes = [
-    new AvailableTime(userId1, isoWeekId, 10000000),
-    new AvailableTime(userId2, isoWeekId, 10000000),
-    new AvailableTime(userId3, isoWeekId, 10000000),
+  const theoreticalTimes = [
+    new TheoreticalTime(userId1, isoWeekId, 10000000),
+    new TheoreticalTime(userId2, isoWeekId, 10000000),
+    new TheoreticalTime(userId3, isoWeekId, 10000000),
   ];
   const measurements = [
     new Measurement(
@@ -147,7 +147,7 @@ describe('SummaryReportNotifyInteractor', () => {
       it('sends reports successfully', () => {
         jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
         jest.spyOn(UserSettingRepository.prototype, 'getAll').mockReturnValue(userSettings);
-        jest.spyOn(AvailableTimeRepository.prototype, 'getAll').mockReturnValue(availableTimes);
+        jest.spyOn(TheoreticalTimeRepository.prototype, 'getAll').mockReturnValue(theoreticalTimes);
         jest.spyOn(MeasurementRepository.prototype, 'getAll').mockReturnValue(measurements);
         jest.spyOn(SummaryReportRepository.prototype, 'last').mockReturnValue(summaryReport);
 
@@ -170,7 +170,7 @@ describe('SummaryReportNotifyInteractor', () => {
       it('does not send message', () => {
         jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
         jest.spyOn(UserSettingRepository.prototype, 'getAll').mockReturnValue(userSettings);
-        jest.spyOn(AvailableTimeRepository.prototype, 'getAll').mockReturnValue([]);
+        jest.spyOn(TheoreticalTimeRepository.prototype, 'getAll').mockReturnValue([]);
 
         summaryReportNotifyInteractor.handle();
         expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(0);
@@ -181,7 +181,7 @@ describe('SummaryReportNotifyInteractor', () => {
       it('does not send message', () => {
         jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
         jest.spyOn(UserSettingRepository.prototype, 'getAll').mockReturnValue(userSettings);
-        jest.spyOn(AvailableTimeRepository.prototype, 'getAll').mockReturnValue(availableTimes);
+        jest.spyOn(TheoreticalTimeRepository.prototype, 'getAll').mockReturnValue(theoreticalTimes);
         jest.spyOn(MeasurementRepository.prototype, 'getAll').mockReturnValue([]);
 
         summaryReportNotifyInteractor.handle();
@@ -193,7 +193,7 @@ describe('SummaryReportNotifyInteractor', () => {
       it('sends reports successfully', () => {
         jest.spyOn(IsoWeekRepository.prototype, 'find').mockReturnValue(isoWeek);
         jest.spyOn(UserSettingRepository.prototype, 'getAll').mockReturnValue(userSettings);
-        jest.spyOn(AvailableTimeRepository.prototype, 'getAll').mockReturnValue(availableTimes);
+        jest.spyOn(TheoreticalTimeRepository.prototype, 'getAll').mockReturnValue(theoreticalTimes);
         jest.spyOn(MeasurementRepository.prototype, 'getAll').mockReturnValue(measurements);
         jest.spyOn(SummaryReportRepository.prototype, 'last').mockReturnValue(null);
 

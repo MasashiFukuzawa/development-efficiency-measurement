@@ -2,11 +2,11 @@ import { NotifyPresenterInterface } from '../../../use_case/notify_presenter_int
 import { SummaryReportNotifyUseCaseInterface } from '../../../use_case/summary_report/notify/summary_report_notify_use_case_interface';
 import { MeasurementRepositoryInterface } from '../../models/measurement/measurement_repository_interface';
 import { SummaryReportRepositoryInterface } from '../../models/summary_report/summary_report_repository_interface';
-import { AvailableTimeRepositoryInterface } from '../../models/available_time/available_time_repository_interface';
+import { TheoreticalTimeRepositoryInterface } from '../../models/theoretical_time//theoretical_time_repository_interface';
 import { UserSettingRepositoryInterface } from '../../models/user_setting/user_setting_repository_interface';
 import { SummaryReportNotifyOutputData } from '../../../use_case/summary_report/notify/summary_report_notify_output_data';
 import { SummaryReport } from '../../models/summary_report/summary_report';
-import { AvailableTime } from '../../models/available_time/available_time';
+import { TheoreticalTime } from '../../models/theoretical_time/theoretical_time';
 import { Measurement } from '../../models/measurement/measurement';
 import { IsoWeekRepositoryInterface } from '../../models/iso_week/iso_week_repository_interface';
 import { StandardValueRepositoryInterface } from '../../models/standard_value/standard_value_repository_interface';
@@ -16,7 +16,7 @@ export class SummaryReportNotifyInteractor implements SummaryReportNotifyUseCase
   constructor(
     private readonly isoWeekRepository: IsoWeekRepositoryInterface,
     private readonly userSettingRepository: UserSettingRepositoryInterface,
-    private readonly availableTimeRepository: AvailableTimeRepositoryInterface,
+    private readonly theoreticalTimeRepository: TheoreticalTimeRepositoryInterface,
     private readonly measurementRepository: MeasurementRepositoryInterface,
     private readonly summaryReportRepository: SummaryReportRepositoryInterface,
     private readonly standardValueRepository: StandardValueRepositoryInterface,
@@ -32,15 +32,15 @@ export class SummaryReportNotifyInteractor implements SummaryReportNotifyUseCase
     const targetUserIds = this.getNotifiedUserIds();
     if (targetUserIds.length === 0) return;
 
-    const targetAvailableTimes = this.filterAvailableTimesBy(targetUserIds, targetIsoWeekId);
-    if (targetAvailableTimes.length === 0) return;
+    const targetTheoreticalTimes = this.filterTheoreticalTimesBy(targetUserIds, targetIsoWeekId);
+    if (targetTheoreticalTimes.length === 0) return;
 
     const targetMeasurements = this.filterMeasurementsBy(targetUserIds, targetIsoWeekId);
     if (targetMeasurements.length === 0) return;
 
     const summaryReports = this.getSummaryReports(
       targetUserIds,
-      targetAvailableTimes,
+      targetTheoreticalTimes,
       targetMeasurements,
       targetIsoWeekId,
     );
@@ -60,14 +60,17 @@ export class SummaryReportNotifyInteractor implements SummaryReportNotifyUseCase
   // TODO: ロジックが適当なので、後からリファクタリングする
   private getSummaryReports(
     userIds: string[],
-    availableTimes: AvailableTime[],
+    theoreticalTimes: TheoreticalTime[],
     measurements: Measurement[],
     isoWeekId: number,
   ): SummaryReport[] {
     const lastSummaryReportId = this.getLastSummaryReportId();
 
     return userIds.map((userId, i) => {
-      const userAvailableTime = this.getAvailableTimeAssociatedWithUser(availableTimes, userId);
+      const userTheoreticalTime = this.getTheoreticalTimeAssociatedWithUser(
+        theoreticalTimes,
+        userId,
+      );
       const userMeasurements = this.getMeasurementsAssociatedWithUser(
         measurements,
         userId,
@@ -80,7 +83,7 @@ export class SummaryReportNotifyInteractor implements SummaryReportNotifyUseCase
       const measurementCount = SummaryReport.count(targetMeasurements);
       const averageImplementHour = SummaryReport.average(measurementCount, totalImplementHour);
       const theoreticalAvailableHour = SummaryReport.calculateTheoreticalAvailableHour(
-        userAvailableTime.getTheoreticalImplementTime().toNumber(),
+        userTheoreticalTime.getTheoreticalImplementTime().toNumber(),
       );
       const availableRate = SummaryReport.calculateAvailableRate(
         theoreticalAvailableHour,
@@ -113,8 +116,8 @@ export class SummaryReportNotifyInteractor implements SummaryReportNotifyUseCase
       .map((e) => e.getUserId().toString());
   }
 
-  private filterAvailableTimesBy(userIds: string[], isoWeekId: number): AvailableTime[] {
-    return this.availableTimeRepository.getAll().filter((e) => {
+  private filterTheoreticalTimesBy(userIds: string[], isoWeekId: number): TheoreticalTime[] {
+    return this.theoreticalTimeRepository.getAll().filter((e) => {
       return e.isTargetWeek(isoWeekId) && e.isAssociatedWithUser(userIds);
     });
   }
@@ -134,16 +137,16 @@ export class SummaryReportNotifyInteractor implements SummaryReportNotifyUseCase
     }
   }
 
-  private getAvailableTimeAssociatedWithUser(
-    availableTimes: AvailableTime[],
+  private getTheoreticalTimeAssociatedWithUser(
+    theoreticalTimes: TheoreticalTime[],
     userId: string,
-  ): AvailableTime {
-    return availableTimes
+  ): TheoreticalTime {
+    return theoreticalTimes
       .filter((e) => {
         return e.isTargetUser(userId);
       })
       .map((e) => {
-        return new AvailableTime(
+        return new TheoreticalTime(
           userId,
           e.getIsoWeekId().toNumber(),
           e.getTheoreticalImplementTime().toNumber(),

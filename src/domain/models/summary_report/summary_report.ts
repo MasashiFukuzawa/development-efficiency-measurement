@@ -110,8 +110,8 @@ export class SummaryReport {
     return measurementCount === 0 ? 0 : totalImplementHour / measurementCount;
   }
 
-  static calculateTheoreticalAvailableHour(theoreticalAvailableTime: number): number {
-    return this.convertMilliSecToHour(theoreticalAvailableTime);
+  static calculateTheoreticalAvailableHour(theoreticalTheoreticalTime: number): number {
+    return this.convertMilliSecToHour(theoreticalTheoreticalTime);
   }
 
   static calculateAvailableRate(theoreticalHour: number, totalImplementHour: number): number {
