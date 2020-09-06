@@ -102,6 +102,6 @@ function measurement() {
   user_id=`cat ${config_path} | grep user_id | sed s/user_id=// | awk '{ print }'`
   user_name=`cat ${config_path} | grep user_name | sed s/user_name=// | awk '{ print }'`
   curl -L "${url}?token=${token}&user_id=${user_id}&user_name=${user_name}&text=$1" \
-    -d "" -H "Content-Type: application/json"
+    -sS -d "" -H "Content-Type: application/json"
 }
 ```
