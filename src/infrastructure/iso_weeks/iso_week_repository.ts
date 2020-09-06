@@ -17,4 +17,11 @@ export class IsoWeekRepository extends BaseRepository implements IsoWeekReposito
     const isoWeekObj = this.fullData.find((e) => e.isTargetWeek(year, isoWeek));
     return !!isoWeekObj ? isoWeekObj : null;
   }
+
+  create(year: number, isoWeek: number): IsoWeek {
+    const id = this.lastRow;
+    const isoWeekObj = new IsoWeek(id, year, isoWeek);
+    this.sheet.getRange(id + 1, 1, 1, this.lastCol).setValues([[id, year, isoWeek]]);
+    return isoWeekObj;
+  }
 }
