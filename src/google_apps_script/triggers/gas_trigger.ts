@@ -25,10 +25,15 @@ export class GasTrigger {
   readonly onEditTriggerNames: string[];
 
   constructor() {
-    this.everyDaysTriggerNames = ['calculateTheoreticalTime', 'notifyTheoreticalTime'];
+    this.everyDaysTriggerNames = [
+      'calculateTheoreticalTime',
+      'notifyTheoreticalTime',
+      'createIsoWeek',
+    ];
     this.everyDaysTriggerList = {
       calculateTheoreticalTime: { everyDays: 1, atHour: 0 },
       notifyTheoreticalTime: { everyDays: 1, atHour: 7 },
+      createIsoWeek: { everyDays: 1, atHour: 0 },
     };
 
     this.everyHoursTriggerNames = ['refreshCache'];
