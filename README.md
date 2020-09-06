@@ -41,9 +41,12 @@ $ clasp push --force
 $ clasp open # GASファイルを開いてコードがpushされているか確認
 ```
 
-## (WIP) データベース (スプレッドシート) のマイグレーション
+## データベース (スプレッドシート) の用意
 
-- テーブルを自動的にマイグレーションできるスクリプトを用意する予定です
+下記 2 通りのいずれかで自動的に必要なシートおよびカラムを作成できます。
+
+1. CLI から`$ clasp run 'createTablesInSpreadsheet'`を実行（CLI から`$ clasp run 'createTablesInSpreadsheet'`を実行するには、事前に Google Cloud Console から諸々の設定をする必要があります。）
+2. `$ clasp open`した後、`google_apps_script/functions/create_tables_in_spreadsheet.gs`を開き、`createTablesInSpreadsheet`関数を実行
 
 ## (WIP) 環境変数の設定
 
