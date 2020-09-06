@@ -81,10 +81,6 @@ $ clasp open # GASファイルを開いてコードがpushされているか確�
 - Slash コマンド設定
 - Webhook 設定
 
-## (Optional) GCP Stackdriver によるログ監視設定
-
-- 更新予定
-
 ## (Optional) CLI Setting
 
 以下のように設定することで CLI からコマンドを実行することが可能になります。
@@ -127,3 +123,9 @@ function measurement() {
     -sS -d "" -H "Content-Type: application/json"
 }
 ```
+
+## (Optional) GCP Stackdriver によるログ監視設定
+
+- Google Cloud Console から設定可能です。
+- doPost 関数のデバッグなどで重宝するので設定しておくことをオススメします。
+- 詳細は Google の公式ドキュメントや解説記事等を参照下さい。
