@@ -2,11 +2,11 @@ import { NotifyPresenterInterface } from '../../../use_case/notify_presenter_int
 import { SummaryReportNotifyUseCaseInterface } from '../../../use_case/summary_report/notify/summary_report_notify_use_case_interface';
 import { MeasurementRepositoryInterface } from '../../models/measurement/measurement_repository_interface';
 import { SummaryReportRepositoryInterface } from '../../models/summary_report/summary_report_repository_interface';
-import { TheoreticalTimeRepositoryInterface } from '../../models/theoretical/theoretical_time_repository_interface';
+import { TheoreticalTimeRepositoryInterface } from '../../models/theoretical_time/theoretical_time_repository_interface';
 import { UserSettingRepositoryInterface } from '../../models/user_setting/user_setting_repository_interface';
 import { SummaryReportNotifyOutputData } from '../../../use_case/summary_report/notify/summary_report_notify_output_data';
 import { SummaryReport } from '../../models/summary_report/summary_report';
-import { TheoreticalTime } from '../../models/theoretical/theoretical_time';
+import { TheoreticalTime } from '../../models/theoretical_time/theoretical_time';
 import { Measurement } from '../../models/measurement/measurement';
 import { IsoWeekRepositoryInterface } from '../../models/iso_week/iso_week_repository_interface';
 import { StandardValueRepositoryInterface } from '../../models/standard_value/standard_value_repository_interface';
