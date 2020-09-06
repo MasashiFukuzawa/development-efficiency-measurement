@@ -48,9 +48,28 @@ $ clasp open # GASファイルを開いてコードがpushされているか確�
 1. CLI から`$ clasp run 'createTablesInSpreadsheet'`を実行（CLI から`$ clasp run 'createTablesInSpreadsheet'`を実行するには、事前に Google Cloud Console から諸々の設定をする必要があります。）
 2. `$ clasp open`した後、`google_apps_script/functions/create_tables_in_spreadsheet.gs`を開き、`createTablesInSpreadsheet`関数を実行
 
-## (WIP) 環境変数の設定
+## secrets の設定
 
-- 更新予定
+`$ clasp open`した後、ファイル > プロジェクトのプロパティ > スクリプトのプロパティ から以下の情報を入れていきます。
+
+![image](https://user-images.githubusercontent.com/44726460/92320126-19469380-f05a-11ea-8d68-0ef4005dc94b.png)
+
+### CLI_VERIFICATION_TOKEN
+
+- CLI から実行する際に必要な認証用の任意の文字列です。
+
+### SLACK_VERIFICATION_TOKEN
+
+- SLACK から slash コマンドを実行する際に必要な認証用の文字列です。Slack でアプリを作成すると発行されます。
+
+### SPREAD_SHEET_ID
+
+- 対象のスプレッドシートの URL の中に含まれます。下記の`{SPREAD_SHEET_ID}`の部分に該当します。
+  - `https://docs.google.com/spreadsheets/d/{SPREAD_SHEET_ID}/edit#gid=xxxxxxxx`
+
+### SLACK_WEBHOOK_URL
+
+- SLACK から bot を送信する実行する際に必要な認証用の文字列です。Slack でアプリを作成すると発行されます。
 
 ## (WIP) GAS のトリガーの設定
 
