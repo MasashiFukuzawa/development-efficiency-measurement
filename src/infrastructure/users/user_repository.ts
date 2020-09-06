@@ -35,7 +35,7 @@ export class UserRepository extends BaseRepository implements UserRepositoryInte
     const usersCacheClone = [...usersCache];
     usersCacheClone.push([userId, userName, now]);
 
-    this.cache?.put(
+    this.cache.put(
       'data:users',
       JSON.stringify(usersCacheClone),
       GoogleAppsScriptConstants.MAX_CACHE_EXPIRATION_IN_SECONDS,

@@ -9,7 +9,7 @@ export class Singleton {
   private constructor() {
     this.cache = CacheService.getScriptCache();
 
-    const spreadsheetIdCache = this.cache?.get('spreadsheet_id');
+    const spreadsheetIdCache = this.cache.get('spreadsheet_id');
     const spreadsheetId = !spreadsheetIdCache
       ? PropertiesService.getScriptProperties().getProperty('SPREAD_SHEET_ID')
       : spreadsheetIdCache;

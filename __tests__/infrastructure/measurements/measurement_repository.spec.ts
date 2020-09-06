@@ -64,7 +64,7 @@ describe('MeasurementRepository', () => {
       const userId = measurement.getUserId().toString();
       const isoWeekId = measurement.getIsoWeekId().toNumber();
       const startAt = measurement.getMeasurementStartAt().toDate();
-      const stopAt = measurement.getMeasurementStopAt()?.toDate();
+      const stopAt = measurement.getMeasurementStopAt().toDate();
       expect(id).toBe(6);
       expect(userId).toBe('IM1234');
       expect(isoWeekId).toBe(10);

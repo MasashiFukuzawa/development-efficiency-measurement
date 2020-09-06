@@ -18,7 +18,7 @@ function refreshCache(): void {
     'sheet_id:user_settings',
   ];
   const cache = CacheService.getScriptCache();
-  cache?.removeAll(keys);
+  cache.removeAll(keys);
 
   // secrets
   const cliToken = PropertiesService.getScriptProperties().getProperty('CLI_VERIFICATION_TOKEN');
@@ -73,17 +73,17 @@ function refreshCache(): void {
 
   // cue
   const max = GoogleAppsScriptConstants.MAX_CACHE_EXPIRATION_IN_SECONDS;
-  cache?.put('cli_token', cliToken, max);
-  cache?.put('slack_token', slackToken, max);
-  cache?.put('slack_webhook_url', slackWebhookUrl, max);
-  cache?.put('spreadsheet_id', spreadsheetId, max);
-  cache?.put('data:users', JSON.stringify(usersSheetData), max);
-  cache?.put('data:user_settings', JSON.stringify(userSettingsSheetData), max);
-  cache?.put('data:iso_weeks', JSON.stringify(isoWeeksSheetData), max);
-  cache?.put('data:measurements', JSON.stringify(measurementsSheetData), max);
-  cache?.put('spreadsheet_url', spreadsheetUrl, max);
-  cache?.put('sheet_id:measurements', measurementsSheetId.toString(), max);
-  cache?.put('sheet_id:user_settings', userSettingsSheetId.toString(), max);
+  cache.put('cli_token', cliToken, max);
+  cache.put('slack_token', slackToken, max);
+  cache.put('slack_webhook_url', slackWebhookUrl, max);
+  cache.put('spreadsheet_id', spreadsheetId, max);
+  cache.put('data:users', JSON.stringify(usersSheetData), max);
+  cache.put('data:user_settings', JSON.stringify(userSettingsSheetData), max);
+  cache.put('data:iso_weeks', JSON.stringify(isoWeeksSheetData), max);
+  cache.put('data:measurements', JSON.stringify(measurementsSheetData), max);
+  cache.put('spreadsheet_url', spreadsheetUrl, max);
+  cache.put('sheet_id:measurements', measurementsSheetId.toString(), max);
+  cache.put('sheet_id:user_settings', userSettingsSheetId.toString(), max);
 
   console.log('cache refreshed!');
 }

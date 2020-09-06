@@ -85,7 +85,7 @@ export class UserSettingRepository extends BaseRepository
       updatedAt,
     ]);
 
-    this.cache?.put(
+    this.cache.put(
       'data:user_settings',
       JSON.stringify(userSettingsCacheClone),
       GoogleAppsScriptConstants.MAX_CACHE_EXPIRATION_IN_SECONDS,

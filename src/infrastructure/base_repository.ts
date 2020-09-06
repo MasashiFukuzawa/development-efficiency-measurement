@@ -16,7 +16,7 @@ export abstract class BaseRepository {
     this.cache = singleton.cache;
     this.spreadsheet = singleton.spreadsheet;
 
-    this.dbCache = this.cache?.get(`data:${sheetName}`);
+    this.dbCache = this.cache.get(`data:${sheetName}`);
 
     this.sheet = this.getSheet(sheetName);
     this.lastRow = this.getLastRow();
