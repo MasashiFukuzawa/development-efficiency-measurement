@@ -26,7 +26,7 @@ export abstract class BaseRepository {
 
   getAll(): readonly any[] {
     if (this.fullData) return this.fullData;
-    const data: any[][] = !this.dbCache ? this.getRawData() : JSON.parse(this.dbCache);
+    const data: readonly any[][] = !this.dbCache ? this.getRawData() : JSON.parse(this.dbCache);
     return this.map(data);
   }
 
@@ -37,7 +37,7 @@ export abstract class BaseRepository {
       .filter((e) => !!e[0]);
   }
 
-  abstract map(data: any[][]): readonly any[];
+  abstract map(data: readonly any[][]): readonly any[];
 
   private getSheet(sheetName: string): Sheet {
     const sheet = this.spreadsheet.getSheetByName(sheetName);

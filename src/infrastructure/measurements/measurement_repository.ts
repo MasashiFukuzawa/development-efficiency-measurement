@@ -16,7 +16,7 @@ export class MeasurementRepository extends BaseRepository
         e[1],
         e[2],
         typeof e[3] === 'string' ? Moment.moment(e[3]).toDate() : e[3],
-        typeof e[4] === 'string' ? Moment.moment(e[4]).toDate() : e[4] || void 0,
+        this.convertStopAt(e[4]),
       );
     });
   }
@@ -80,5 +80,11 @@ export class MeasurementRepository extends BaseRepository
       JSON.stringify(measurementsCacheClone),
       GoogleAppsScriptConstants.MAX_CACHE_EXPIRATION_IN_SECONDS,
     );
+  }
+
+  private convertStopAt(param: Date | string): Date | undefined {
+    if (param === '') return void 0;
+    if (typeof param === 'string') return Moment.moment(param).toDate();
+    if (typeof param === 'object') return param;
   }
 }
