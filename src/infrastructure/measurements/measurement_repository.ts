@@ -70,7 +70,7 @@ export class MeasurementRepository extends BaseRepository
     const measurementsCacheClone = [...measurementsCache];
 
     if (!stopAt) {
-      measurementsCacheClone.push([id, userId, isoWeekId, startAt, void 0]);
+      measurementsCacheClone.push([id, userId, isoWeekId, startAt, '']);
     } else {
       measurementsCacheClone.filter((e) => e[0] === id)[0][4] = stopAt;
     }
