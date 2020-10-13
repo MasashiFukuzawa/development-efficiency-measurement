@@ -139,6 +139,9 @@ export class Measurement {
   }
 
   static isAlreadyStarted(lastMeasurement: Measurement): boolean {
-    return typeof lastMeasurement.getMeasurementStopAt() === 'undefined';
+    // NOTE: 元々、typeof lastMeasurement.getMeasurementStopAt() === 'undefined'としていたが、
+    // cacheを使用するとundefinedが空文字として入るためロジックを修正
+    // FIXME: 暗黙的になっているので設計を見直すべき
+    return !lastMeasurement.getMeasurementStopAt();
   }
 }
