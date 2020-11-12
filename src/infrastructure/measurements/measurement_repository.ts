@@ -75,7 +75,7 @@ export class MeasurementRepository extends BaseRepository
       measurementsCacheClone.filter((e) => e[0] === id)[0][4] = stopAt;
     }
 
-    this.cache?.put(
+    this.cache.put(
       'data:measurements',
       JSON.stringify(measurementsCacheClone),
       GoogleAppsScriptConstants.MAX_CACHE_EXPIRATION_IN_SECONDS,
